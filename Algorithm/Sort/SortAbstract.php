@@ -1,9 +1,9 @@
 <?php
 
-namespace App\AlgorithmDemo\Sort\Handler;
+namespace App\Algorithm\Sort;
 
 
-abstract class SortHandlerAbstract
+abstract class SortAbstract
 {
     protected $sortArray; // 排序数组
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\AlgorithmDemo\DynamicProgramming\Handler;
+namespace App\Algorithm\DynamicProgramming;
 
 
 /**
- * Class GiveChangeHandler
+ * Class GiveChange
  * 找零钱问题
  *
- * @package App\AlgorithmDemo\DynamicProgramming\Handler
+ * @package App\Algorithm\DynamicProgramming
  */
-class GiveChangeHandler extends DynamicProgrammingHandlerAbstract
+class GiveChange extends DynamicProgrammingAbstract
 {
     /*
     |--------------------------------------------------------------------------

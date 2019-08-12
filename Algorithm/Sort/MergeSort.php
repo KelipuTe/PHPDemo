@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AlgorithmDemo\Sort\Handler;
+namespace App\Algorithm\Sort;
 
 
 /**
@@ -9,7 +9,7 @@ namespace App\AlgorithmDemo\Sort\Handler;
  *
  * @package App\AlgorithmDemo\Sort\Handler
  */
-class MergeSortHandler extends SortHandlerAbstract
+class MergeSort extends SortAbstract
 {
     public function sort()
     {

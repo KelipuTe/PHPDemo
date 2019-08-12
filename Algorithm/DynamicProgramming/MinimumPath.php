@@ -1,15 +1,15 @@
 <?php
 
-namespace App\AlgorithmDemo\DynamicProgramming\Handler;
+namespace App\Algorithm\DynamicProgramming;
 
 
 /**
- * Class MinimumPathHandler
+ * Class MinimumPath
  * 最小路径问题
  *
- * @package App\AlgorithmDemo\DynamicProgramming\Handler
+ * @package App\Algorithm\DynamicProgramming
  */
-class MinimumPathHandler extends DynamicProgrammingHandlerAbstract
+class MinimumPath extends DynamicProgrammingAbstract
 {
     /*
     |--------------------------------------------------------------------------

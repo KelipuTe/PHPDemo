@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AlgorithmDemo\Sort\Handler;
+namespace App\Algorithm\Sort;
 
 /**
  * Class InsertionSortHandler
@@ -8,7 +8,7 @@ namespace App\AlgorithmDemo\Sort\Handler;
  *
  * @package App\AlgorithmDemo\Sort\Handler
  */
-class InsertionSortHandler extends SortHandlerAbstract
+class InsertionSort extends SortAbstract
 {
     public function sort()
     {

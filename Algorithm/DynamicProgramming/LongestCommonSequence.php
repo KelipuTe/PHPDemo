@@ -1,15 +1,14 @@
 <?php
 
-namespace App\AlgorithmDemo\DynamicProgramming\Handler;
-
+namespace App\Algorithm\DynamicProgramming;
 
 /**
- * Class LongestCommonSequenceHandler
+ * Class LongestCommonSequence
  * 最长公共子序列问题
  *
- * @package App\AlgorithmDemo\DynamicProgramming\Handler
+ * @package App\Algorithm\DynamicProgramming
  */
-class LongestCommonSequenceHandler extends DynamicProgrammingHandlerAbstract
+class LongestCommonSequence extends DynamicProgrammingAbstract
 {
     /*
     |--------------------------------------------------------------------------

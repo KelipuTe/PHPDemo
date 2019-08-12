@@ -1,9 +1,9 @@
 <?php
 
-namespace App\AlgorithmDemo\DynamicProgramming\Handler;
+namespace App\Algorithm\DynamicProgramming;
 
 
-abstract class DynamicProgrammingHandlerAbstract
+abstract class DynamicProgrammingAbstract
 {
     protected $handleSteps; // 求解步骤
 

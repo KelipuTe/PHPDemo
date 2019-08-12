@@ -1,15 +1,15 @@
 <?php
 
-namespace App\AlgorithmDemo\DynamicProgramming\Handler;
+namespace App\Algorithm\DynamicProgramming;
 
 
 /**
- * Class ClimbingStepsHandler
+ * Class ClimbingSteps
  * 爬台阶问题
  *
- * @package App\AlgorithmDemo\DynamicProgramming\Handler
+ * @package App\Algorithm\DynamicProgramming
  */
-class ClimbingStepsHandler extends DynamicProgrammingHandlerAbstract
+class ClimbingSteps extends DynamicProgrammingAbstract
 {
     /*
     |--------------------------------------------------------------------------

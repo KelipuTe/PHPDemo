@@ -1,15 +1,15 @@
 <?php
 
-namespace App\AlgorithmDemo\DynamicProgramming\Handler;
+namespace App\Algorithm\DynamicProgramming;
 
 
 /**
- * Class KingAndGoldMineHandler
+ * Class KingAndGoldMine
  * 国王的金矿问题
  *
- * @package App\AlgorithmDemo\DynamicProgramming\Handler
+ * @package App\Algorithm\DynamicProgramming
  */
-class KingAndGoldMineHandler extends DynamicProgrammingHandlerAbstract
+class KingAndGoldMine extends DynamicProgrammingAbstract
 {
     /*
     |--------------------------------------------------------------------------

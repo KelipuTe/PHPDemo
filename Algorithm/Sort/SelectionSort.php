@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AlgorithmDemo\Sort\Handler;
+namespace App\Algorithm\Sort;
 
 /**
  * Class SelectionSortHandler
@@ -8,7 +8,7 @@ namespace App\AlgorithmDemo\Sort\Handler;
  *
  * @package App\AlgorithmDemo\Sort\Handler
  */
-class SelectionSortHandler extends SortHandlerAbstract
+class SelectionSort extends SortAbstract
 {
     public function sort()
     {
