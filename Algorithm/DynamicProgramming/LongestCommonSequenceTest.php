@@ -2,6 +2,9 @@
 
 namespace App\Algorithm\DynamicProgramming;
 
+
+require 'LongestCommonSequence.php';
+
 $string1 = '1A2C3';
 $string2 = 'B1D23';
 
@@ -15,4 +18,4 @@ $returnData = [
     ]
 ];
 
-echo $returnData;
+echo json_encode($returnData);

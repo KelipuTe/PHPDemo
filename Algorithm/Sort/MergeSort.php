@@ -3,14 +3,12 @@
 namespace App\Algorithm\Sort;
 
 
-/**
- * Class MergeSortHandler
- * 归并排序(Merge Sort) 时间复杂度=O(nlog₂n) 空间复杂度=T(n)
- *
- * @package App\AlgorithmDemo\Sort\Handler
- */
+require_once 'SortAbstract.php';
+
 class MergeSort extends SortAbstract
 {
+    // 归并排序(Merge Sort)，时间复杂度=O(n*log2(n))，空间复杂度=T(n)
+
     public function sort()
     {
         $startIndex = 0;

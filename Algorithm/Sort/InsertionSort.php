@@ -2,14 +2,13 @@
 
 namespace App\Algorithm\Sort;
 
-/**
- * Class InsertionSortHandler
- * 插入排序(Insertion Sort) 时间复杂度=O(n²) 空间复杂度=T(1)
- *
- * @package App\AlgorithmDemo\Sort\Handler
- */
+
+require_once 'SortAbstract.php';
+
 class InsertionSort extends SortAbstract
 {
+    // 插入排序(Insertion Sort)，时间复杂度=O(n^2)，空间复杂度=T(1)
+
     public function sort()
     {
         $length = count($this->sortArray);

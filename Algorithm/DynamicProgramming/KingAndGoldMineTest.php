@@ -2,6 +2,7 @@
 
 namespace App\Algorithm\DynamicProgramming;
 
+
 require 'KingAndGoldMine.php';
 
 $goldMine = ['400-5', '500-5', '200-3', '300-4', '350-3'];
@@ -17,4 +18,4 @@ $returnData = [
     ]
 ];
 
-echo $returnData;
+echo json_encode($returnData);

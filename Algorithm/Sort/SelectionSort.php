@@ -2,14 +2,13 @@
 
 namespace App\Algorithm\Sort;
 
-/**
- * Class SelectionSortHandler
- * 选择排序(Selection Sort) 时间复杂度=O(n²) 空间复杂度=T(1)
- *
- * @package App\AlgorithmDemo\Sort\Handler
- */
+
+require_once 'SortAbstract.php';
+
 class SelectionSort extends SortAbstract
 {
+    // 选择排序(Selection Sort)，时间复杂度=O(n^2)，空间复杂度=T(1)
+
     public function sort()
     {
         $length = count($this->sortArray);

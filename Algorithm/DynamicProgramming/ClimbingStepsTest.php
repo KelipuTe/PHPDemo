@@ -1,15 +1,28 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Kelip
- * Date: 2019/8/12
- * Time: 18:41
- */
 
 namespace App\Algorithm\DynamicProgramming;
 
 
-class ClimbingStepsTest
-{
+require 'ClimbingSteps.php';
 
-}
+$steps = 5;
+$handlerRecursionOnly = new ClimbingSteps();
+$handlerRecursionByStorage = new ClimbingSteps();
+$handlerDynamicProgramming = new ClimbingSteps();
+
+$returnData = [
+    'recursionOnly'      => [
+        'resultNum'   => $handlerRecursionOnly->recursionOnly($steps),
+        'handleSteps' => $handlerRecursionOnly->getHandleSteps()
+    ],
+    'recursionByStorage' => [
+        'resultNum'    => $handlerRecursionByStorage->recursionByStorage($steps),
+        'handleSteps'  => $handlerRecursionByStorage->getHandleSteps(),
+        'handleResult' => $handlerRecursionByStorage->getHandleResult()
+    ],
+    'dynamicProgramming' => [
+        'resultNum' => $handlerDynamicProgramming->dynamicProgramming($steps)
+    ]
+];
+
+echo json_encode($returnData);
