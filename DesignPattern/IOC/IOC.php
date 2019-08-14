@@ -4,7 +4,7 @@ require 'LogService.php';
 
 class IOC
 {
-    public $binding = [];
+    protected $binding = [];
 
     public function bind($abstract, $concrete)
     {
@@ -21,7 +21,13 @@ class IOC
         return $concrete($this);
     }
 
-    // 创建对象
+    /**
+     * 创建对象
+     *
+     * @param $concrete
+     * @return object
+     * @throws ReflectionException
+     */
     public function build($concrete)
     {
         $reflector = new ReflectionClass($concrete);
@@ -36,7 +42,12 @@ class IOC
         }
     }
 
-    // 获取参数的依赖
+    /**
+     * 获取参数依赖
+     *
+     * @param $paramters
+     * @return array
+     */
     protected function getDependencies($paramters)
     {
         $dependencies = [];
