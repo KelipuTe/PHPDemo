@@ -1,7 +1,5 @@
 <?php
 
-require 'LogService.php';
-
 class IOC
 {
     protected $binding = [];
