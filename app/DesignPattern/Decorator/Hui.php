@@ -3,9 +3,9 @@
 namespace App\DesignPattern\Decorator;
 
 
-require_once 'Decorator.php';
+require_once 'DecoratorInterface.php';
 
-class Hui implements Decorator
+class Hui implements DecoratorInterface
 {
     private $iName;
 

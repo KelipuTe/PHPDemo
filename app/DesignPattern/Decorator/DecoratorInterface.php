@@ -3,7 +3,7 @@
 namespace App\DesignPattern\Decorator;
 
 
-interface Decorator
+interface DecoratorInterface
 {
     public function display();
 }
