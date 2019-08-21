@@ -1,0 +1,4 @@
+<?php
+
+require 'DoorSimpleFactory.php';
+
