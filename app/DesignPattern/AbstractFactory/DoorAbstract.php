@@ -18,4 +18,9 @@ abstract class DoorAbstract
     {
         return $this->height;
     }
+
+    public function getArea()
+    {
+        echo 'area is: ' . $this->width * $this->height . ".<br>\n";
+    }
 }

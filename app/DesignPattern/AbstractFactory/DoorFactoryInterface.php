@@ -1,10 +1,11 @@
 <?php
 
-namespace App\DesignPattern\Factory;
+namespace App\DesignPattern\AbstractFactory;
 
 
 interface DoorFactoryInterface
 {
     public function makeDoor();
+
     public function makeFittingExpert();
 }

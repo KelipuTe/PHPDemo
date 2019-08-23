@@ -11,6 +11,6 @@ class Overcoat extends Clothes
     {
         parent::display();
 
-        echo "穿上外套。\n";
+        echo "穿上外套。<br>\n";
     }
 }

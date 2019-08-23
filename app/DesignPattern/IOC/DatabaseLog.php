@@ -9,6 +9,6 @@ class DatabaseLog implements LogInterface
 {
     public function saveLog()
     {
-        echo "save log by database\n";
+        echo "save log by database.<br>\n";
     }
 }

@@ -11,6 +11,6 @@ class Shoes extends Clothes
     {
         parent::display();
 
-        echo "穿上鞋子。\n";
+        echo "穿上鞋子。<br>\n";
     }
 }

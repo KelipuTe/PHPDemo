@@ -16,6 +16,6 @@ class Hui implements DecoratorInterface
 
     public function display()
     {
-        echo "我是{$this->iName}。\n";
+        echo "我是{$this->iName}。<br>\n";
     }
 }

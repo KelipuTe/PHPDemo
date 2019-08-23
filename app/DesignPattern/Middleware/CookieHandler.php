@@ -11,10 +11,10 @@ class CookieHandler implements Middleware
 {
     public static function handle(Closure $next)
     {
-        echo "获取 Cookie 信息。\n";
+        echo "获取 Cookie 信息。<br>\n";
 
         $next();
 
-        echo "设置 Cookie 信息。\n";
+        echo "设置 Cookie 信息。<br>\n";
     }
 }

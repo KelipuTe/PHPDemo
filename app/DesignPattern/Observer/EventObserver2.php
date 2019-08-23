@@ -9,6 +9,6 @@ class EventObserver2 implements ObserverInterface
 {
     public function update($info = '')
     {
-        echo "EventObserver2。\n";
+        echo "EventObserver2.<br>\n";
     }
 }

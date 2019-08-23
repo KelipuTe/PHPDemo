@@ -1,23 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Kelip
- * Date: 2019/8/21
- * Time: 23:12
- */
 
-namespace App\DesignPattern\Factory;
+namespace App\DesignPattern\AbstractFactory;
 
+require_once 'DoorFactoryInterface.php';
+require 'IronDoor.php';
+require 'Carpenter.php';
 
 class IronDoorFactory implements DoorFactoryInterface
 {
     public function makeDoor()
     {
-        return new IronDoor();
+        return new IronDoor(10, 20);
     }
 
     public function makeFittingExpert()
     {
-        return new Welder();
+        return new Carpenter();
     }
 }

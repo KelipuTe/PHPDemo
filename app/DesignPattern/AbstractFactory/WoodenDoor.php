@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DesignPattern\Factory;
+namespace App\DesignPattern\AbstractFactory;
 
 
 require_once 'DoorAbstract.php';
@@ -11,15 +11,5 @@ class WoodenDoor extends DoorAbstract
     {
         $this->width = $width;
         $this->height = $height;
-    }
-
-    public function getWidth()
-    {
-        return $this->width;
-    }
-
-    public function getHeight()
-    {
-        return $this->height;
     }
 }

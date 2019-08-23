@@ -9,6 +9,6 @@ class FileLog implements LogInterface
 {
     public function saveLog()
     {
-        echo "save log by file\n";
+        echo "save log by file.<br>\n";
     }
 }

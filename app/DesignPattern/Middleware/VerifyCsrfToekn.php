@@ -11,7 +11,7 @@ class VerifyCsrfToekn implements Middleware
 {
     public static function handle(Closure $next)
     {
-        echo "验证 CSRF Token。\n";
+        echo "验证 CSRF Token。<br>\n";
 
         $next();
     }
