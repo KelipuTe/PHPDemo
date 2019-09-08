@@ -4,11 +4,10 @@ namespace App\DesignPattern\Factory;
 
 
 require_once 'PizzaStore.php';
-require 'ChicagoCheesePizza.php';
 
 class ChicagoPizzaStore extends PizzaStore
 {
-    protected function createPizza(string $pizzaType)
+    protected function createPizza(string $pizzaType): Pizza
     {
         if ($pizzaType == 'cheese') {
             return new ChicagoCheesePizza();

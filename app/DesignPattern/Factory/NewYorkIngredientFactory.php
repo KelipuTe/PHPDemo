@@ -7,7 +7,6 @@ require_once 'PizzaIngredientFactory.php';
 
 class NewYorkIngredientFactory implements PizzaIngredientFactory
 {
-
     public function createDough()
     {
         return 'Thin Crust Dough';
@@ -20,7 +19,7 @@ class NewYorkIngredientFactory implements PizzaIngredientFactory
 
     public function createCheese()
     {
-        return 'ReggianoCheese';
+        return 'Reggiano Cheese';
     }
 
     public function createVeggies()

@@ -7,7 +7,7 @@ require_once 'PizzaStore.php';
 
 class CaliforniaPizzaStore extends PizzaStore
 {
-    protected function createPizza(string $pizzaType)
+    protected function createPizza(string $pizzaType): Pizza
     {
         if ($pizzaType == 'cheese') {
             return new CaliforniaCheesePizza();
