@@ -27,38 +27,28 @@ abstract class Pizza
         $this->name = $name;
     }
 
-    /**
-     * 准备原料
-     */
+    // 准备原料
     public abstract function prepare();
 
-    /**
-     *  烘烤
-     */
+    // 烘烤
     public function bake()
     {
         echo "Bake for 25 minutes at 350.\n<br>";
     }
 
-    /**
-     * 切割
-     */
+    // 切割
     public function cut()
     {
         echo "Cutting the pizza into diagonal slices.\n<br>";
     }
 
-    /**
-     * 装盒
-     */
+    // 装盒
     public function box()
     {
         echo "Place pizza in official PizzaStore box.\n<br>";
     }
 
-    /**
-     * 原料清单
-     */
+    // 原料清单
     public function ingredientToString()
     {
         echo "Ingredient:{$this->dough},{$this->sauce},{$this->veggies},{$this->cheese},{$this->clam}.\n<br>";
