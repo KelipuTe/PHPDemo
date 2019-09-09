@@ -7,11 +7,11 @@ require 'Shoes.php';
 
 use App\DesignPattern\Decorator\Hui;
 use App\DesignPattern\Decorator\Overcoat;
-use App\DesignPattern\Decorator\Shoes;
 use App\DesignPattern\Decorator\Trousers;
+use App\DesignPattern\Decorator\Shoes;
 
 $hui = new Hui('惠');
-$overcoat = new Overcoat($hui);
-$trousers = new Trousers($overcoat);
-$shoes = new Shoes($trousers);
-$shoes->display();
+$huiAddOvercoat = new Overcoat($hui);
+$huiAddTrousers = new Trousers($huiAddOvercoat);
+$huiAddShoes = new Shoes($huiAddShoes);
+$huiAddShoes->display();

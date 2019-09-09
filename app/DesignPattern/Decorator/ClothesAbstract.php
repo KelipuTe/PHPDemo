@@ -5,17 +5,17 @@ namespace App\DesignPattern\Decorator;
 
 require_once 'DecoratorInterface.php';
 
-class Clothes implements DecoratorInterface
+abstract class ClothesAbstract implements DecoratorInterface
 {
-    private $iComponent;
+    protected $component;
 
     public function __construct(DecoratorInterface $component)
     {
-        $this->iComponent = $component;
+        $this->component = $component;
     }
 
     public function display()
     {
-        $this->iComponent->display();
+        $this->component->display();
     }
 }

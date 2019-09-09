@@ -3,9 +3,9 @@
 namespace App\DesignPattern\Decorator;
 
 
-require_once 'ClothesInterface.php';
+require_once 'ClothesAbstract.php';
 
-class Overcoat extends Clothes
+class Overcoat extends ClothesAbstract
 {
     public function display()
     {
