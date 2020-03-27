@@ -28,7 +28,7 @@ $treeMap = array(
     'id_282' => array('parent_id' => 'id_93', 'name' => 'name_93',),
     'id_291' => array('parent_id' => 'id_122', 'name' => 'name_122',),
     'id_300' => array('parent_id' => 'id_249', 'name' => 'name_249',),
-    'id_1'   => array('parent_id' => NULL, 'name' => 'root',),
+    'id_1'   => array('parent_id' => null, 'name' => 'root',),
 );
 
 $tree = (new Tree())->treeMapToTreeAddress($treeMap);

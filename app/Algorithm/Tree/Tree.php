@@ -8,34 +8,35 @@ class Tree
     /**
      * 使用数组引用还原树
      *
-     * @param $treeMap
+     * @param array $treeMap
+     * @param null  $rootNode
      * @return array
      */
-    public function treeMapToTreeAddress($treeMap)
+    public function treeMapToTreeAddress(array $treeMap, $rootNode = null)
     {
         // 临时保存节点，用于获取数组地址
         $address = [];
         $tree = [];
 
-        foreach ($treeMap as $childId => $parentData) {
-            if (!isset($address[$childId])) {
-                $address[$childId] = [
-                    'name'     => $parentData['name'],
-                    'children' => []
+        foreach ($treeMap as $kChildId => $vParentData) {
+            if (!isset($address[$kChildId])) {
+                $address[$kChildId] = [
+                    'name'     => $kChildId,
+                    'children' => [],
                 ];
             }
-            if (!empty($parentData['parent_id'])) {
-                if (!isset($address[$parentData['parent_id']])) {
-                    $parentNode = [
-                        'name'     => $parentData['name'],
-                        'children' => [&$address[$childId]],
-                    ];
-                    $address[$parentData['parent_id']] = $parentNode;
+            if ($vParentData['parent_id'] !== $rootNode) {
+                if (isset($address[$vParentData['parent_id']])) {
+                    $address[$vParentData['parent_id']]['children'][$kChildId] = &$address[$kChildId];
                 } else {
-                    $address[$parentData['parent_id']]['children'][] = &$address[$childId];
+                    $parentNode = [
+                        'name'     => $vParentData['name'],
+                        'children' => [$kChildId => &$address[$kChildId]],
+                    ];
+                    $address[$vParentData['parent_id']] = $parentNode;
                 }
             } else {
-                $tree[$childId] = &$address[$childId];
+                $tree[$kChildId] = &$address[$kChildId];
             }
         }
 
@@ -45,24 +46,24 @@ class Tree
     /**
      * 使用递归还原树
      *
-     * @param      $tree
-     * @param null $root
+     * @param array $treeMap
+     * @param null  $rootNode
      * @return array|null
      */
-    public function treeMapToTreeRecursion($tree, $root = null)
+    public function treeMapToTreeRecursion(array $treeMap, $rootNode = null)
     {
-        $return = [];
-        foreach ($tree as $child => $parent) {
-            if ($parent == $root) {
-                unset($tree[$child]);
-                $return[] = array(
-                    'name'     => $child,
-                    'children' => $this->treeMapToTreeRecursion($tree, $child)
-                );
+        $tree = [];
+        foreach ($treeMap as $kChild => $vParentNode) {
+            if ($vParentNode['parent_id'] === $rootNode) {
+                unset($treeMap[$kChild]);
+                $tree[$kChild] = [
+                    'name'     => $kChild,
+                    'children' => $this->treeMapToTreeRecursion($treeMap, $kChild)
+                ];
             }
         }
 
-        return empty($return) ? null : $return;
+        return empty($tree) ? [] : $tree;
     }
 
     /**
