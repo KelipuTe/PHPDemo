@@ -5,7 +5,7 @@ namespace App\Algorithm\DynamicProgramming;
 
 require_once 'DynamicProgrammingAbstract.php';
 
-class MinimumPath extends DynamicProgrammingAbstract
+class ZuiXiaoLuJing extends DynamicProgrammingAbstract
 {
     // 最小路径问题
 

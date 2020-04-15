@@ -3,12 +3,12 @@
 namespace App\Algorithm\DynamicProgramming;
 
 
-require 'KingAndGoldMine.php';
+require 'GuoWangDeJinKuang.php';
 
 $goldMine = ['400-5', '500-5', '200-3', '300-4', '350-3'];
 $workerNumber = 10;
 
-$handlerDynamicProgramming = new KingAndGoldMine();
+$handlerDynamicProgramming = new GuoWangDeJinKuang();
 
 $returnData = [
     'goldMine'           => $goldMine,

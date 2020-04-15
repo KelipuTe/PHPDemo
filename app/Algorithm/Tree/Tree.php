@@ -28,20 +28,20 @@ class Tree
             $this->treeMap = $treeMap;
         } else {
             $this->treeMap = [
-                'id_01' => ['name' => 'name_01', 'parent_id' => null, 'parent_name' => 'root'],
-                'id_02' => ['name' => 'name_02', 'parent_id' => 'id_01', 'parent_name' => 'name_01'],
-                'id_03' => ['name' => 'name_03', 'parent_id' => 'id_01', 'parent_name' => 'name_01'],
-                'id_04' => ['name' => 'name_04', 'parent_id' => 'id_01', 'parent_name' => 'name_01'],
-                'id_05' => ['name' => 'name_05', 'parent_id' => 'id_02', 'parent_name' => 'name_02'],
-                'id_06' => ['name' => 'name_06', 'parent_id' => 'id_02', 'parent_name' => 'name_02'],
-                'id_07' => ['name' => 'name_07', 'parent_id' => 'id_03', 'parent_name' => 'name_03'],
-                'id_08' => ['name' => 'name_08', 'parent_id' => 'id_03', 'parent_name' => 'name_03'],
-                'id_09' => ['name' => 'name_09', 'parent_id' => 'id_03', 'parent_name' => 'name_03'],
-                'id_10' => ['name' => 'name_10', 'parent_id' => 'id_04', 'parent_name' => 'name_04'],
-                'id_11' => ['name' => 'name_11', 'parent_id' => 'id_05', 'parent_name' => 'name_05'],
-                'id_12' => ['name' => 'name_12', 'parent_id' => 'id_10', 'parent_name' => 'name_10'],
-                'id_13' => ['name' => 'name_13', 'parent_id' => 'id_10', 'parent_name' => 'name_10'],
-                'id_14' => ['name' => 'name_14', 'parent_id' => 'id_10', 'parent_name' => 'name_10'],
+                'id_1'  => ['self_id' => 'id_1', 'self_name' => 'name_1', 'parent_id' => null, 'parent_name' => 'root'],
+                'id_2'  => ['self_id' => 'id_2', 'self_name' => 'name_2', 'parent_id' => 'id_1', 'parent_name' => 'name_1'],
+                'id_3'  => ['self_id' => 'id_3', 'self_name' => 'name_3', 'parent_id' => 'id_1', 'parent_name' => 'name_1'],
+                'id_4'  => ['self_id' => 'id_4', 'self_name' => 'name_4', 'parent_id' => 'id_1', 'parent_name' => 'name_1'],
+                'id_5'  => ['self_id' => 'id_5', 'self_name' => 'name_5', 'parent_id' => 'id_2', 'parent_name' => 'name_2'],
+                'id_6'  => ['self_id' => 'id_6', 'self_name' => 'name_6', 'parent_id' => 'id_2', 'parent_name' => 'name_2'],
+                'id_7'  => ['self_id' => 'id_7', 'self_name' => 'name_7', 'parent_id' => 'id_3', 'parent_name' => 'name_3'],
+                'id_8'  => ['self_id' => 'id_8', 'self_name' => 'name_8', 'parent_id' => 'id_3', 'parent_name' => 'name_3'],
+                'id_9'  => ['self_id' => 'id_9', 'self_name' => 'name_9', 'parent_id' => 'id_3', 'parent_name' => 'name_3'],
+                'id_10' => ['self_id' => 'id_10', 'self_name' => 'name_10', 'parent_id' => 'id_4', 'parent_name' => 'name_4'],
+                'id_11' => ['self_id' => 'id_11', 'self_name' => 'name_11', 'parent_id' => 'id_5', 'parent_name' => 'name_5'],
+                'id_12' => ['self_id' => 'id_12', 'self_name' => 'name_12', 'parent_id' => 'id_10', 'parent_name' => 'name_10'],
+                'id_13' => ['self_id' => 'id_13', 'self_name' => 'name_13', 'parent_id' => 'id_10', 'parent_name' => 'name_10'],
+                'id_14' => ['self_id' => 'id_14', 'self_name' => 'name_14', 'parent_id' => 'id_10', 'parent_name' => 'name_10'],
             ];
         }
     }
@@ -49,9 +49,10 @@ class Tree
     /**
      * 使用数组引用还原树
      *
-     * @return array
+     * @param string $childTree [子家族节点名]
+     * @return array [家族树或子家族树]
      */
-    public function treeMapToTreeAddress()
+    public function treeMapToTreeAddress($childTree = '')
     {
         $tree = [];
         // 临时保存节点，用于获取数组地址
@@ -60,8 +61,9 @@ class Tree
             // 循环遍历上下级关系表
             if (!isset($address[$kChildId])) {
                 $address[$kChildId] = [
-                    'name'     => $vChildData['name'],
-                    'children' => [],
+                    'self_id'   => $vChildData['self_id'],
+                    'self_name' => $vChildData['self_name'],
+                    'children'  => [],
                 ];
             }
             $parentId = $vChildData['parent_id'];
@@ -73,8 +75,9 @@ class Tree
                 } else {
                     // 如果未出现过上级节点，则要先构造上级节点
                     $parentNode = [
-                        'name'     => $vChildData['parent_name'],
-                        'children' => [$kChildId => &$address[$kChildId]],
+                        'self_id'   => $vChildData['parent_id'],
+                        'self_name' => $vChildData['parent_name'],
+                        'children'  => [$kChildId => &$address[$kChildId]],
                     ];
                     $address[$parentId] = $parentNode;
                 }
@@ -82,6 +85,10 @@ class Tree
                 // 如果上级节点是 root 节点，则本节点为树的根节点
                 $tree[$kChildId] = &$address[$kChildId];
             }
+        }
+
+        if (!empty($childTree) && !empty($address[$childTree])) {
+            return [$childTree => $address[$childTree]];
         }
         return $tree;
     }
@@ -110,32 +117,34 @@ class Tree
             if ($vChildData['parent_id'] === $rootNode) {
                 unset($treeMap[$kChild]);
                 $tree[$kChild] = [
-                    'name'     => $vChildData['name'],
-                    'children' => $this->buildTreeRecursion($treeMap, $kChild)
+                    'self_id'   => $vChildData['self_id'],
+                    'self_name' => $vChildData['self_name'],
+                    'children'  => $this->buildTreeRecursion($treeMap, $kChild)
                 ];
             }
         }
+
         return count($tree) > 0 ? $tree : [];
     }
 
     /**
-     * 使用递归输出树
+     * 遍历树获取 id
      *
      * @param $tree
      * @return string
      */
-    function printTree($tree)
+    public function ergodicTreeForId(array $tree)
     {
-        $treeString = '';
+        $idList = [];
         if (!is_null($tree) && count($tree) > 0) {
-            $treeString .= '<ul>';
+            $chileIdList = [];
             foreach ($tree as $node) {
-                $treeString .= '<li>' . $node['name'];
-                $treeString .= $this->printTree($node['children']);
-                $treeString .= '</li>';
+                $idList[] = $node['self_id'];
+                $chileIdList = $this->ergodicTreeForId($node['children']);
             }
-            $treeString .= '</ul>';
+            $idList = array_merge($idList, $chileIdList);
         }
-        return $treeString;
+
+        return $idList;
     }
 }

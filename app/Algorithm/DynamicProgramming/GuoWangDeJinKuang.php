@@ -5,7 +5,7 @@ namespace App\Algorithm\DynamicProgramming;
 
 require_once 'DynamicProgrammingAbstract.php';
 
-class KingAndGoldMine extends DynamicProgrammingAbstract
+class GuoWangDeJinKuang extends DynamicProgrammingAbstract
 {
     // 国王的金矿问题
 

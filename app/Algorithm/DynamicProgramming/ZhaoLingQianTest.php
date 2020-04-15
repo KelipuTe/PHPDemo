@@ -2,14 +2,14 @@
 
 namespace App\Algorithm\DynamicProgramming;
 
-require 'GiveChange.php';
+require 'ZhaoLingQian.php';
 
 $penny = [1, 2, 3];
 $aim = 6;
 
-$handlerRecursionOnly = new GiveChange();
-$handlerRecursionByStorage = new GiveChange();
-$handlerDynamicProgramming = new GiveChange();
+$handlerRecursionOnly = new ZhaoLingQian();
+$handlerRecursionByStorage = new ZhaoLingQian();
+$handlerDynamicProgramming = new ZhaoLingQian();
 
 $returnData = [
     'penny'              => $penny,

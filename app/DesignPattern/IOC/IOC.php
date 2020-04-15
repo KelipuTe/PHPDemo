@@ -28,14 +28,18 @@ class IOC
      */
     public function build($concrete)
     {
+        // 获取 reflectionClass 对象
         $reflector = new ReflectionClass($concrete);
+        // 拿到构造函数
         $constructor = $reflector->getConstructor();
         if (is_null($constructor)) {
+            // 创建对象
             return $reflector->newInstance();
         } else {
+            // 拿到构造函数的所有依赖参数
             $dependencies = $constructor->getParameters();
             $instances = $this->getDependencies($dependencies);
-
+            // 创建对象，需要传递参数
             return $reflector->newInstanceArgs($instances);
         }
     }

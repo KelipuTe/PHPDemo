@@ -5,7 +5,7 @@ namespace App\Algorithm\DynamicProgramming;
 
 require_once 'DynamicProgrammingAbstract.php';
 
-class GiveChange extends DynamicProgrammingAbstract
+class ZhaoLingQian extends DynamicProgrammingAbstract
 {
     // 找零钱问题
 

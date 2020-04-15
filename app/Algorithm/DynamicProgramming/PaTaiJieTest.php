@@ -3,12 +3,12 @@
 namespace App\Algorithm\DynamicProgramming;
 
 
-require 'ClimbingSteps.php';
+require 'PaTaiJie.php';
 
 $steps = 5;
-$handlerRecursionOnly = new ClimbingSteps();
-$handlerRecursionByStorage = new ClimbingSteps();
-$handlerDynamicProgramming = new ClimbingSteps();
+$handlerRecursionOnly = new PaTaiJie();
+$handlerRecursionByStorage = new PaTaiJie();
+$handlerDynamicProgramming = new PaTaiJie();
 
 $returnData = [
     'recursionOnly'      => [

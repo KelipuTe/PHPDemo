@@ -3,12 +3,12 @@
 namespace App\Algorithm\DynamicProgramming;
 
 
-require 'LongestCommonSequence.php';
+require 'ZuiChangGongGongZiXuLie.php';
 
 $string1 = '1A2C3';
 $string2 = 'B1D23';
 
-$handlerDynamicProgramming = new LongestCommonSequence();
+$handlerDynamicProgramming = new ZuiChangGongGongZiXuLie();
 
 $returnData = [
     'string1'            => $string1,

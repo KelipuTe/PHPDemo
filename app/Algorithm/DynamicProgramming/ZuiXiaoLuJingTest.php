@@ -3,7 +3,7 @@
 namespace App\Algorithm\DynamicProgramming;
 
 
-require 'MinimumPath.php';
+require 'ZuiXiaoLuJing.php';
 
 $row = 3;
 $column = 3;
@@ -14,9 +14,9 @@ for ($i = 0; $i < $row; $i++) {
     }
 }
 
-$handlerRecursionOnly = new MinimumPath($matrix, $row, $column);
-$handlerRecursionByStorage = new MinimumPath($matrix, $row, $column);
-$handlerDynamicProgramming = new MinimumPath($matrix, $row, $column);
+$handlerRecursionOnly = new ZuiXiaoLuJing($matrix, $row, $column);
+$handlerRecursionByStorage = new ZuiXiaoLuJing($matrix, $row, $column);
+$handlerDynamicProgramming = new ZuiXiaoLuJing($matrix, $row, $column);
 
 $m = 3;
 $n = 3;

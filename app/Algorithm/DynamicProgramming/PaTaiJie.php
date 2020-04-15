@@ -5,7 +5,7 @@ namespace App\Algorithm\DynamicProgramming;
 
 require_once 'DynamicProgrammingAbstract.php';
 
-class ClimbingSteps extends DynamicProgrammingAbstract
+class PaTaiJie extends DynamicProgrammingAbstract
 {
     // 爬台阶问题
 

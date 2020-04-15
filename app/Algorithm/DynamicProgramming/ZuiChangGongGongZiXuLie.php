@@ -5,7 +5,7 @@ namespace App\Algorithm\DynamicProgramming;
 
 require_once 'DynamicProgrammingAbstract.php';
 
-class LongestCommonSequence extends DynamicProgrammingAbstract
+class ZuiChangGongGongZiXuLie extends DynamicProgrammingAbstract
 {
     // 最长公共子序列问题
 
