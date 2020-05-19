@@ -49,13 +49,13 @@ class GuoWangDeJinKuang
 $goldMine = ['400-5', '500-5', '200-3', '300-4', '350-3'];
 $workerNumber = 10;
 
-$handlerDongTaiGuiHua = new GuoWangDeJinKuang();
+$handlerDynamicProgramming = new GuoWangDeJinKuang();
 
 $returnData = [
     'goldMine'           => $goldMine,
     'workerNumber'       => $workerNumber,
     'dynamicProgramming' => [
-        'maxGold' => $handlerDongTaiGuiHua->dynamicProgramming($goldMine, $workerNumber)
+        'maxGold' => $handlerDynamicProgramming->dynamicProgramming($goldMine, $workerNumber)
     ]
 ];
 

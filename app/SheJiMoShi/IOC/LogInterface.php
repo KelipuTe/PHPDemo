@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DesignPattern\IOC;
+namespace App\SheJiMoShi\KongZhiFanZhuan;
 
 
 interface LogInterface

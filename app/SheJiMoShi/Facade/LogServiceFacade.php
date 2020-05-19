@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DesignPattern\Facade;
+namespace App\SheJiMoShi\Facade;
 
 
 class LogServiceFacade
