@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Algorithm\Tree;
+namespace App\ShuJuJieGou\Shu\Tree;
 
 
 class Tree
@@ -16,7 +16,7 @@ class Tree
     protected $rootNode;
 
     /**
-     * Tree constructor.
+     * Shu constructor.
      *
      * @param array $treeMap
      * @param null  $rootNode

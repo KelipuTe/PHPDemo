@@ -1,22 +1,11 @@
 <?php
 
-namespace App\Algorithm\DynamicProgramming;
-
-
-require_once 'DynamicProgrammingAbstract.php';
-
-class ZuiChangGongGongZiXuLie extends DynamicProgrammingAbstract
+class ZuiChangGongGongZiXuLie
 {
     // 最长公共子序列问题
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * 动态规划求解
-     *
      * @param string $string1
      * @param string $string2
      * @return int
@@ -66,9 +55,23 @@ class ZuiChangGongGongZiXuLie extends DynamicProgrammingAbstract
                 }
             }
         }
-
         $strLCS = implode($arrLCS);
 
         return $strLCS;
     }
 }
+
+$string1 = '1A2C3';
+$string2 = 'B1D23';
+
+$handlerDynamicProgramming = new ZuiChangGongGongZiXuLie();
+
+$returnData = [
+    'string1'            => $string1,
+    'string2'            => $string2,
+    'dynamicProgramming' => [
+        'strLCS' => $handlerDynamicProgramming->dynamicProgramming($string1, $string2)
+    ]
+];
+
+echo json_encode($returnData);

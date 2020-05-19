@@ -1,24 +1,21 @@
 <?php
 
-namespace App\Algorithm\DynamicProgramming;
-
-
-require_once 'DynamicProgrammingAbstract.php';
-
-class ZuiXiaoLuJing extends DynamicProgrammingAbstract
+class ZuiXiaoLuJing
 {
     // 最小路径问题
 
-    private $matrix; // 路径矩阵
+    public $handleSteps; // 求解步骤
 
-    private $row; // 矩阵行数
+    public $handleResult; // 求解结果
 
-    private $column; // 矩阵列数
+    public $matrix; // 路径矩阵
+
+    public $row; // 矩阵行数
+
+    public $column; // 矩阵列数
 
     public function __construct(array $matrix, int $row, int $column)
     {
-        parent::__construct();
-
         $this->matrix = $matrix;
         $this->row = $row;
         $this->column = $column;
@@ -48,7 +45,6 @@ class ZuiXiaoLuJing extends DynamicProgrammingAbstract
 
     /**
      * 递归暴力求解
-     *
      * @param int $m
      * @param int $n
      * @return int
@@ -76,7 +72,6 @@ class ZuiXiaoLuJing extends DynamicProgrammingAbstract
 
     /**
      * 递归暴力求解的优化方案：记录结果
-     *
      * @param int $m
      * @param int $n
      * @return int
@@ -84,11 +79,9 @@ class ZuiXiaoLuJing extends DynamicProgrammingAbstract
     public function recursionByStorage(int $m, int $n)
     {
         $key = $m . '_' . $n;
-
         if (isset($this->handleResult[$key])) {
             return $this->handleResult[$key]; // 计算过的直接取值
         }
-
         if ($m === 1 && $n === 1) {
             $this->handleSteps[] = '求解：[' . $m . ',' . $n . ']=' . $this->matrix[0][0];
             $this->handleResult[$key] = $this->matrix[0][0];
@@ -112,7 +105,6 @@ class ZuiXiaoLuJing extends DynamicProgrammingAbstract
 
     /**
      * 动态规划求解
-     *
      * @param int $m
      * @param int $n
      * @return int
@@ -138,3 +130,36 @@ class ZuiXiaoLuJing extends DynamicProgrammingAbstract
         return $dpResult[$m - 1][$n - 1];
     }
 }
+
+$row = 3;
+$column = 3;
+$matrix = [];
+for ($i = 0; $i < $row; $i++) {
+    for ($j = 0; $j < $column; $j++) {
+        $matrix[$i][$j] = rand(1, 20);
+    }
+}
+
+$handlerRecursionOnly = new ZuiXiaoLuJing($matrix, $row, $column);
+$handlerRecursionByStorage = new ZuiXiaoLuJing($matrix, $row, $column);
+$handlerDynamicProgramming = new ZuiXiaoLuJing($matrix, $row, $column);
+
+$m = 3;
+$n = 3;
+$returnData = [
+    'matrix'             => $handlerRecursionOnly->getMatrix(),
+    'recursionOnly'      => [
+        'resultNum'   => $handlerRecursionOnly->recursionOnly($m, $n),
+        'handleSteps' => $handlerRecursionOnly->handleSteps
+    ],
+    'recursionByStorage' => [
+        'resultNum'    => $handlerRecursionByStorage->recursionByStorage($m, $n),
+        'handleSteps'  => $handlerRecursionByStorage->handleSteps,
+        'handleResult' => $handlerRecursionByStorage->handleResult
+    ],
+    'dynamicProgramming' => [
+        'resultNum' => $handlerDynamicProgramming->dynamicProgramming($m, $n)
+    ]
+];
+
+echo json_encode($returnData);

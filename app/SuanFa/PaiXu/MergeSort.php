@@ -7,7 +7,7 @@ require_once 'SortAbstract.php';
 
 class MergeSort extends SortAbstract
 {
-    // 归并排序(Merge Sort)，时间复杂度=O(n*log2(n))，空间复杂度=T(n)
+    // 归并排序(Merge PaiXu)，时间复杂度=O(n*log2(n))，空间复杂度=T(n)
 
     public function sort()
     {

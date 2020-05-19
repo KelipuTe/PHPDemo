@@ -7,7 +7,7 @@ require_once 'SortAbstract.php';
 
 class BubbleSort extends SortAbstract
 {
-    // 冒泡排序(Bubble Sort)，时间复杂度=O(n^2)，空间复杂度=T(1)
+    // 冒泡排序(Bubble PaiXu)，时间复杂度=O(n^2)，空间复杂度=T(1)
 
     /**
      * 这是稍加改进过的冒泡排序，跳过部分无意义的比较

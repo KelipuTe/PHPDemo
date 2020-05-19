@@ -5,8 +5,8 @@ require 'NewYorkPizzaStore.php';
 // require 'CaliforniaPizzaStore.php';
 
 use App\DesignPattern\Factory\NewYorkPizzaStore;
-// use App\DesignPattern\Factory\ChicagoPizzaStore;
-// use App\DesignPattern\Factory\CaliforniaPizzaStore;
+// use App\SheJiMoShi\Factory\ChicagoPizzaStore;
+// use App\SheJiMoShi\Factory\CaliforniaPizzaStore;
 
 $newYorkPizzaStore = new  NewYorkPizzaStore();
 // $chicagoPizzaStore = new  ChicagoPizzaStore();

@@ -7,7 +7,7 @@ require_once 'SortAbstract.php';
 
 class QuickSort extends SortAbstract
 {
-    // 快速排序(Quick Sort)，平均时间复杂度=O(n*log2(n))，空间复杂度=T(1)
+    // 快速排序(Quick PaiXu)，平均时间复杂度=O(n*log2(n))，空间复杂度=T(1)
     // 在最糟情况下(即待排序数组是有序数组时)，最糟时间复杂度=O(n^2)
 
     public function sort()

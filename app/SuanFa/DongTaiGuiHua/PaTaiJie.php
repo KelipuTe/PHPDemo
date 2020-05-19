@@ -1,23 +1,16 @@
 <?php
 
-namespace App\Algorithm\DynamicProgramming;
-
-
-require_once 'DynamicProgrammingAbstract.php';
-
-class PaTaiJie extends DynamicProgrammingAbstract
+class PaTaiJie
 {
     // 爬台阶问题
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    public $handleSteps; // 求解步骤
+
+    public $handleResult; // 求解结果
 
     /**
      * 递归暴力求解
-     *
-     * @param int $steps [台阶数量]
+     * @param int $steps
      * @return int
      */
     public function recursionOnly(int $steps)
@@ -33,14 +26,14 @@ class PaTaiJie extends DynamicProgrammingAbstract
 
     /**
      * 递归暴力求解的优化方案：记录结果
-     *
      * @param int $steps
      * @return int
      */
     public function recursionByStorage(int $steps)
     {
-        if (isset($this->handleStorage[$steps])) {
-            return $this->handleResult[$steps]; // 如果发现已经计算过的结果则直接返回该结果
+        if (isset($this->handleResult[$steps])) {
+            // 如果发现已经计算过的结果则直接返回该结果
+            return $this->handleResult[$steps];
         }
 
         $this->handleSteps[] = '求解：steps=' . $steps;
@@ -50,7 +43,6 @@ class PaTaiJie extends DynamicProgrammingAbstract
             return $steps;
         }
         $result = $this->recursionByStorage($steps - 2) + $this->recursionByStorage($steps - 1);
-
         $this->handleResult[$steps] = $result; // 记录结果
 
         return $result;
@@ -58,7 +50,6 @@ class PaTaiJie extends DynamicProgrammingAbstract
 
     /**
      * 动态规划求解
-     *
      * @param int $steps
      * @return int
      */
@@ -76,3 +67,25 @@ class PaTaiJie extends DynamicProgrammingAbstract
         return $dpResult[$steps];
     }
 }
+
+$steps = 5;
+$handlerRecursionOnly = new PaTaiJie();
+$handlerRecursionByStorage = new PaTaiJie();
+$handlerDynamicProgramming = new PaTaiJie();
+
+$returnData = [
+    'recursionOnly'      => [
+        'resultNum'   => $handlerRecursionOnly->recursionOnly($steps),
+        'handleSteps' => $handlerRecursionOnly->handleSteps
+    ],
+    'recursionByStorage' => [
+        'resultNum'    => $handlerRecursionByStorage->recursionByStorage($steps),
+        'handleSteps'  => $handlerRecursionByStorage->handleSteps,
+        'handleResult' => $handlerRecursionByStorage->handleResult
+    ],
+    'dynamicProgramming' => [
+        'resultNum' => $handlerDynamicProgramming->dynamicProgramming($steps)
+    ]
+];
+
+echo json_encode($returnData);

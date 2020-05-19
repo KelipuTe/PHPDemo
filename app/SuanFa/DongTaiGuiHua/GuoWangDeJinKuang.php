@@ -1,24 +1,13 @@
 <?php
 
-namespace App\Algorithm\DynamicProgramming;
-
-
-require_once 'DynamicProgrammingAbstract.php';
-
-class GuoWangDeJinKuang extends DynamicProgrammingAbstract
+class GuoWangDeJinKuang
 {
     // 国王的金矿问题
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * 动态规划求解
-     *
-     * @param array $goldMine     [金矿工人关系数组]
-     * @param int   $workerNumber [工人总数]
+     * @param array $goldMine [金矿工人关系数组]
+     * @param int $workerNumber [工人总数]
      * @return int
      */
     public function dynamicProgramming(array $goldMine, int $workerNumber)
@@ -56,3 +45,18 @@ class GuoWangDeJinKuang extends DynamicProgrammingAbstract
         return $dpResult[$goldMineCount - 1][$workerNumber];
     }
 }
+
+$goldMine = ['400-5', '500-5', '200-3', '300-4', '350-3'];
+$workerNumber = 10;
+
+$handlerDongTaiGuiHua = new GuoWangDeJinKuang();
+
+$returnData = [
+    'goldMine'           => $goldMine,
+    'workerNumber'       => $workerNumber,
+    'dynamicProgramming' => [
+        'maxGold' => $handlerDongTaiGuiHua->dynamicProgramming($goldMine, $workerNumber)
+    ]
+];
+
+echo json_encode($returnData);

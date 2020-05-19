@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Algorithm\Tree;
+namespace App\ShuJuJieGou\Shu\Tree;
 
 
 require 'Tree.php';

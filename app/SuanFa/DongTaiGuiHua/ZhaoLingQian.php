@@ -1,25 +1,18 @@
 <?php
 
-namespace App\Algorithm\DynamicProgramming;
-
-
-require_once 'DynamicProgrammingAbstract.php';
-
-class ZhaoLingQian extends DynamicProgrammingAbstract
+class ZhaoLingQian
 {
     // 找零钱问题
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    public $handleSteps; // 求解步骤
+
+    public $handleResult; // 求解结果
 
     /**
      * 递归暴力求解
-     *
      * @param array $penny [从小到大排好序的零钱数组]
-     * @param int   $index [零钱数组的数组下标]
-     * @param int   $aim   [目标数值]
+     * @param int $index [零钱数组的数组下标]
+     * @param int $aim [目标数值]
      * @return int
      */
     public function recursionOnly(array $penny, int $index, int $aim)
@@ -32,7 +25,6 @@ class ZhaoLingQian extends DynamicProgrammingAbstract
                 $result += $this->recursionOnly($penny, $index + 1, $aim - $i * $penny[$index]);
             }
         }
-
         $this->handleSteps[] = '求解：index=' . $index . ',aim=' . $aim . '=>' . $result;
 
         return $result;
@@ -40,20 +32,18 @@ class ZhaoLingQian extends DynamicProgrammingAbstract
 
     /**
      * 递归暴力求解的优化方案：记录结果
-     *
      * @param array $penny [从小到大排好序的零钱数组]
-     * @param int   $index [零钱数组的数组下标]
-     * @param int   $aim   [目标数值]
+     * @param int $index [零钱数组的数组下标]
+     * @param int $aim [目标数值]
      * @return int
      */
     public function recursionByStorage(array $penny, int $index, int $aim)
     {
         $key = $index . '_' . $aim;
-
         if (isset($this->handleResult[$key])) {
-            return $this->handleResult[$key]; // 计算过的直接取值
+            // 计算过的直接取值
+            return $this->handleResult[$key];
         }
-
         $result = 0;
         if ($index === count($penny)) {
             $result = $aim === 0 ? 1 : 0;
@@ -62,7 +52,6 @@ class ZhaoLingQian extends DynamicProgrammingAbstract
                 $result += $this->recursionByStorage($penny, $index + 1, $aim - $i * $penny[$index]);
             }
         }
-
         $this->handleSteps[] = '求解：index=' . $index . ',aim=' . $aim . '=>' . $result;
         $this->handleResult[$key] = $result;
 
@@ -71,9 +60,8 @@ class ZhaoLingQian extends DynamicProgrammingAbstract
 
     /**
      * 动态规划求解
-     *
      * @param array $penny [从小到大排好序的零钱数组]
-     * @param int   $aim   [目标数值]
+     * @param int $aim [目标数值]
      * @return int
      */
     public function dynamicProgramming(array $penny, int $aim)
@@ -97,3 +85,29 @@ class ZhaoLingQian extends DynamicProgrammingAbstract
         return $dpResult[$index - 1][$aim];
     }
 }
+
+$penny = [1, 2, 3];
+$aim = 6;
+
+$handlerRecursionOnly = new ZhaoLingQian();
+$handlerRecursionByStorage = new ZhaoLingQian();
+$handlerDynamicProgramming = new ZhaoLingQian();
+
+$returnData = [
+    'penny'              => $penny,
+    'aim'                => $aim,
+    'recursionOnly'      => [
+        'resultNum'   => $handlerRecursionOnly->recursionOnly($penny, 0, $aim),
+        'handleSteps' => $handlerRecursionOnly->handleSteps
+    ],
+    'recursionByStorage' => [
+        'resultNum'    => $handlerRecursionByStorage->recursionByStorage($penny, 0, $aim),
+        'handleSteps'  => $handlerRecursionByStorage->handleSteps,
+        'handleResult' => $handlerRecursionByStorage->handleResult
+    ],
+    'dynamicProgramming' => [
+        'resultNum' => $handlerDynamicProgramming->dynamicProgramming($penny, $aim)
+    ]
+];
+
+echo json_encode($returnData);
