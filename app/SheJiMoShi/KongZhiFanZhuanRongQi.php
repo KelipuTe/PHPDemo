@@ -1,9 +1,53 @@
 <?php
 
+/* 控制反转容器（IOC 容器） */
+
+// 日志接口
+interface LogInterface
+{
+    public function saveLog();
+}
+
+// 文件记录日志
+class FileLog implements LogInterface
+{
+    public function saveLog()
+    {
+        echo "save log by file.<br>\n";
+    }
+}
+
+// 数据库记录日志
+class DatabaseLog implements LogInterface
+{
+    public function saveLog()
+    {
+        echo "save log by database.<br>\n";
+    }
+}
+
+// 日志操作类
+class LogService
+{
+    protected $log;
+
+    public function __construct(LogInterface $log)
+    {
+        $this->log = $log;
+    }
+
+    public function saveLog()
+    {
+        $this->log->saveLog();
+    }
+}
+
+// IOC 容器
 class IOC
 {
     protected $binding = [];
 
+    // 绑定抽象类和实例类的关系
     public function bind($abstract, $concrete)
     {
         // 因为 bind() 的时候还不需要创建对象，所以采用 closure，等到 make() 的时候再创建对象
@@ -12,18 +56,10 @@ class IOC
         };
     }
 
-    public function make($abstract)
-    {
-        $concrete = $this->binding[$abstract]['concrete']; // 根据 key 获取 binding 的值
-
-        return $concrete($this);
-    }
-
     /**
      * 创建对象
-     *
      * @param $concrete
-     * @return object
+     * @return object [实例对象]
      * @throws ReflectionException
      */
     public function build($concrete)
@@ -46,8 +82,7 @@ class IOC
 
     /**
      * 获取参数依赖
-     *
-     * @param $paramters
+     * @param $paramters [反射得到的依赖参数]
      * @return array
      */
     protected function getDependencies($paramters)
@@ -58,4 +93,25 @@ class IOC
         }
         return $dependencies;
     }
+
+    /**
+     * 创建对象
+     * @param $abstract
+     * @return mixed
+     */
+    public function make($abstract)
+    {
+        $concrete = $this->binding[$abstract]['concrete']; // 根据 key 获取 binding 的值
+
+        return $concrete($this);
+    }
 }
+
+/* 测试代码 */
+
+// $ioc = new IOC();
+// // $ioc->bind('LogInterface','DataBaseLog');
+// $ioc->bind('LogInterface','FileLog');
+// $ioc->bind('LogService','LogService');
+// $logService = $ioc->make('LogService');
+// $logService->saveLog();
