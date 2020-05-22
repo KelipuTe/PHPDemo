@@ -3,7 +3,7 @@
 /* 外观模式（Facade）*/
 
 // 外观模式需要 IOC 容器支持
-require_once 'KongZhiFanZhuanRongQi.php';
+require_once 'KongZhiFanZhuan.php';
 
 class LogServiceFacade
 {
@@ -32,8 +32,8 @@ class LogServiceFacade
 
 /* 测试代码 */
 
-// $ioc = new IOC();
-// $ioc->bind('LogInterface', 'DataBaseLog');
-// $ioc->bind('LogService', 'LogService');
-// LogServiceFacade::setFacadeIoc($ioc);
-// LogServiceFacade::saveLog();
+$ioc = new IOC();
+$ioc->bind('LogInterface', 'DataBaseLog');
+$ioc->bind('LogService', 'LogService');
+LogServiceFacade::setFacadeIoc($ioc);
+LogServiceFacade::saveLog();
