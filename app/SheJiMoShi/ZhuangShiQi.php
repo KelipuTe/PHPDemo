@@ -1,6 +1,6 @@
 <?php
 
-/* 装饰者模式 */
+/* 装饰器模式 */
 
 // 定义统一动作的接口
 interface DecoratorInterface

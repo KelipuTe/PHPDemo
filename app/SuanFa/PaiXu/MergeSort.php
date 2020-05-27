@@ -1,8 +1,5 @@
 <?php
 
-namespace App\Algorithm\Sort;
-
-
 require_once 'SortAbstract.php';
 
 class MergeSort extends SortAbstract
