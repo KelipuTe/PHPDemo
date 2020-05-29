@@ -81,8 +81,10 @@ class WeatherData implements WeatherSubject
 // 天气数据展示（观察者）
 class WeatherConditionDisplay implements WeatherObserver
 {
+    // 观察者唯一标识
     protected $uniqueId;
 
+    // 被观察的天气数据主体
     protected $weatherSubject;
 
     protected $temperature;
@@ -98,6 +100,7 @@ class WeatherConditionDisplay implements WeatherObserver
         $weatherSubject->registerObserver($this);
     }
 
+    // 信息展示
     public function display()
     {
         echo "{$this->uniqueId} Current Conditions:Temperature={$this->temperature};Humidity={$this->humidity};Pressure={$this->pressure};" . PHP_EOL;
