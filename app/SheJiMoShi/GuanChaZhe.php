@@ -2,129 +2,140 @@
 
 /* 观察者模式 */
 
-// 天气数据观察者接口
-interface WeatherObserver
-{
-    // 获取唯一识别号
-    public function getUniqueId();
-
-    // 数据更新时的响应
-    public function update(float $temperature, float $humidity, float $pressure);
-}
-
-// 天气数据主体接口
-interface WeatherSubject
+/**
+ * Interface QiXiangShuInterface
+ * 气象数据接口，被观察者
+ */
+interface QiXiangShuInterface
 {
     // 注册观察者
-    public function registerObserver(WeatherObserver $observer);
+    public function tianJiaXianShiPingMu(XianShiPingMuInterface $observer);
 
     // 移除观察者
-    public function removeObserver(WeatherObserver $observer);
+    public function yiChuXianShiPingMu(XianShiPingMuInterface $observer);
 
-    // 通知观察者
-    public function notifyObserver();
+    // 数据发生变化，通知观察者
+    public function shuJuFaShengBianHua();
 }
 
-// 天气数据主体（被观察者）
-class WeatherData implements WeatherSubject
+/**
+ * Interface XianShiPingMuInterface
+ * 显示屏幕接口，观察者
+ */
+interface XianShiPingMuInterface
 {
-    // 观察者列表
-    protected $observerList;
+    // 获取识别号
+    public function huoQuShiBieHao();
+
+    // 数据更新时的响应
+    public function shuJuGenXin(float $qiWen, float $shiDu, float $qiYa);
+}
+
+/**
+ * Class QiXiangShuJu
+ * 气象数据主体，被观察者
+ */
+class QiXiangShuJu implements QiXiangShuInterface
+{
+    // 显示屏幕列表，观察者列表
+    protected $xianShiPingMuList;
 
     // 气温
-    protected $temperature;
+    protected $qiWen;
 
     // 湿度
-    protected $humidity;
+    protected $shiDu;
 
     // 气压
-    protected $pressure;
+    protected $qiYa;
 
     public function __construct()
     {
-        $this->observerList = [];
+        $this->xianShiPingMuList = [];
     }
 
-    public function registerObserver(WeatherObserver $observer)
+    public function tianJiaXianShiPingMu(XianShiPingMuInterface $xianShiPingMu)
     {
-        $this->observerList[$observer->getUniqueId()] = $observer;
+        $this->xianShiPingMuList[$xianShiPingMu->huoQuShiBieHao()] = $xianShiPingMu;
     }
 
-    public function removeObserver(WeatherObserver $observer)
+    public function yiChuXianShiPingMu(XianShiPingMuInterface $xianShiPingMu)
     {
-        unset($this->observerList[$observer->getUniqueId()]);
+        unset($this->xianShiPingMuList[$xianShiPingMu->huoQuShiBieHao()]);
     }
 
-    public function notifyObserver()
+    public function shuJuFaShengBianHua()
     {
-        foreach ($this->observerList as $item) {
-            $item->update($this->temperature, $this->humidity, $this->pressure);
+        foreach ($this->xianShiPingMuList as $itemXianShiPingMu) {
+            $itemXianShiPingMu->shuJuGenXin($this->qiWen, $this->shiDu, $this->qiYa);
         }
     }
 
-    // 天气测量数值发生变化，通知观察者
-    public function measurementsChanged()
+    // 设置新的气象数据，通知观察者
+    public function setMeasurements(float $qiWen, float $shiDu, float $qiYa)
     {
-        $this->notifyObserver();
-    }
-
-    // 设置天气测量数值
-    public function setMeasurements(float $temperature, float $humidity, float $pressure)
-    {
-        $this->temperature = $temperature;
-        $this->humidity = $humidity;
-        $this->pressure = $pressure;
-        $this->measurementsChanged();
+        $this->qiWen = $qiWen;
+        $this->shiDu = $shiDu;
+        $this->qiYa = $qiYa;
+        $this->shuJuFaShengBianHua();
     }
 }
 
-// 天气数据展示（观察者）
-class WeatherConditionDisplay implements WeatherObserver
+/**
+ * Class XianShiPingMu
+ * 显示屏幕，观察者
+ */
+class XianShiPingMu implements XianShiPingMuInterface
 {
     // 观察者唯一标识
-    protected $uniqueId;
+    protected $weiYiBiaoShi;
 
     // 被观察的天气数据主体
-    protected $weatherSubject;
+    protected $qiXiangShuJu;
 
-    protected $temperature;
+    // 气温
+    protected $qiWen;
 
-    protected $humidity;
+    // 湿度
+    protected $shiDu;
 
-    protected $pressure;
+    // 气压
+    protected $qiYa;
 
-    public function __construct($uniqueId, WeatherSubject $weatherSubject)
+    public function __construct($weiYiBiaoShi, QiXiangShuJu $qiXiangShuJu)
     {
-        $this->uniqueId = $uniqueId;
-        $this->weatherSubject = $weatherSubject;
-        $weatherSubject->registerObserver($this);
+        $this->weiYiBiaoShi = $weiYiBiaoShi;
+        $this->qiXiangShuJu = $qiXiangShuJu;
+        $qiXiangShuJu->tianJiaXianShiPingMu($this);
     }
 
-    // 信息展示
-    public function display()
+    public function huoQuShiBieHao()
     {
-        echo "{$this->uniqueId} Current Conditions:Temperature={$this->temperature};Humidity={$this->humidity};Pressure={$this->pressure};" . PHP_EOL;
+        return $this->weiYiBiaoShi;
     }
 
-    public function getUniqueId()
+    public function shuJuGenXin(float $qiWen, float $shiDu, float $qiYa)
     {
-        return $this->uniqueId;
+        $this->qiWen = $qiWen;
+        $this->shiDu = $shiDu;
+        $this->qiYa = $qiYa;
+        $this->shuJuXianShi();
     }
 
-    public function update(float $temperature, float $humidity, float $pressure)
+    // 数据展示
+    public function shuJuXianShi()
     {
-        $this->temperature = $temperature;
-        $this->humidity = $humidity;
-        $this->pressure = $pressure;
-        $this->display();
+        echo "显示屏幕：{$this->weiYiBiaoShi}，当前气温：{$this->qiYa};当前湿度：{$this->shiDu};当前气压：{$this->qiYa};" . PHP_EOL;
     }
 }
 
 /* 测试代码 */
 
-$weatherData = new WeatherData();
-$conditionDisplay1 = new WeatherConditionDisplay('display1', $weatherData);
-$conditionDisplay2 = new WeatherConditionDisplay('display2', $weatherData);
-$conditionDisplay3 = new WeatherConditionDisplay('display3', $weatherData);
-$weatherData->setMeasurements(1, 2, 3);
-$weatherData->setMeasurements(4, 5, 6);
+$qiXiangShuJu1 = new QiXiangShuJu();
+$qiXiangShuJu2 = new QiXiangShuJu();
+$xianShiPingMu1 = new XianShiPingMu('屏幕1', $qiXiangShuJu1);
+$xianShiPingMu2 = new XianShiPingMu('屏幕2', $qiXiangShuJu2);
+$xianShiPingMu3 = new XianShiPingMu('屏幕3', $qiXiangShuJu1);
+$qiXiangShuJu1->setMeasurements(1, 11, 111);
+$qiXiangShuJu2->setMeasurements(2, 22, 222);
+$qiXiangShuJu1->setMeasurements(3, 33, 333);
