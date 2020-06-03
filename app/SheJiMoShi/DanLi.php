@@ -2,8 +2,12 @@
 
 /* 单例模式 */
 
+// 假设家里只有一个豆浆机
+// 所以，重复的新建对象都会得到同一个豆浆机
+// 重复的加配料最终都会加到同一个豆浆机里去
+
 /**
- * Class DouJiangJi 豆浆机，假设家里只有一个
+ * Class DouJiangJi 豆浆机
  */
 class DouJiangJi
 {
@@ -34,7 +38,8 @@ class DouJiangJi
         return self::$weiYiDouJiangJi;
     }
 
-    public function jiaLiao($peiLiao)
+    // 加配料，不能超过豆浆机容积
+    public function jiaPeiLiao($peiLiao)
     {
         if ($this->rongLiang < $peiLiao) {
             echo "豆浆机装不下 {$peiLiao}ml 配料了。" . PHP_EOL;
@@ -44,6 +49,7 @@ class DouJiangJi
         }
     }
 
+    // 做豆浆，会消耗掉所有的配料
     public function zuoDouJiang()
     {
         $douJiang = 500 - $this->rongLiang;
@@ -56,10 +62,10 @@ class DouJiangJi
 /* 测试代码 */
 
 $douJiangJi1 = DouJiangJi::huoQuDouJiangJi();
-$douJiangJi1->jiaLiao(200);
-$douJiangJi1->jiaLiao(200);
+$douJiangJi1->jiaPeiLiao(200);
+$douJiangJi1->jiaPeiLiao(200);
 $douJiangJi2 = DouJiangJi::huoQuDouJiangJi();
-$douJiangJi2->jiaLiao(200);
+$douJiangJi2->jiaPeiLiao(200);
 $douJiangJi1->zuoDouJiang();
-$douJiangJi2->jiaLiao(500);
+$douJiangJi2->jiaPeiLiao(500);
 $douJiangJi2->zuoDouJiang();
