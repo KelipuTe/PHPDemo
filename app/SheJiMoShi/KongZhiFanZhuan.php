@@ -2,13 +2,17 @@
 
 /* 控制反转容器（IOC 容器） */
 
-// 日志接口
+/**
+ * Interface LogInterface 日志接口
+ */
 interface LogInterface
 {
     public function saveLog();
 }
 
-// 文件记录日志
+/**
+ * Class FileLog 文件记录日志
+ */
 class FileLog implements LogInterface
 {
     public function saveLog()
@@ -17,7 +21,9 @@ class FileLog implements LogInterface
     }
 }
 
-// 数据库记录日志
+/**
+ * Class DatabaseLog 数据库记录日志
+ */
 class DatabaseLog implements LogInterface
 {
     public function saveLog()
@@ -26,7 +32,9 @@ class DatabaseLog implements LogInterface
     }
 }
 
-// 日志操作类
+/**
+ * Class LogService 日志操作类
+ */
 class LogService
 {
     protected $log;
@@ -42,12 +50,18 @@ class LogService
     }
 }
 
-// IOC 容器
+/**
+ * Class IOC 容器
+ */
 class IOC
 {
     protected $binding = [];
 
-    // 绑定抽象类和实例类的关系
+    /**
+     * 绑定抽象类和实例类的关系
+     * @param $abstract
+     * @param $concrete
+     */
     public function bind($abstract, $concrete)
     {
         // 因为 bind() 的时候还不需要创建对象，所以采用 closure，等到 make() 的时候再创建对象

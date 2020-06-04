@@ -2,9 +2,11 @@
 
 /* 观察者模式 */
 
+// 假设有多个天气数据显示屏幕
+// 这些屏幕可能显示同一组或者不同组的天气数据
+
 /**
- * Interface QiXiangShuInterface
- * 气象数据接口，被观察者
+ * Interface QiXiangShuInterface 气象数据接口，被观察者
  */
 interface QiXiangShuInterface
 {
@@ -19,8 +21,7 @@ interface QiXiangShuInterface
 }
 
 /**
- * Interface XianShiPingMuInterface
- * 显示屏幕接口，观察者
+ * Interface XianShiPingMuInterface 显示屏幕接口，观察者
  */
 interface XianShiPingMuInterface
 {
@@ -32,8 +33,7 @@ interface XianShiPingMuInterface
 }
 
 /**
- * Class QiXiangShuJu
- * 气象数据主体，被观察者
+ * Class QiXiangShuJu 气象数据主体，被观察者
  */
 class QiXiangShuJu implements QiXiangShuInterface
 {
@@ -82,8 +82,7 @@ class QiXiangShuJu implements QiXiangShuInterface
 }
 
 /**
- * Class XianShiPingMu
- * 显示屏幕，观察者
+ * Class XianShiPingMu 显示屏幕，观察者
  */
 class XianShiPingMu implements XianShiPingMuInterface
 {

@@ -2,7 +2,12 @@
 
 /* 装饰器模式 */
 
-// 定义统一动作的接口
+// 一个人穿衣服，顺序随机，一次一件
+// 反过来理解就是，一个人不停地被不同的衣服装饰
+
+/**
+ * Interface DecoratorInterface 定义统一动作的接口
+ */
 interface DecoratorInterface
 {
     public function display();
