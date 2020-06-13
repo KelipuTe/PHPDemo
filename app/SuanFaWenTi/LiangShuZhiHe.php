@@ -29,12 +29,11 @@
 function twoNumSum($nums, $target)
 {
     $numberMap = [];
-    $numberList = $nums;
-    foreach ($numberList as $index => $value) {
+    foreach ($nums as $index => $value) {
         $numberMap[(string)$value] = $index;
     }
 
-    foreach ($numberList as $index => $value) {
+    foreach ($nums as $index => $value) {
         $otherValue = $target - $value;
         $otherKey = (string)$otherValue;
         if (isset($numberMap[$otherKey]) && $index !== $numberMap[$otherKey]) {
