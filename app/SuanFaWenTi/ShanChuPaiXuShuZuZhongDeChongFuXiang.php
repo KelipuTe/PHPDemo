@@ -26,6 +26,8 @@
 //     print(nums[i]);
 // }
 
+/* ##### 代码 ##### */
+
 /**
  * @param Integer[] $nums
  * @return Integer
@@ -43,6 +45,8 @@ function removeDuplicates(&$nums)
     }
     return $i + 1;
 }
+
+/* ##### 测试 ##### */
 
 $timeStart = intval(microtime(true) * 1000);
 $testList = [
