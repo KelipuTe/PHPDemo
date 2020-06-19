@@ -25,37 +25,50 @@
 require_once 'ErChaShu.php';
 
 /**
+ * 递归解法
  * @param TreeNode $root
  * @return Integer
  */
 function maxDepth($root)
 {
-    if ($root->val === null) {
-        return 0;
-    }
-    $stack = [];
-    $stackNode = ['treeNode' => $root, 'depth' => 1];
-    $maxDepth = 0;
-    // 根节点入栈
-    array_push($stack, $stackNode);
-    while (!empty($stack)) {
-        $tStackNode = array_pop($stack);
-        $tNode = $tStackNode['treeNode'];
-        // 比较一下深度
-        if ($maxDepth < $tStackNode['depth']) {
-            $maxDepth = $tStackNode['depth'];
-        }
-        if ($tNode->right !== null) {
-            $stackNode = ['treeNode' => $tNode->right, 'depth' => $tStackNode['depth'] + 1];
-            array_push($stack, $stackNode);
-        }
-        if ($tNode->left !== null) {
-            $stackNode = ['treeNode' => $tNode->left, 'depth' => $tStackNode['depth'] + 1];
-            array_push($stack, $stackNode);
-        }
-    }
-    return $maxDepth;
+    if ($root === null) return 0;
+    $left = maxDepth($root->left);
+    $right = maxDepth($root->right);
+    return max($left, $right) + 1;
 }
+
+/**
+ * @param TreeNode $root
+ * @return Integer
+ */
+// function maxDepth($root)
+// {
+//     if ($root->val === null) {
+//         return 0;
+//     }
+//     $stack = [];
+//     $stackNode = ['treeNode' => $root, 'depth' => 1];
+//     $maxDepth = 0;
+//     // 根节点入栈
+//     array_push($stack, $stackNode);
+//     while (!empty($stack)) {
+//         $tStackNode = array_pop($stack);
+//         $tNode = $tStackNode['treeNode'];
+//         // 比较一下深度
+//         if ($maxDepth < $tStackNode['depth']) {
+//             $maxDepth = $tStackNode['depth'];
+//         }
+//         if ($tNode->right !== null) {
+//             $stackNode = ['treeNode' => $tNode->right, 'depth' => $tStackNode['depth'] + 1];
+//             array_push($stack, $stackNode);
+//         }
+//         if ($tNode->left !== null) {
+//             $stackNode = ['treeNode' => $tNode->left, 'depth' => $tStackNode['depth'] + 1];
+//             array_push($stack, $stackNode);
+//         }
+//     }
+//     return $maxDepth;
+// }
 
 /* ##### 测试 ##### */
 

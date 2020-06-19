@@ -33,13 +33,17 @@ class TreeNode
  */
 function makeTree($numList)
 {
+    // 空数组返回 null
+    if (count($numList) === 0) {
+        return null;
+    }
+    // 创建根节点
     $root = new TreeNode($numList[0]);
-
     for ($i = 1; $i < count($numList); $i++) {
+        // 依次添加节点
         $node = new TreeNode($numList[$i]);
         insertNode($root, $node);
     }
-
     return $root;
 }
 
@@ -59,7 +63,7 @@ function insertNode($root, $iNode)
         // 队尾元素出队
         $tNode = array_pop($queue);
         // 左节点先入队
-        if ($tNode->left == null) {
+        if ($tNode->left === null) {
             $tNode->left = $iNode;
 
             return $root;
@@ -67,7 +71,7 @@ function insertNode($root, $iNode)
             array_unshift($queue, $tNode->left);
         }
         // 右节点后入队
-        if ($tNode->right == null) {
+        if ($tNode->right === null) {
             $tNode->right = $iNode;
 
             return $root;
@@ -78,7 +82,7 @@ function insertNode($root, $iNode)
 }
 
 /**
- * 广度优先遍历用队列
+ * 广度优先遍历，使用队列
  * @param $root
  * @return array
  */
@@ -94,13 +98,48 @@ function breadthFirstTraverse($root)
         $tNode = array_pop($queue);
         // 存放节点数据
         $nodeList[] = $tNode->val;
-        // 左节点先入队，先遍历
         if ($tNode->left !== null) {
+            // 左节点先入队，先遍历
             array_unshift($queue, $tNode->left);
         }
-        // 右节点后入队，后遍历
         if ($tNode->right !== null) {
+            // 右节点后入队，后遍历
             array_unshift($queue, $tNode->right);
+        }
+    }
+    return $nodeList;
+}
+
+/**
+ * 广度优先遍历，使用队列的另一种思路
+ * 每一次遍历会把下一层所有的节点输入队列，可分层输出结果
+ * @param $root
+ * @return array
+ */
+function breadthFirstTraverse2($root)
+{
+    $queue = [];
+    $nodeList = [];
+    // 根节点入队
+    array_push($queue, $root);
+    while ($length = count($queue)) {
+        // 持续输出节点，直到队列为空
+        $tempResult = [];
+        for ($i = 0; $i < $length; $i++) {
+            // 弹出队列中第一个元素
+            $tNode = array_shift($queue);
+            $tempResult[] = $tNode->val;
+            if ($tNode->left !== null) {
+                // 左节点先入队，先遍历
+                array_push($queue, $tNode->left);
+            }
+            if ($tNode->right !== null) {
+                // 右节点后入队，后遍历
+                array_push($queue, $tNode->right);
+            }
+        }
+        if (!empty($tempResult)) {
+            $nodeList[] = $tempResult;
         }
     }
     return $nodeList;
