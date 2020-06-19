@@ -12,25 +12,11 @@
 
 /* ##### 问题分析 ##### */
 
-// 链表没啥需要注意的
-// 需要注意的是两个数字链表可能不一样长
-// 以及进位时的处理
+// 注意两个数字链表可能不一样长，以及进位时的情况
 
 /* ##### 代码 ##### */
 
-/**
- * Definition for a singly-linked list.
- */
-class ListNode
-{
-    public $val = 0;
-    public $next = null;
-
-    function __construct($val)
-    {
-        $this->val = $val;
-    }
-}
+require_once 'LianBiao.php';
 
 /**
  * @param ListNode $l1
@@ -46,8 +32,8 @@ function addTwoNumbers($l1, $l2)
     $l2Node = $l2;
     do {
         $prevCarry = $nextCarry ? 1 : 0;
-        $l1Val = $l1Node !== null ? $l1Node->val : 0;
-        $l2Val = $l2Node !== null ? $l2Node->val : 0;
+        $l1Val = ($l1Node !== null) ? $l1Node->val : 0;
+        $l2Val = ($l2Node !== null) ? $l2Node->val : 0;
         $thisVal = $prevCarry + $l1Val + $l2Val;
 
         $nextCarry = false;
@@ -76,35 +62,7 @@ function addTwoNumbers($l1, $l2)
     return $listHead;
 }
 
-/**
- * 数字构造链表
- * @param $num
- * @return ListNode|null
- */
-function makeList($num)
-{
-    if ($num === 0) {
-        return new ListNode($num);
-    }
 
-    $listHead = null;
-    $listTail = null;
-    $i = 10;
-    do {
-        $listVal = $num % $i;
-        $listNode = new ListNode($listVal);
-        if ($listHead === null) {
-            $listHead = $listNode;
-            $listTail = $listNode;
-        } else {
-            $listTail->next = $listNode;
-            $listTail = $listNode;
-        }
-        $num = (int)(($num - $listVal) / $i);
-    } while ($num > 0);
-
-    return $listHead;
-}
 
 /* ##### 测试 ##### */
 

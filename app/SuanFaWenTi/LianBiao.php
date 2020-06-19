@@ -2,7 +2,7 @@
 /* ##### 链表 ##### */
 
 /**
- * Definition for a singly - linked list.
+ * Definition for a singly-linked list.
  */
 class ListNode
 {
@@ -54,4 +54,33 @@ function makeListDesc($numList)
     }
 
     return $root;
+}
+
+/**
+ * 数字构造链表
+ * @param $num
+ * @return ListNode|null
+ */
+function makeList($num)
+{
+    if ($num === 0) {
+        return new ListNode($num);
+    }
+    $listHead = null;
+    $listTail = null;
+    do {
+        // 数字每次对 10 取余，获得最后一位
+        $listVal = $num % 10;
+        $listNode = new ListNode($listVal);
+        if ($listHead === null) {
+            $listHead = $listNode;
+            $listTail = $listNode;
+        } else {
+            $listTail->next = $listNode;
+            $listTail = $listNode;
+        }
+        $num = (int)(($num - $listVal) / 10);
+    } while ($num > 0);
+
+    return $listHead;
 }

@@ -12,6 +12,12 @@
 // 输入: a = "1010", b = "1011"
 // 输出: "10101"
 
+/* ##### 问题分析 ##### */
+
+// 把字符串换转换成数组，然后从最后一位开始算。只有求和有四种结果，分别是 0,1,2,3。
+// 0 和 1 是不需要考虑进位的，2 对应 进 1 余 0 ，3 对应 进 1 余 1。
+// 进位的结果直接加在前面一个位置的结果上，重复上述求和操作。
+
 /* ##### 代码 ##### */
 
 /**
@@ -64,12 +70,13 @@ function addBinary($a, $b)
 
 /* ##### 测试 ##### */
 
-$timeStart = intval(microtime(true) * 1000);
 $testList = [
     ['a' => '11', 'b' => '1'],
     ['a' => '1010', 'b' => '1011'],
     ['a' => '11', 'b' => '101']
 ];
+
+$timeStart = intval(microtime(true) * 1000);
 $resultList = [];
 foreach ($testList as $item) {
     $resultList[] = addBinary($item['a'], $item['b']);
@@ -78,8 +85,8 @@ $timeStop = intval(microtime(true) * 1000);
 
 $echo = [
     'timeStart' => $timeStart,
-    'timeStop'  => $timeStop,
-    'timePass'  => round(($timeStop - $timeStart) / count($testList), 2),
-    'result'    => $resultList
+    'timeStop' => $timeStop,
+    'timePass' => round(($timeStop - $timeStart) / count($testList), 2),
+    'result' => $resultList
 ];
 echo json_encode($echo);
