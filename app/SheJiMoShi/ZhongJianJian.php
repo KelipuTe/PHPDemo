@@ -2,9 +2,6 @@
 
 /* 中间件（Middleware） */
 
-// 想象成一个类似洋葱的结构，一层一层进门，再一层一层出来
-// 值得注意的是，进入时的第一个门，在出来的时候，是最后一个
-
 interface Middleware
 {
     public static function handle(Closure $next);

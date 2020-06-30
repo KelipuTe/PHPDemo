@@ -35,5 +35,6 @@ class LogServiceFacade
 $ioc = new IOC();
 $ioc->bind('LogInterface', 'DataBaseLog');
 $ioc->bind('LogService', 'LogService');
+
 LogServiceFacade::setFacadeIoc($ioc);
 LogServiceFacade::saveLog();

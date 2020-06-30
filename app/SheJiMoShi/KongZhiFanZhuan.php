@@ -17,7 +17,7 @@ class FileLog implements LogInterface
 {
     public function saveLog()
     {
-        echo "save log by file.<br>\n";
+        echo "save log by file" . PHP_EOL;
     }
 }
 
@@ -28,7 +28,7 @@ class DatabaseLog implements LogInterface
 {
     public function saveLog()
     {
-        echo "save log by database.<br>\n";
+        echo "save log by database" . PHP_EOL;
     }
 }
 
@@ -127,5 +127,6 @@ class IOC
 // // $ioc->bind('LogInterface','DataBaseLog');
 // $ioc->bind('LogInterface','FileLog');
 // $ioc->bind('LogService','LogService');
+
 // $logService = $ioc->make('LogService');
 // $logService->saveLog();

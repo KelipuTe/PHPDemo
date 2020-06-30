@@ -2,10 +2,6 @@
 
 /* 单例模式 */
 
-// 假设家里只有一个豆浆机
-// 所以，重复的新建对象都会得到同一个豆浆机
-// 重复的加配料最终都会加到同一个豆浆机里去
-
 /**
  * Class DouJiangJi 豆浆机
  */
@@ -62,10 +58,12 @@ class DouJiangJi
 /* 测试代码 */
 
 $douJiangJi1 = DouJiangJi::huoQuDouJiangJi();
-$douJiangJi1->jiaPeiLiao(200);
-$douJiangJi1->jiaPeiLiao(200);
 $douJiangJi2 = DouJiangJi::huoQuDouJiangJi();
+
+$douJiangJi1->jiaPeiLiao(200);
 $douJiangJi2->jiaPeiLiao(200);
+$douJiangJi1->jiaPeiLiao(200);
 $douJiangJi1->zuoDouJiang();
+
 $douJiangJi2->jiaPeiLiao(500);
 $douJiangJi2->zuoDouJiang();

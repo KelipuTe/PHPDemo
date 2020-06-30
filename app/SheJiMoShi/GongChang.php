@@ -2,10 +2,6 @@
 
 /* 工厂模式 */
 
-// 假设不同的城市有不同的饭馆
-// 不同的饭馆有相同或者不同的菜，这些菜有相同或不同的做法
-// 不同城市的饭馆需要去不同城市的菜市场买菜
-
 /**
  * Class CaiShiChang 菜市场
  */
@@ -236,9 +232,9 @@ class SiChuanFanGuan extends FanGuan
 
 /* 测试代码 */
 
-$fanGuan = new JiangSuFanGuan();
-$fanGuan->dianCai('xi_hong_shi_chao_dan');
-$fanGuan->dianCai('chao_to_dou_si');
+$fanGuan1 = new JiangSuFanGuan();
+$cai1 = $fanGuan1->dianCai('xi_hong_shi_chao_dan');
+$cai2 = $fanGuan1->dianCai('chao_to_dou_si');
 
-$fanGuan = new SiChuanFanGuan();
-$fanGuan->dianCai('chao_to_dou_si');
+$fanGuan2 = new SiChuanFanGuan();
+$cai3 = $fanGuan2->dianCai('chao_to_dou_si');
