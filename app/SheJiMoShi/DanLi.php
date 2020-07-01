@@ -2,9 +2,7 @@
 
 /* 单例模式 */
 
-/**
- * Class DouJiangJi 豆浆机
- */
+// 豆浆机单例类
 class DouJiangJi
 {
     // 用静态私有变量保存该类唯一实例

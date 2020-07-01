@@ -2,20 +2,18 @@
 
 /* 工厂模式 */
 
-/**
- * Class CaiShiChang 菜市场
- */
+// 菜市场抽象类
 abstract class CaiShiChang
 {
-    /**
-     * @var array
-     */
+    // 库存清单 array(菜名标识=>array(菜名=>string，库存=>int))
     public $kuCunList;
 
+    // 进货
     public function jinHuo($caiMing, $zhiLiang)
     {
     }
 
+    // 买菜
     public function maiCai($caiMing, $zhiLiang)
     {
         echo "买{$zhiLiang}克{$this->kuCunList[$caiMing]['ming_cheng']}" . PHP_EOL;
