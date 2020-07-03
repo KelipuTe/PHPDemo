@@ -1,15 +1,5 @@
 <?php
-/* ##### 整数反转 ##### */
-
-// 给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
-//
-// 示例 1:
-// 输入: 123
-// 输出: 321
-//
-// 示例 2:
-// 输入: -123
-// 输出: -321
+/* LeetCode7 整数反转 */
 
 /**
  * @param Integer $x
@@ -17,10 +7,7 @@
  */
 function reverse($x)
 {
-    if ($x === 0) {
-        return 0;
-    }
-
+    if ($x === 0) return 0;
     $numArr = [];
     $max32Num = 2147483648;
     $isPositive = true;
@@ -46,19 +33,27 @@ function reverse($x)
         $numPow = intval($numPow / 10);
     }
 
-    if ($isPositive && $result > $max32Num - 1) {
-        return 0;
-    }
-    if (!$isPositive && $result > $max32Num) {
-        return 0;
-    }
-    if (!$isPositive) {
-        $result = -$result;
-    }
+    if ($isPositive && $result > $max32Num - 1) return 0;
+    if (!$isPositive && $result > $max32Num) return 0;
+    if (!$isPositive) $result = -$result;
     return $result;
 }
 
-$x = 120;
-$xResult = reverse($x);
+/* 测试代码 */
 
-echo json_encode($xResult);
+$testList = [120];
+$resultList = [];
+
+$timeStart = intval(microtime(true) * 1000);
+foreach ($testList as $item) {
+    $resultList[] = reverse($item);
+}
+$timeStop = intval(microtime(true) * 1000);
+
+$echo = [
+    'timeStart' => $timeStart,
+    'timeStop' => $timeStop,
+    'timePass' => $timeStop - $timeStart,
+    'result' => $resultList
+];
+echo json_encode($echo);
