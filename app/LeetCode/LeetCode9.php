@@ -1,30 +1,5 @@
 <?php
-/* ##### 回文数 ##### */
-
-// 判断一个整数是否是回文数。回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。
-//
-// 示例 1:
-// 输入: 121
-// 输出: true
-//
-// 示例 2:
-// 输入: -121
-// 输出: false
-// 解释: 从左向右读, 为 -121 。 从右向左读, 为 121- 。因此它不是一个回文数。
-//
-// 示例 3:
-// 输入: 10
-// 输出: false
-// 解释: 从右向左读, 为 01 。因此它不是一个回文数。
-//
-// 进阶:
-// 你能不将整数转为字符串来解决这个问题吗？
-
-/* ##### 问题分析 ##### */
-
-// 转换成数组，双指针
-
-/* ##### 代码 ##### */
+/* LeetCode9 回文数 */
 
 /**
  * @param Integer $x
@@ -32,22 +7,20 @@
  */
 function isPalindrome($x)
 {
-    if ($x < 0) {
-        return false;
-    }
+    if ($x < 0) return false;
 
     $numArr = [];
     while ($x > 0) {
         $numArr[] = $x % 10;
         $x = intval($x / 10);
     }
-
     $numLength = count($numArr);
     for ($i = 0; $i < intval($numLength / 2); $i++) {
         if ($numArr[$i] !== $numArr[$numLength - 1 - $i]) {
             return false;
         }
     }
+
     return true;
 }
 
@@ -58,9 +31,8 @@ function isPalindrome($x)
  */
 function isPalindrome2($x)
 {
-    if ($x < 0) {
-        return false;
-    }
+    if ($x < 0) return false;
+
     $length = 1;
     while ($x >= pow(10, $length)) {
         $length++;
@@ -73,12 +45,25 @@ function isPalindrome2($x)
             return false;
         }
     }
+
     return true;
 }
 
-$x = 10;
-// $xResult = isPalindrome($x);
-// echo json_encode($xResult);
+/* 测试代码 */
 
-$xResult2 = isPalindrome2($x);
-echo json_encode($xResult2);
+$testList = [0, 10, 11, 121];
+$resultList = [];
+
+$timeStart = intval(microtime(true) * 1000);
+foreach ($testList as $item) {
+    $resultList[] = isPalindrome($item);
+}
+$timeStop = intval(microtime(true) * 1000);
+
+$echo = [
+    'timeStart' => $timeStart,
+    'timeStop' => $timeStop,
+    'timePass' => $timeStop - $timeStart,
+    'result' => $resultList
+];
+echo json_encode($echo);

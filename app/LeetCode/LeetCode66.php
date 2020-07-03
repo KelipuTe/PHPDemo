@@ -1,21 +1,5 @@
 <?php
-/* ##### 加一 ##### */
-
-// 给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。
-// 最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。
-// 你可以假设除了整数 0 之外，这个整数不会以零开头。
-//
-// 示例 1:
-// 输入: [1,2,3]
-// 输出: [1,2,4]
-// 解释: 输入数组表示数字 123。
-//
-// 示例 2:
-// 输入: [4,3,2,1]
-// 输出: [4,3,2,2]
-// 解释: 输入数组表示数字 4321。
-
-/* ##### 代码 ##### */
+/* LeetCode66 加一 ##### */
 
 /**
  * @param Integer[] $digits
@@ -25,9 +9,7 @@ function plusOne($digits)
 {
     $length = count($digits);
     if ($digits[$length - 1] === 9) {
-        if (!isset($digits[$length - 2])) {
-            return [1, 0];
-        }
+        if (!isset($digits[$length - 2])) return [1, 0];
         $digits[$length - 1] = 0;
         $digits[$length - 2]++;
         for ($i = $length - 2; $i > 0; $i--) {
@@ -43,12 +25,12 @@ function plusOne($digits)
     } else {
         $digits[$length - 1]++;
     }
+
     return $digits;
 }
 
-/* ##### 测试 ##### */
+/* 测试代码 */
 
-$timeStart = intval(microtime(true) * 1000);
 $testList = [
     [0], [9],
     [1, 9], [9, 9],
@@ -56,6 +38,8 @@ $testList = [
     [9, 9, 9, 9],
 ];
 $resultList = [];
+
+$timeStart = intval(microtime(true) * 1000);
 foreach ($testList as $item) {
     $resultList[] = plusOne($item);
 }
@@ -63,9 +47,9 @@ $timeStop = intval(microtime(true) * 1000);
 
 $echo = [
     'timeStart' => $timeStart,
-    'timeStop'  => $timeStop,
-    'timePass'  => round(($timeStop - $timeStart) / count($testList), 2),
-    'result'    => $resultList
+    'timeStop' => $timeStop,
+    'timePass' => $timeStop - $timeStart,
+    'result' => $resultList
 ];
 echo json_encode($echo);
 

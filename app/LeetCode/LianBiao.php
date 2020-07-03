@@ -1,5 +1,5 @@
 <?php
-/* ##### 链表 ##### */
+/*　链表　*/
 
 /**
  * Definition for a singly-linked list.
@@ -23,9 +23,7 @@ class ListNode
  */
 function makeListAsc($numList)
 {
-    if(empty($numList)){
-        return null;
-    }
+    if (empty($numList)) return null;
     $head = new ListNode($numList[0]);
     $tail = $head;
     for ($i = 1; $i < count($numList); $i++) {
@@ -44,9 +42,7 @@ function makeListAsc($numList)
  */
 function makeListDesc($numList)
 {
-    if(empty($numList)){
-        return null;
-    }
+    if (empty($numList)) return null;
     $length = count($numList);
     $root = new ListNode($numList[$length - 1]);
     for ($i = $length - 2; $i >= 0; $i--) {
@@ -63,9 +59,7 @@ function makeListDesc($numList)
  */
 function makeList($num)
 {
-    if ($num === 0) {
-        return new ListNode($num);
-    }
+    if ($num === 0) return new ListNode($num);
     $listHead = null;
     $listTail = null;
     do {

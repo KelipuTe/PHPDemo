@@ -1,5 +1,5 @@
 <?php
-/* ##### 二叉树 ##### */
+/* 二叉树 */
 
 /**
  * Definition for a binary tree node.
@@ -16,14 +16,6 @@ class TreeNode
     }
 }
 
-// 数组: [1,2,3,null,5,null,4]
-// 二叉树:
-//       1
-//     /   \
-//   2      3
-//  / \    / \
-// n   5  n   4
-
 /**
  * 用数组构造二叉树
  * 数组中的值表示从上到下从左到右依次表示二叉树的节点
@@ -34,9 +26,7 @@ class TreeNode
 function makeTree($numList)
 {
     // 空数组返回 null
-    if (count($numList) === 0) {
-        return null;
-    }
+    if (count($numList) === 0) return null;
     // 创建根节点
     $root = new TreeNode($numList[0]);
     for ($i = 1; $i < count($numList); $i++) {
@@ -44,6 +34,7 @@ function makeTree($numList)
         $node = new TreeNode($numList[$i]);
         insertNode($root, $node);
     }
+
     return $root;
 }
 
@@ -97,16 +88,13 @@ function breadthFirstTraverse($root)
         // 队尾元素出队
         $tNode = array_pop($queue);
         // 存放节点数据
-        $nodeList[] = $tNode->val;
-        if ($tNode->left !== null) {
-            // 左节点先入队，先遍历
-            array_unshift($queue, $tNode->left);
-        }
-        if ($tNode->right !== null) {
-            // 右节点后入队，后遍历
-            array_unshift($queue, $tNode->right);
-        }
+        if ($tNode->val !== null) $nodeList[] = $tNode->val;
+        // 左节点先入队，先遍历
+        if ($tNode->left !== null) array_unshift($queue, $tNode->left);
+        // 右节点后入队，后遍历
+        if ($tNode->right !== null) array_unshift($queue, $tNode->right);
     }
+
     return $nodeList;
 }
 
@@ -118,30 +106,26 @@ function breadthFirstTraverse($root)
  */
 function breadthFirstTraverse2($root)
 {
-    $queue = [];
     $nodeList = [];
+    $level = 1;
+
+    $queue = [];
     // 根节点入队
     array_push($queue, $root);
     while ($length = count($queue)) {
         // 持续输出节点，直到队列为空
-        $tempResult = [];
         for ($i = 0; $i < $length; $i++) {
             // 弹出队列中第一个元素
             $tNode = array_shift($queue);
-            $tempResult[] = $tNode->val;
-            if ($tNode->left !== null) {
-                // 左节点先入队，先遍历
-                array_push($queue, $tNode->left);
-            }
-            if ($tNode->right !== null) {
-                // 右节点后入队，后遍历
-                array_push($queue, $tNode->right);
-            }
+            if ($tNode->val !== null) $nodeList[$level][] = $tNode->val;
+            // 左节点先入队，先遍历
+            if ($tNode->left !== null) array_push($queue, $tNode->left);
+            // 右节点后入队，后遍历
+            if ($tNode->right !== null) array_push($queue, $tNode->right);
         }
-        if (!empty($tempResult)) {
-            $nodeList[] = $tempResult;
-        }
+        $level++;
     }
+
     return $nodeList;
 }
 
@@ -161,22 +145,18 @@ function depthFirstTraverse($root)
         // 栈顶元素出栈
         $tNode = array_pop($stack);
         // 存放节点数据
-        $nodeList[] = $tNode->val;
+        if ($tNode->val !== null) $nodeList[] = $tNode->val;
         // 右节点先入栈，后遍历
-        if ($tNode->right !== null) {
-            array_push($stack, $tNode->right);
-        }
+        if ($tNode->right !== null) array_push($stack, $tNode->right);
         // 左节点后入栈，先遍历
-        if ($tNode->left !== null) {
-            array_push($stack, $tNode->left);
-        }
+        if ($tNode->left !== null) array_push($stack, $tNode->left);
     }
+
     return $nodeList;
 }
 
-/* ##### 测试 ##### */
+/* 测试代码 */
 
 // $numList = [1, 2, 3, null, 5, null, 4];
 // $numTree = makeTree($numList);
-//
-// echo json_encode(depthFirstTraverse($numTree));
+// echo json_encode($numTree);

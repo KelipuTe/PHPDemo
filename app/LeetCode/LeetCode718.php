@@ -1,5 +1,5 @@
 <?php
-/* LeetCode 718 最长重复子数组 */
+/* LeetCode718 最长重复子数组 */
 
 /**
  * @param Integer[] $A
