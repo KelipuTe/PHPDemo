@@ -51,7 +51,6 @@ function addTwoNumbers($l1, $l2)
     return $listHead;
 }
 
-
 /* 测试代码 */
 
 $testList = [
