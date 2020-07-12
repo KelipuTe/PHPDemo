@@ -1,5 +1,6 @@
 <?php
 
+namespace App\SuanFa;
 /*
  * 插入排序(Insertion PaiXu)
  * 时间复杂度=O(n^2)，空间复杂度=T(1)
