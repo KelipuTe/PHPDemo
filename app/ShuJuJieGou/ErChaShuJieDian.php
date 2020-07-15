@@ -1,5 +1,4 @@
 <?php
-/* 二叉树结点 */
 
 namespace App\ShuJuJieGou;
 
@@ -16,14 +15,14 @@ class ErChaShuJieDian
     public $jieDianZhi;
 
     /**
-     * @var ErChaShuJieDian [左子树]
+     * @var ErChaShuJieDian [左指针]
      */
-    public $zuoZiShu;
+    public $zuoZhiZhen;
 
     /**
-     * @var ErChaShuJieDian [右子树]
+     * @var ErChaShuJieDian [右指针]
      */
-    public $youZiShu;
+    public $youZhiZhen;
 
     /**
      * ErChaShuJieDian constructor.
@@ -32,7 +31,7 @@ class ErChaShuJieDian
     public function __construct($jieDianZhi)
     {
         $this->jieDianZhi = $jieDianZhi;
-        $this->zuoZiShu = null;
-        $this->youZiShu = null;
+        $this->zuoZhiZhen = null;
+        $this->youZhiZhen = null;
     }
 }

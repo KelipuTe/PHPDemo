@@ -44,6 +44,7 @@ function getRPN($zhongZhuiBiaoDaShi)
                         break 2;
                     }
                 }
+                break;
             case '*':
             case '/':
                 // 如果乘号和除号前面有乘号或除号则需要输出，加号或减号则不输出

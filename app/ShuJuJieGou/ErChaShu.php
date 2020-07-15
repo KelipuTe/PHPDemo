@@ -1,5 +1,4 @@
 <?php
-/* 二叉树 */
 
 namespace App\ShuJuJieGou;
 
@@ -50,7 +49,7 @@ class ErChaShu
 
     /**
      * 以先序遍历的顺序插入结点（根左右）
-     * @param ErChaShuJieDian $jieDian
+     * @param ErChaShuJieDian $jieDian [要插入的结点]
      */
     protected function chaRuJieDianByNLR($jieDian)
     {
@@ -62,23 +61,23 @@ class ErChaShu
             // 持续遍历结点，直到队列为空
             // 队列元素出队
             $tempJieDian = array_pop($duiLie);
-            if ($tempJieDian->zuoZiShu === null) {
+            if ($tempJieDian->zuoZhiZhen === null) {
                 // 如果左结点为空就插入结点
-                $tempJieDian->zuoZiShu = $jieDian;
+                $tempJieDian->zuoZhiZhen = $jieDian;
 
                 return;
             } else {
                 // 左结点先入队
-                array_unshift($duiLie, $tempJieDian->zuoZiShu);
+                array_unshift($duiLie, $tempJieDian->zuoZhiZhen);
             }
-            if ($tempJieDian->youZiShu === null) {
+            if ($tempJieDian->youZhiZhen === null) {
                 // 如果右结点为空就插入结点
-                $tempJieDian->youZiShu = $jieDian;
+                $tempJieDian->youZhiZhen = $jieDian;
 
                 return;
             } else {
                 // 右结点后入队
-                array_unshift($duiLie, $tempJieDian->youZiShu);
+                array_unshift($duiLie, $tempJieDian->youZhiZhen);
             }
         }
     }
@@ -100,15 +99,15 @@ class ErChaShu
     {
         if ($genJieDian === null) return;
         if ($genJieDian->jieDianZhi === null) return;
-        if ($genJieDian->zuoZiShu !== null && $genJieDian->zuoZiShu->jieDianZhi === null) {
-            $genJieDian->zuoZiShu = null;
+        if ($genJieDian->zuoZhiZhen !== null && $genJieDian->zuoZhiZhen->jieDianZhi === null) {
+            $genJieDian->zuoZhiZhen = null;
         } else {
-            $this->qianXuBianLiXiuJian($genJieDian->zuoZiShu);
+            $this->qianXuBianLiXiuJian($genJieDian->zuoZhiZhen);
         }
-        if ($genJieDian->youZiShu !== null && $genJieDian->youZiShu->jieDianZhi === null) {
-            $genJieDian->youZiShu = null;
+        if ($genJieDian->youZhiZhen !== null && $genJieDian->youZhiZhen->jieDianZhi === null) {
+            $genJieDian->youZhiZhen = null;
         } else {
-            $this->qianXuBianLiXiuJian($genJieDian->youZiShu);
+            $this->qianXuBianLiXiuJian($genJieDian->youZhiZhen);
         }
     }
 
@@ -123,8 +122,8 @@ class ErChaShu
         if ($genJieDian->jieDianZhi === null) return '';
         $xuLie = '';
         $xuLie .= $genJieDian->jieDianZhi . ';';
-        $xuLie .= $this->qianXuBianLi($genJieDian->zuoZiShu);
-        $xuLie .= $this->qianXuBianLi($genJieDian->youZiShu);
+        $xuLie .= $this->qianXuBianLi($genJieDian->zuoZhiZhen);
+        $xuLie .= $this->qianXuBianLi($genJieDian->youZhiZhen);
 
         return $xuLie;
     }
@@ -139,9 +138,9 @@ class ErChaShu
         if ($genJieDian === null) return '';
         if ($genJieDian->jieDianZhi === null) return '';
         $xuLie = '';
-        $xuLie .= $this->zhongXuBianLi($genJieDian->zuoZiShu);
+        $xuLie .= $this->zhongXuBianLi($genJieDian->zuoZhiZhen);
         $xuLie .= $genJieDian->jieDianZhi . ';';
-        $xuLie .= $this->zhongXuBianLi($genJieDian->youZiShu);
+        $xuLie .= $this->zhongXuBianLi($genJieDian->youZhiZhen);
 
         return $xuLie;
     }
@@ -156,8 +155,8 @@ class ErChaShu
         if ($genJieDian === null) return '';
         if ($genJieDian->jieDianZhi === null) return '';
         $xuLie = '';
-        $xuLie .= $this->houXuBianLi($genJieDian->zuoZiShu);
-        $xuLie .= $this->houXuBianLi($genJieDian->youZiShu);
+        $xuLie .= $this->houXuBianLi($genJieDian->zuoZhiZhen);
+        $xuLie .= $this->houXuBianLi($genJieDian->youZhiZhen);
         $xuLie .= $genJieDian->jieDianZhi . ';';
 
         return $xuLie;
@@ -172,10 +171,10 @@ class ErChaShu
     {
         if ($genJieDian === null) return 0;
         if ($genJieDian->jieDianZhi === null) return 0;
-        $zuoZiShu = $this->zuiDaShenDu($genJieDian->zuoZiShu);
-        $youZiShu = $this->zuiDaShenDu($genJieDian->youZiShu);
+        $zuoZhiZhen = $this->zuiDaShenDu($genJieDian->zuoZhiZhen);
+        $youZhiZhen = $this->zuiDaShenDu($genJieDian->youZhiZhen);
 
-        return max($zuoZiShu, $youZiShu) + 1;
+        return max($zuoZhiZhen, $youZhiZhen) + 1;
     }
 
     /**
@@ -197,9 +196,9 @@ class ErChaShu
             // 存放结点数据
             if ($tempJieDian->jieDianZhi !== null) $xuLie[] = $tempJieDian->jieDianZhi;
             // 左结点先入队，先遍历
-            if ($tempJieDian->zuoZiShu !== null) array_unshift($duiLie, $tempJieDian->zuoZiShu);
+            if ($tempJieDian->zuoZhiZhen !== null) array_unshift($duiLie, $tempJieDian->zuoZhiZhen);
             // 右结点后入队，后遍历
-            if ($tempJieDian->youZiShu !== null) array_unshift($duiLie, $tempJieDian->youZiShu);
+            if ($tempJieDian->youZhiZhen !== null) array_unshift($duiLie, $tempJieDian->youZhiZhen);
         }
 
         return $xuLie;
@@ -225,9 +224,9 @@ class ErChaShu
                 $tempJieDian = array_shift($duiLie);
                 if ($tempJieDian->jieDianZhi !== null) $xuLie[$cengShu][] = $tempJieDian->jieDianZhi;
                 // 左结点先入队，先遍历
-                if ($tempJieDian->zuoZiShu !== null) array_push($duiLie, $tempJieDian->zuoZiShu);
+                if ($tempJieDian->zuoZhiZhen !== null) array_push($duiLie, $tempJieDian->zuoZhiZhen);
                 // 右结点后入队，后遍历
-                if ($tempJieDian->youZiShu !== null) array_push($duiLie, $tempJieDian->youZiShu);
+                if ($tempJieDian->youZhiZhen !== null) array_push($duiLie, $tempJieDian->youZhiZhen);
             }
             // 一层遍历结束，层数+1
             $cengShu++;
@@ -255,9 +254,9 @@ class ErChaShu
             // 存放结点数据
             if ($tempJieDian->jieDianZhi !== null) $xuLie[] = $tempJieDian->jieDianZhi;
             // 右结点先入栈，后遍历
-            if ($tempJieDian->youZiShu !== null) array_push($zhan, $tempJieDian->youZiShu);
+            if ($tempJieDian->youZhiZhen !== null) array_push($zhan, $tempJieDian->youZhiZhen);
             // 左结点后入栈，先遍历
-            if ($tempJieDian->zuoZiShu !== null) array_push($zhan, $tempJieDian->zuoZiShu);
+            if ($tempJieDian->zuoZhiZhen !== null) array_push($zhan, $tempJieDian->zuoZhiZhen);
         }
 
         return $xuLie;
@@ -266,7 +265,7 @@ class ErChaShu
 
 /* 测试代码 */
 
-$numList = ['A', 'B', 'C', null, 'D', null, 'E'];
+$numList = ['A', 'B', 'C', null, 'D', null, 'E', null, null, 'F', 'I', null, null, 'J', null];
 $erChaShu = new ErChaShu($numList);
 $erChaShu->buildTreeWithArray();
 $erChaShu->qianXuBianLiXiuJian($erChaShu->getErChaShu());
