@@ -4,7 +4,8 @@ namespace App\ShuJuJieGou;
 
 
 /**
- * Class ErChaShuJieDian [二叉树结点]
+ * 二叉树结点
+ * Class ErChaShuJieDian
  * @package App\ShuJuJieGou
  */
 class ErChaShuJieDian

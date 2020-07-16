@@ -6,7 +6,8 @@ namespace App\ShuJuJieGou;
 require_once 'ErChaShuJieDian.php';
 
 /**
- * Class ErChaShu [二叉树]
+ * 二叉树
+ * Class ErChaShu
  * @package App\ShuJuJieGou
  */
 class ErChaShu
@@ -25,18 +26,31 @@ class ErChaShu
      * ErChaShu constructor.
      * @param $yuanSuList [二叉树元素数组]
      */
-    public function __construct($yuanSuList)
+    public function __construct($yuanSuList = [])
     {
-        $this->yuanSuList = $yuanSuList;
+        $this->yuanSuList = [];
         $this->genJieDian = null;
+
+        if (is_array($yuanSuList) && count($yuanSuList) > 0) $this->setYuanSuList($yuanSuList);
+    }
+
+    /**
+     * 设置二叉树元素数组
+     * @param $yuanSuList
+     */
+    public function setYuanSuList($yuanSuList)
+    {
+        if (!is_array($yuanSuList)) return;
+        $this->yuanSuList = $yuanSuList;
+        $this->buildTreeWithArray();
+        $this->qianXuBianLiXiuJian();
     }
 
     /**
      * 用数组构造二叉树
      */
-    public function buildTreeWithArray()
+    protected function buildTreeWithArray()
     {
-        // 空数组返回 null
         if (count($this->yuanSuList) === 0) return null;
         // 创建根结点
         $this->genJieDian = new ErChaShuJieDian($this->yuanSuList[0]);
@@ -49,7 +63,7 @@ class ErChaShu
 
     /**
      * 以先序遍历的顺序插入结点（根左右）
-     * @param ErChaShuJieDian $jieDian [要插入的结点]
+     * @param ErChaShuJieDian $jieDian
      */
     protected function chaRuJieDianByNLR($jieDian)
     {
@@ -93,70 +107,94 @@ class ErChaShu
 
     /**
      * 使用前序遍历移除多余的空结点
+     */
+    protected function qianXuBianLiXiuJian()
+    {
+        $this->qianXuBianLiXiuJianDiGui($this->genJieDian);
+    }
+
+    /**
      * @param ErChaShuJieDian $genJieDian
      */
-    public function qianXuBianLiXiuJian($genJieDian)
+    protected function qianXuBianLiXiuJianDiGui($genJieDian)
     {
         if ($genJieDian === null) return;
         if ($genJieDian->jieDianZhi === null) return;
-        if ($genJieDian->zuoZhiZhen !== null && $genJieDian->zuoZhiZhen->jieDianZhi === null) {
+        if ($genJieDian->zuoZhiZhen !== null && $genJieDian->zuoZhiZhen->jieDianZhi === null)
             $genJieDian->zuoZhiZhen = null;
-        } else {
-            $this->qianXuBianLiXiuJian($genJieDian->zuoZhiZhen);
-        }
-        if ($genJieDian->youZhiZhen !== null && $genJieDian->youZhiZhen->jieDianZhi === null) {
+        else $this->qianXuBianLiXiuJianDiGui($genJieDian->zuoZhiZhen);
+        if ($genJieDian->youZhiZhen !== null && $genJieDian->youZhiZhen->jieDianZhi === null)
             $genJieDian->youZhiZhen = null;
-        } else {
-            $this->qianXuBianLiXiuJian($genJieDian->youZhiZhen);
-        }
+        else $this->qianXuBianLiXiuJianDiGui($genJieDian->youZhiZhen);
     }
 
     /**
      * 前序遍历
+     */
+    public function qianXuBianLi()
+    {
+        return $this->qianXuBianLiDiGui($this->genJieDian);
+    }
+
+    /**
      * @param ErChaShuJieDian $genJieDian
      * @return string
      */
-    public function qianXuBianLi($genJieDian)
+    protected function qianXuBianLiDiGui($genJieDian)
     {
         if ($genJieDian === null) return '';
         if ($genJieDian->jieDianZhi === null) return '';
         $xuLie = '';
         $xuLie .= $genJieDian->jieDianZhi . ';';
-        $xuLie .= $this->qianXuBianLi($genJieDian->zuoZhiZhen);
-        $xuLie .= $this->qianXuBianLi($genJieDian->youZhiZhen);
-
+        $xuLie .= $this->qianXuBianLiDiGui($genJieDian->zuoZhiZhen);
+        $xuLie .= $this->qianXuBianLiDiGui($genJieDian->youZhiZhen);
         return $xuLie;
     }
 
     /**
      * 中序遍历
+     * @return string
+     */
+    public function zhongXuBianLi()
+    {
+        return $this->zhongXuBianLiDiGui($this->genJieDian);
+    }
+
+    /**
      * @param ErChaShuJieDian $genJieDian
      * @return string
      */
-    public function zhongXuBianLi($genJieDian)
+    protected function zhongXuBianLiDiGui($genJieDian)
     {
         if ($genJieDian === null) return '';
         if ($genJieDian->jieDianZhi === null) return '';
         $xuLie = '';
-        $xuLie .= $this->zhongXuBianLi($genJieDian->zuoZhiZhen);
+        $xuLie .= $this->zhongXuBianLiDiGui($genJieDian->zuoZhiZhen);
         $xuLie .= $genJieDian->jieDianZhi . ';';
-        $xuLie .= $this->zhongXuBianLi($genJieDian->youZhiZhen);
+        $xuLie .= $this->zhongXuBianLiDiGui($genJieDian->youZhiZhen);
 
         return $xuLie;
     }
 
     /**
      * 后序遍历
+     */
+    public function houXuBianLi()
+    {
+        return $this->houXuBianLiDiGui($this->genJieDian);
+    }
+
+    /**
      * @param ErChaShuJieDian $genJieDian
      * @return string
      */
-    public function houXuBianLi($genJieDian)
+    protected function houXuBianLiDiGui($genJieDian)
     {
         if ($genJieDian === null) return '';
         if ($genJieDian->jieDianZhi === null) return '';
         $xuLie = '';
-        $xuLie .= $this->houXuBianLi($genJieDian->zuoZhiZhen);
-        $xuLie .= $this->houXuBianLi($genJieDian->youZhiZhen);
+        $xuLie .= $this->houXuBianLiDiGui($genJieDian->zuoZhiZhen);
+        $xuLie .= $this->houXuBianLiDiGui($genJieDian->youZhiZhen);
         $xuLie .= $genJieDian->jieDianZhi . ';';
 
         return $xuLie;
@@ -164,31 +202,37 @@ class ErChaShu
 
     /**
      * 计算二叉树的最大深度
+     * @return int
+     */
+    public function zuiDaShenDu()
+    {
+        return $this->zuiDaShenDuDiGui($this->genJieDian);
+    }
+
+    /**
      * @param ErChaShuJieDian $genJieDian
      * @return int
      */
-    public function zuiDaShenDu($genJieDian)
+    protected function zuiDaShenDuDiGui($genJieDian)
     {
         if ($genJieDian === null) return 0;
         if ($genJieDian->jieDianZhi === null) return 0;
-        $zuoZhiZhen = $this->zuiDaShenDu($genJieDian->zuoZhiZhen);
-        $youZhiZhen = $this->zuiDaShenDu($genJieDian->youZhiZhen);
+        $zuoZhiZhen = $this->zuiDaShenDuDiGui($genJieDian->zuoZhiZhen);
+        $youZhiZhen = $this->zuiDaShenDuDiGui($genJieDian->youZhiZhen);
 
         return max($zuoZhiZhen, $youZhiZhen) + 1;
     }
 
     /**
      * 广度优先遍历
-     * @param ErChaShuJieDian $genJieDian
      * @return array
      */
-    public function guangDuYouXianBianLi($genJieDian)
+    public function guangDuYouXianBianLi()
     {
         $xuLie = [];
-
         $duiLie = [];
         // 根结点入队
-        array_unshift($duiLie, $genJieDian);
+        array_unshift($duiLie, $this->genJieDian);
         while (!empty($duiLie)) {
             // 持续输出结点，直到队列为空
             // 队列元素出队
@@ -206,17 +250,15 @@ class ErChaShu
 
     /**
      * 广度优先遍历，可分层输出结果
-     * @param ErChaShuJieDian $genJieDian
      * @return array
      */
-    public function guangDuYouXianBianLiFenCeng($genJieDian)
+    public function guangDuYouXianBianLiFenCeng()
     {
         $xuLie = [];
         $cengShu = 1;
-
         $duiLie = [];
         // 根结点入队
-        array_push($duiLie, $genJieDian);
+        array_push($duiLie, $this->genJieDian);
         while ($length = count($duiLie)) {
             // 持续输出结点，直到队列为空
             for ($i = 0; $i < $length; $i++) {
@@ -237,16 +279,14 @@ class ErChaShu
 
     /**
      * 深度优先遍历
-     * @param ErChaShuJieDian $genJieDian
      * @return array
      */
-    public function shenDuYouXianBianLi($genJieDian)
+    public function shenDuYouXianBianLi()
     {
         $xuLie = [];
-
         $zhan = [];
         // 根结点入栈
-        array_push($zhan, $genJieDian);
+        array_push($zhan, $this->genJieDian);
         while (!empty($zhan)) {
             // 持续输出结点，直到栈为空
             // 栈顶元素出栈
@@ -266,14 +306,13 @@ class ErChaShu
 /* 测试代码 */
 
 $numList = ['A', 'B', 'C', null, 'D', null, 'E', null, null, 'F', 'I', null, null, 'J', null];
-$erChaShu = new ErChaShu($numList);
-$erChaShu->buildTreeWithArray();
-$erChaShu->qianXuBianLiXiuJian($erChaShu->getErChaShu());
+$erChaShu = new ErChaShu();
+$erChaShu->setYuanSuList($numList);
 echo json_encode($erChaShu->getErChaShu());
-// echo json_encode($erChaShu->qianXuBianLi($erChaShu->getErChaShu()));
-// echo json_encode($erChaShu->zhongXuBianLi($erChaShu->getErChaShu()));
-// echo json_encode($erChaShu->houXuBianLi($erChaShu->getErChaShu()));
-// echo json_encode($erChaShu->zuiDaShenDu($erChaShu->getErChaShu()));
-// echo json_encode($erChaShu->guangDuYouXianBianLi($erChaShu->getErChaShu()));
-// echo json_encode($erChaShu->guangDuYouXianBianLiFenCeng($erChaShu->getErChaShu()));
-// echo json_encode($erChaShu->shenDuYouXianBianLi($erChaShu->getErChaShu()));
+// echo json_encode($erChaShu->qianXuBianLi());
+// echo json_encode($erChaShu->zhongXuBianLi());
+// echo json_encode($erChaShu->houXuBianLi());
+// echo json_encode($erChaShu->zuiDaShenDu());
+// echo json_encode($erChaShu->guangDuYouXianBianLi());
+// echo json_encode($erChaShu->guangDuYouXianBianLiFenCeng());
+// echo json_encode($erChaShu->shenDuYouXianBianLi());
