@@ -1,10 +1,14 @@
 <?php
 
 namespace App\SuanFa;
+
+
 /*
- * 插入排序(Insertion PaiXu)
- * 时间复杂度=O(n^2)，空间复杂度=T(1)
+ * 插入排序
  */
+class ChaRuPaiXu{
+
+}
 
 /**
  * @param $numList
@@ -41,9 +45,9 @@ function insertionSort($numList)
 
 /* 测试代码 */
 
-$listLength = 10;
-$numList = [];
-for ($i = 0; $i < $listLength; $i++) {
-    $numList[] = rand(1, 50);
+$beforeSortList = [];
+$length = 10;
+for ($i = 0; $i < $length; $i++) {
+    $beforeSortList[] = rand(1, 50);
 }
 echo json_encode(insertionSort($numList)) . PHP_EOL;
