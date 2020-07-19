@@ -6,8 +6,7 @@ namespace App\ShuJuJieGou;
 require_once 'ErChaShuJieDian.php';
 
 /**
- * 二叉树
- * Class ErChaShu
+ * Class ErChaShu [二叉树]
  * @package App\ShuJuJieGou
  */
 class ErChaShu
@@ -41,6 +40,7 @@ class ErChaShu
     public function setYuanSuList($yuanSuList)
     {
         if (!is_array($yuanSuList)) return;
+        if (count($yuanSuList) < 1) return;
         $this->yuanSuList = $yuanSuList;
         $this->buildTreeWithArray();
         $this->qianXuBianLiXiuJian();
@@ -62,7 +62,7 @@ class ErChaShu
     }
 
     /**
-     * 以先序遍历的顺序插入结点（根左右）
+     * 以层次遍历的顺序插入结点
      * @param ErChaShuJieDian $jieDian
      */
     protected function chaRuJieDianByNLR($jieDian)
@@ -148,6 +148,7 @@ class ErChaShu
         $xuLie .= $genJieDian->jieDianZhi . ';';
         $xuLie .= $this->qianXuBianLiDiGui($genJieDian->zuoZhiZhen);
         $xuLie .= $this->qianXuBianLiDiGui($genJieDian->youZhiZhen);
+
         return $xuLie;
     }
 
@@ -258,17 +259,17 @@ class ErChaShu
         $cengShu = 1;
         $duiLie = [];
         // 根结点入队
-        array_push($duiLie, $this->genJieDian);
+        array_unshift($duiLie, $this->genJieDian);
         while ($length = count($duiLie)) {
             // 持续输出结点，直到队列为空
             for ($i = 0; $i < $length; $i++) {
                 // 队列元素出队
-                $tempJieDian = array_shift($duiLie);
+                $tempJieDian = array_pop($duiLie);
                 if ($tempJieDian->jieDianZhi !== null) $xuLie[$cengShu][] = $tempJieDian->jieDianZhi;
                 // 左结点先入队，先遍历
-                if ($tempJieDian->zuoZhiZhen !== null) array_push($duiLie, $tempJieDian->zuoZhiZhen);
+                if ($tempJieDian->zuoZhiZhen !== null) array_unshift($duiLie, $tempJieDian->zuoZhiZhen);
                 // 右结点后入队，后遍历
-                if ($tempJieDian->youZhiZhen !== null) array_push($duiLie, $tempJieDian->youZhiZhen);
+                if ($tempJieDian->youZhiZhen !== null) array_unshift($duiLie, $tempJieDian->youZhiZhen);
             }
             // 一层遍历结束，层数+1
             $cengShu++;

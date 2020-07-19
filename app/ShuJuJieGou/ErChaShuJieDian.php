@@ -4,8 +4,7 @@ namespace App\ShuJuJieGou;
 
 
 /**
- * 二叉树结点
- * Class ErChaShuJieDian
+ * Class ErChaShuJieDian [二叉树结点]
  * @package App\ShuJuJieGou
  */
 class ErChaShuJieDian
@@ -27,9 +26,9 @@ class ErChaShuJieDian
 
     /**
      * ErChaShuJieDian constructor.
-     * @param $jieDianZhi [结点值]
+     * @param string $jieDianZhi [结点值]
      */
-    public function __construct($jieDianZhi)
+    public function __construct($jieDianZhi = '')
     {
         $this->jieDianZhi = $jieDianZhi;
         $this->zuoZhiZhen = null;

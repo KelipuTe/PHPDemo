@@ -6,8 +6,7 @@ namespace App\ShuJuJieGou;
 require_once 'ErChaShuJieDian.php';
 
 /**
- * 哈夫曼树结点
- * Class HaFuManShuJieDian
+ * Class HaFuManShuJieDian [哈夫曼树结点]
  * @package App\ShuJuJieGou
  */
 class HaFuManShuJieDian extends ErChaShuJieDian
@@ -19,7 +18,7 @@ class HaFuManShuJieDian extends ErChaShuJieDian
 
     /**
      * HaFuManShuJieDian constructor.
-     * @param string $jieDianZhi
+     * @param string $jieDianZhi [结点值]
      * @param int $quanZhong [结点权重]
      */
     public function __construct($jieDianZhi, $quanZhong)

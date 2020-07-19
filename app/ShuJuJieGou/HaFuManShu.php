@@ -6,8 +6,7 @@ namespace App\ShuJuJieGou;
 require_once 'HaFuManShuJieDian.php';
 
 /**
- * 哈夫曼树
- * Class HaFuManShu
+ * Class HaFuManShu [哈夫曼树]
  * @package App\ShuJuJieGou
  */
 class HaFuManShu
@@ -48,9 +47,7 @@ class HaFuManShu
         $this->haFuManBianMaBiao = [];
         $this->genJieDian = null;
 
-        if (!empty($string)) {
-            $this->setMuBiaoZiFuChuan($string);
-        }
+        if (!empty($string)) $this->setMuBiaoZiFuChuan($string);
     }
 
     /**
@@ -59,7 +56,8 @@ class HaFuManShu
      */
     public function setMuBiaoZiFuChuan($string)
     {
-        if(empty($string)) return;
+        if (!is_string($string)) return;
+        if (strlen($string) < 1) return;
         $this->muBiaoZiFuZhuan = $string;
         $strLen = strlen($string);
         for ($i = 0; $i < $strLen; ++$i) {

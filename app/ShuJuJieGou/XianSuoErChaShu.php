@@ -29,7 +29,7 @@ class XianSuoErChaShu
     protected $qianQuJieDian;
 
     /**
-     * @var XianSuoErChaShuJieDian [前驱结点值]
+     * @var XianSuoErChaShuJieDian [前驱结点]
      * 前驱结点需要额外记录，而后继结点不需要
      */
     protected $qianQuJieDianZhi;
@@ -52,7 +52,7 @@ class XianSuoErChaShu
     public function buildTreeWithArray()
     {
         // 空数组返回 null
-        if (count($this->yuanSuList) === 0) return null;
+        if (count($this->yuanSuList) < 1) return null;
         // 创建根结点
         $this->genJieDian = new XianSuoErChaShuJieDian($this->yuanSuList[0]);
         for ($i = 1, $numLen = count($this->yuanSuList); $i < $numLen; $i++) {
