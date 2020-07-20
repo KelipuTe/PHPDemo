@@ -19,12 +19,12 @@ class HaFuManShu
     /**
      * @var string [目标字符串]
      */
-    protected $muBiaoZiFuZhuan;
+    protected $muBiaoZiFuChuan;
 
     /**
-     * @var array [字符权重列表]
+     * @var array [字符权重表]
      */
-    protected $ziFuQuanZhongMap;
+    protected $ziFuQuanZhongBiao;
 
     /**
      * @var array [哈夫曼编码表]
@@ -32,45 +32,74 @@ class HaFuManShu
     protected $haFuManBianMaBiao;
 
     /**
-     * @var HaFuManShuJieDian [根结点]
+     * @var array [虚拟内存空间]
+     * 用于模拟C语言中的指针
      */
-    protected $genJieDian;
+    protected $xuNiNeiCunKongJian;
+
+    /**
+     * @var int [虚拟内存大小]
+     * 用于记录分配内存的数量
+     */
+    protected $xuNiNeiCunDaXiao;
+
+    /**
+     * @var string [根结点指针]
+     */
+    protected $genJieDianZhiZhen;
 
     /**
      * HaFuManShu constructor.
-     * @param $string [目标字符串]
+     * @param string $muBiaoZiFuZhuan [目标字符串]
      */
-    public function __construct($string = '')
+    public function __construct($muBiaoZiFuZhuan)
     {
-        $this->muBiaoZiFuZhuan = '';
-        $this->ziFuQuanZhongMap = [];
+        $this->muBiaoZiFuChuan = '';
+        $this->ziFuQuanZhongBiao = [];
         $this->haFuManBianMaBiao = [];
-        $this->genJieDian = null;
-
-        if (!empty($string)) $this->setMuBiaoZiFuChuan($string);
+        $this->xuNiNeiCunKongJian = [];
+        $this->xuNiNeiCunDaXiao = 0;
+        $this->genJieDianZhiZhen = null;
+        if (is_string($muBiaoZiFuZhuan) && strlen($muBiaoZiFuZhuan) > 0) {
+            $this->muBiaoZiFuChuan = $muBiaoZiFuZhuan;
+            $this->jiSuanZiFuQuanZhong();
+            $this->gouZaoHaFuManShu();
+            $this->gouZaoHaFuManBianMaBiao();
+        }
     }
 
     /**
-     * 设置目标字符串并计算字符数目
-     * @param string $string
+     * 获取哈夫曼树
+     * @return array
      */
-    public function setMuBiaoZiFuChuan($string)
+    public function getHaFuManShu()
     {
-        if (!is_string($string)) return;
-        if (strlen($string) < 1) return;
-        $this->muBiaoZiFuZhuan = $string;
-        $strLen = strlen($string);
-        for ($i = 0; $i < $strLen; ++$i) {
-            $char = $string[$i];
+        return [
+            'gen_jie_dian_zhi_zhen' => $this->genJieDianZhiZhen,
+            'xu_ni_nei_cun_kong_jian' => $this->xuNiNeiCunKongJian
+        ];
+    }
+
+    /**
+     * 计算字符串中字符的权重
+     */
+    protected function jiSuanZiFuQuanZhong()
+    {
+        $chuanChang = strlen($this->muBiaoZiFuChuan);
+        for ($i = 0; $i < $chuanChang; ++$i) {
+            $char = $this->muBiaoZiFuChuan[$i];
             // 转义一下特殊字符，用这些特殊字符作为数组键名，不合适。
-            if ($char === ' ') $char = 'kong_ge';
-            if (isset($this->ziFuQuanZhongMap[$char])) ++$this->ziFuQuanZhongMap[$char];
-            else $this->ziFuQuanZhongMap[$char] = 1;
+            if ($char === ' ') {
+                $char = 'kong_ge';
+            }
+            if (isset($this->ziFuQuanZhongBiao[$char])) {
+                ++$this->ziFuQuanZhongBiao[$char];
+            } else {
+                $this->ziFuQuanZhongBiao[$char] = 1;
+            }
         }
-        // 字符权重列表升序排序
-        asort($this->ziFuQuanZhongMap);
-        $this->gouZaoHaFuManShu();
-        $this->gouZaoHaFuManBianMaBiao();
+        // 字符权重表按升序排序
+        asort($this->ziFuQuanZhongBiao);
     }
 
     /**
@@ -78,85 +107,64 @@ class HaFuManShu
      */
     protected function gouZaoHaFuManShu()
     {
-        $ziFuQuanZhongMap = $this->ziFuQuanZhongMap;
-        $tempJieDianMap = [];
-        $tempJieDianId = 1;
-        while (count($ziFuQuanZhongMap) > 1) {
+        $ziFuQuanZhongBiao = $this->ziFuQuanZhongBiao;
+        while (count($ziFuQuanZhongBiao) > 1) {
             // 这里获取两个结点的逻辑是一样的，但是不适合做成方法，涉及到数组的删除，有点得不偿失。
             // 获取第一个结点
-            reset($ziFuQuanZhongMap);
-            $keyZiFu1 = key($ziFuQuanZhongMap);
-            $quanZhong1 = $ziFuQuanZhongMap[$keyZiFu1];
-            if (isset($tempJieDianMap[$keyZiFu1])) {
-                $treeNode1 = $tempJieDianMap[$keyZiFu1];
-                unset($ziFuQuanZhongMap[$keyZiFu1]);
-                unset($tempJieDianMap[$keyZiFu1]);
+            reset($ziFuQuanZhongBiao);
+            $keyZiFu1 = key($ziFuQuanZhongBiao);
+            $quanZhong1 = $ziFuQuanZhongBiao[$keyZiFu1];
+            if (isset($this->xuNiNeiCunKongJian[$keyZiFu1])) {
+                $jieDianZhiZhen1 = $keyZiFu1;
+                unset($ziFuQuanZhongBiao[$keyZiFu1]);
             } else {
-                $treeNode1 = new HaFuManShuJieDian($keyZiFu1, $quanZhong1);
-                unset($ziFuQuanZhongMap[$keyZiFu1]);
+                $jieDianZhiZhen1 = $this->fenPeiXuNiNeiCun($keyZiFu1, $quanZhong1);
+                unset($ziFuQuanZhongBiao[$keyZiFu1]);
             }
+            $jieDian1 = $this->xuNiNeiCunKongJian[$jieDianZhiZhen1];
             // 获取第二个结点
-            // reset($ziFuQuanZhongMap);
-            $keyZiFu2 = key($ziFuQuanZhongMap);
-            $quanZhong2 = $ziFuQuanZhongMap[$keyZiFu2];
-            if (isset($tempJieDianMap[$keyZiFu2])) {
-                $treeNode2 = $tempJieDianMap[$keyZiFu2];
-                unset($ziFuQuanZhongMap[$keyZiFu2]);
-                unset($tempJieDianMap[$keyZiFu2]);
+            $keyZiFu2 = key($ziFuQuanZhongBiao);
+            $quanZhong2 = $ziFuQuanZhongBiao[$keyZiFu2];
+            if (isset($this->xuNiNeiCunKongJian[$keyZiFu2])) {
+                $jieDianZhiZhen2 = $keyZiFu2;
+                unset($ziFuQuanZhongBiao[$keyZiFu2]);
             } else {
-                $treeNode2 = new HaFuManShuJieDian($keyZiFu2, $quanZhong2);
-                unset($ziFuQuanZhongMap[$keyZiFu2]);
+                $jieDianZhiZhen2 = $this->fenPeiXuNiNeiCun($keyZiFu2, $quanZhong2);
+                unset($ziFuQuanZhongBiao[$keyZiFu2]);
             }
+            $jieDian2 = $this->xuNiNeiCunKongJian[$jieDianZhiZhen2];
             // 构造上层结点
-            $shangCengQuanZhong = $treeNode1->quanZhong + $treeNode2->quanZhong;
-            $shangCengTreeNode = new HaFuManShuJieDian(self::TEMP_JIE_DIAN_ZHI, $shangCengQuanZhong);
-            if ($treeNode1->quanZhong <= $treeNode2->quanZhong) {
-                $shangCengTreeNode->zuoZhiZhen = $treeNode1;
-                $shangCengTreeNode->youZhiZhen = $treeNode2;
+            $shangCengQuanZhong = $jieDian1->quanZhong + $jieDian2->quanZhong;
+            $shangCengZhiZhen = $this->fenPeiXuNiNeiCun(self::TEMP_JIE_DIAN_ZHI, $shangCengQuanZhong);
+            $shangcengJieDian = $this->xuNiNeiCunKongJian[$shangCengZhiZhen];
+            if ($jieDian1->quanZhong <= $jieDian2->quanZhong) {
+                $shangcengJieDian->zuoZhiZhen = $jieDianZhiZhen1;
+                $shangcengJieDian->youZhiZhen = $jieDianZhiZhen2;
             } else {
-                $shangCengTreeNode->zuoZhiZhen = $treeNode2;
-                $shangCengTreeNode->youZhiZhen = $treeNode1;
+                $shangcengJieDian->zuoZhiZhen = $jieDianZhiZhen2;
+                $shangcengJieDian->youZhiZhen = $jieDianZhiZhen1;
             }
             // 将构造好的结点放回权重数组并升序排序
-            $ziFuQuanZhongMap['temp_' . $tempJieDianId] = $shangCengQuanZhong;
-            asort($ziFuQuanZhongMap);
-            // 将构造好的结点放到临时列表
-            $tempJieDianMap['temp_' . $tempJieDianId] = $shangCengTreeNode;
-            // 临时结点ID自增
-            ++$tempJieDianId;
+            $ziFuQuanZhongBiao[$shangCengZhiZhen] = $shangCengQuanZhong;
+            asort($ziFuQuanZhongBiao);
         }
-        $this->genJieDian = array_shift($tempJieDianMap);
+        reset($ziFuQuanZhongBiao);
+        $this->genJieDianZhiZhen = key($ziFuQuanZhongBiao);
     }
 
     /**
-     * 获取哈夫曼树
-     * @return HaFuManShuJieDian
+     * 分配虚拟内存
+     * @param $ziFu
+     * @param $quanZhong
+     * @return string
      */
-    public function getHaFuManShu()
+    protected function fenPeiXuNiNeiCun($ziFu, $quanZhong)
     {
-        return $this->genJieDian;
-    }
+        $zhiZhen = 'zhi_zhen_' . $this->xuNiNeiCunDaXiao;
+        ++$this->xuNiNeiCunDaXiao;
+        $this->xuNiNeiCunKongJian[$zhiZhen] = new HaFuManShuJieDian($ziFu, $quanZhong);
 
-    /**
-     * 前序遍历构造哈夫曼编码表
-     */
-    protected function gouZaoHaFuManBianMaBiao()
-    {
-        $this->gouZaoHaFuManBianMaBiaoDiGui($this->genJieDian);
-    }
-
-    /**
-     * @param ErChaShuJieDian $genJieDian
-     */
-    protected function gouZaoHaFuManBianMaBiaoDiGui($genJieDian, $qianZhui = '')
-    {
-        if ($genJieDian === null) return;
-        if ($genJieDian->jieDianZhi === null) return;
-
-        if ($genJieDian->jieDianZhi !== self::TEMP_JIE_DIAN_ZHI)
-            $this->haFuManBianMaBiao[$genJieDian->jieDianZhi] = $qianZhui;
-        $this->gouZaoHaFuManBianMaBiaoDiGui($genJieDian->zuoZhiZhen, $qianZhui . '0');
-        $this->gouZaoHaFuManBianMaBiaoDiGui($genJieDian->youZhiZhen, $qianZhui . '1');
+        return $zhiZhen;
     }
 
     /**
@@ -169,16 +177,46 @@ class HaFuManShu
     }
 
     /**
-     * 对字符串进行哈夫曼编码
+     * 前序遍历构造哈夫曼编码表
+     */
+    protected function gouZaoHaFuManBianMaBiao()
+    {
+        $this->gouZaoHaFuManBianMaBiaoDiGui($this->genJieDianZhiZhen);
+    }
+
+    /**
+     * @param string $genJieDianZhiZhen
+     * @param string $qianZhui
+     */
+    protected function gouZaoHaFuManBianMaBiaoDiGui($genJieDianZhiZhen, $qianZhui = '')
+    {
+        if ($genJieDianZhiZhen === null) {
+            return;
+        }
+        $genJieDian = $this->xuNiNeiCunKongJian[$genJieDianZhiZhen];
+        if ($genJieDian->jieDianZhi === null) {
+            return;
+        }
+        if ($genJieDian->jieDianZhi !== self::TEMP_JIE_DIAN_ZHI) {
+            $this->haFuManBianMaBiao[$genJieDian->jieDianZhi] = $qianZhui;
+        }
+        $this->gouZaoHaFuManBianMaBiaoDiGui($genJieDian->zuoZhiZhen, $qianZhui . '0');
+        $this->gouZaoHaFuManBianMaBiaoDiGui($genJieDian->youZhiZhen, $qianZhui . '1');
+    }
+
+    /**
+     * 对目标字符串进行哈夫曼编码
      * @return string
      */
     public function ziFuChuanBianMa()
     {
         $bianMa = '';
-        $strLen = strLen($this->muBiaoZiFuZhuan);
-        for ($i = 0; $i < $strLen; ++$i) {
-            $char = $this->muBiaoZiFuZhuan[$i];
-            if ($char === ' ') $char = 'kong_ge';
+        $chuanChang = strLen($this->muBiaoZiFuChuan);
+        for ($i = 0; $i < $chuanChang; ++$i) {
+            $char = $this->muBiaoZiFuChuan[$i];
+            if ($char === ' ') {
+                $char = 'kong_ge';
+            }
             $bianMa .= $this->haFuManBianMaBiao[$char];
         }
 
@@ -192,29 +230,33 @@ class HaFuManShu
      */
     public function ziFuChanJieMa($bianMa)
     {
-        $haFuManJieMaBiao = array_flip($this->haFuManBianMaBiao);
         $jieMa = '';
         $shiBieMa = '';
-        $strLen = strLen($bianMa);
-        for ($i = 0; $i < $strLen; ++$i) {
+        $haFuManJieMaBiao = array_flip($this->haFuManBianMaBiao);
+        $chuanChang = strLen($bianMa);
+        for ($i = 0; $i < $chuanChang; ++$i) {
             $shiBieMa .= $bianMa[$i];
             if (isset($haFuManJieMaBiao[$shiBieMa])) {
-                if ($haFuManJieMaBiao[$shiBieMa] === 'kong_ge') $jieMa .= ' ';
-                else $jieMa .= $haFuManJieMaBiao[$shiBieMa];
+                if ($haFuManJieMaBiao[$shiBieMa] === 'kong_ge') {
+                    $jieMa .= ' ';
+                } else {
+                    $jieMa .= $haFuManJieMaBiao[$shiBieMa];
+                }
+                // 匹配到一次之后，要把当前这个识别码置空，进行下一轮的匹配
                 $shiBieMa = '';
             }
         }
+
         return $jieMa;
     }
 }
 
 /* 测试代码 */
 
-$string = 'hello world';
-$haFuManShu = new HaFuManShu();
-$haFuManShu->setMuBiaoZiFuChuan($string);
+// $muBiaoZiFuZhuan = 'hello world';
+// $haFuManShu = new HaFuManShu($muBiaoZiFuZhuan);
 // echo json_encode($haFuManShu->getHaFuManShu());
 // echo json_encode($haFuManShu->getHaFuManBianMaBiao());
-$bianMa = $haFuManShu->ziFuChuanBianMa();
-echo json_encode($bianMa);
-echo json_encode($haFuManShu->ziFuChanJieMa($bianMa));
+// $bianMa = $haFuManShu->ziFuChuanBianMa();
+// echo json_encode($bianMa);
+// echo json_encode($haFuManShu->ziFuChanJieMa($bianMa));
