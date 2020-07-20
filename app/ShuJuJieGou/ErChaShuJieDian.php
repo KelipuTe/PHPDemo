@@ -28,10 +28,13 @@ class ErChaShuJieDian
      * ErChaShuJieDian constructor.
      * @param string $jieDianZhi [结点值]
      */
-    public function __construct($jieDianZhi = '')
+    public function __construct($jieDianZhi)
     {
-        $this->jieDianZhi = $jieDianZhi;
+        $this->jieDianZhi = '';
         $this->zuoZhiZhen = null;
         $this->youZhiZhen = null;
+        if (is_string($jieDianZhi) && strlen($jieDianZhi) > 0) {
+            $this->jieDianZhi = $jieDianZhi;
+        }
     }
 }

@@ -135,7 +135,6 @@ class WuXiangTuJuZhen
         foreach ($this->zuoBiaoLieBiao as $key => $value) {
             $this->dingDianFangWenLieBiao[$key] = 0;
         }
-
         for ($i = 0; $i < $this->dingDianShu; ++$i) {
             if ($this->dingDianFangWenLieBiao[$i] === 0)
                 // 第一个访问到的顶点是肯定没有被访问过的，所以不用判断连通性
@@ -164,7 +163,6 @@ class WuXiangTuJuZhen
     public function guangDuYouXianBianLi()
     {
         $this->bianLiJieGuo = '';
-        // 初始化被访问顶点列表，全部置为未访问
         foreach ($this->zuoBiaoLieBiao as $key => $value) {
             $this->dingDianFangWenLieBiao[$key] = 0;
         }

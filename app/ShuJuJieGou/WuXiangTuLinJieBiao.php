@@ -50,12 +50,17 @@ class WuXiangTuLinJieBiao
      */
     protected $bianLiJieGuo;
 
+    /**
+     * WuXiangTuLinJieBiao constructor.
+     * @param array $luJingLieBiao
+     */
     public function __construct($luJingLieBiao = [])
     {
         $this->luJingLieBiao = [];
         $this->dingDianLieBiao = [];
         $this->dingDianShu = 0;
         $this->zuoBiaoLieBiao = [];
+        $this->linJieBiao = [];
         $this->dingDianFangWenLieBiao = [];
         $this->bianLiJieGuo = '';
 
@@ -65,14 +70,19 @@ class WuXiangTuLinJieBiao
         }
     }
 
+    public function getDingDianLieBiao()
+    {
+        return $this->dingDianLieBiao;
+    }
+
+    public function getZuoBiaoLieBiao()
+    {
+        return $this->zuoBiaoLieBiao;
+    }
+
     public function getLinJieBiao()
     {
         return $this->linJieBiao;
-    }
-
-    public function getBianLiJieGuo()
-    {
-        return $this->bianLiJieGuo;
     }
 
     /**
@@ -83,6 +93,7 @@ class WuXiangTuLinJieBiao
         // 遍历统计顶点
         $this->dingDianShu = 0;
         foreach ($this->luJingLieBiao as $itemLuJing) {
+            // 这里要统计所有的顶点，然后把顶点映射到坐标上
             if (!isset($this->dingDianLieBiao[$itemLuJing[0]])) {
                 $this->dingDianLieBiao[$itemLuJing[0]] = $this->dingDianShu;
                 $this->zuoBiaoLieBiao[$this->dingDianShu] = $itemLuJing[0];
@@ -94,12 +105,12 @@ class WuXiangTuLinJieBiao
                 ++$this->dingDianShu;
             }
         }
-        // 初始化邻接表
+        // 初始化邻接表，把所有的顶点先构造出来，边的关系链表初始化为空链表
         for ($i = 0; $i < $this->dingDianShu; ++$i) {
             $this->linJieBiao[$i]['ding_dian_zhi'] = $this->zuoBiaoLieBiao[$i];
             $this->linJieBiao[$i]['zhi_zhen'] = null;
         }
-        // 构造邻接矩阵
+        // 构造邻接表，把所有有边关联的顶点都放到各自顶点的链表里去
         foreach ($this->luJingLieBiao as $itemLuJing) {
             $dingDian1 = $itemLuJing[0];
             $dingDian2 = $itemLuJing[1];
@@ -120,6 +131,7 @@ class WuXiangTuLinJieBiao
         if ($this->linJieBiao[$dingDianZuoBiao]['zhi_zhen'] === null)
             $this->linJieBiao[$dingDianZuoBiao]['zhi_zhen'] = new LinJieBiaoJieDian($tianJiaJieDianZuoBiao);
         else {
+            // 循环到链表的末尾，再插入顶点
             $weiJieDian = $this->linJieBiao[$dingDianZuoBiao]['zhi_zhen'];
             while ($weiJieDian->zhiZhen !== null) {
                 $weiJieDian = $weiJieDian->zhiZhen;
@@ -128,10 +140,18 @@ class WuXiangTuLinJieBiao
         }
     }
 
+    public function getBianLiJieGuo()
+    {
+        return $this->bianLiJieGuo;
+    }
+
+    /**
+     * 深度优先遍历
+     * @return string
+     */
     public function shenDuYouXianBianLi()
     {
         $this->bianLiJieGuo = '';
-        // 初始化被访问顶点列表，全部置为未访问
         foreach ($this->zuoBiaoLieBiao as $key => $value) {
             $this->dingDianFangWenLieBiao[$key] = 0;
         }
@@ -145,6 +165,7 @@ class WuXiangTuLinJieBiao
 
     protected function shenDuYouXianBianLiDiGui($i)
     {
+        // 这里的逻辑和邻接矩阵是一个思路
         $this->bianLiJieGuo .= $this->zuoBiaoLieBiao[$i] . ';';
         $this->dingDianFangWenLieBiao[$i] = 1;
         $weiJieDian = $this->linJieBiao[$i]['zhi_zhen'];
@@ -155,13 +176,17 @@ class WuXiangTuLinJieBiao
         }
     }
 
+    /**
+     * 广度优先遍历
+     * @return string
+     */
     public function guangDuYouXianBianLi()
     {
         $this->bianLiJieGuo = '';
-        // 初始化被访问顶点列表，全部置为未访问
         foreach ($this->zuoBiaoLieBiao as $key => $value) {
             $this->dingDianFangWenLieBiao[$key] = 0;
         }
+        // 邻接表的广度优先遍历和邻接矩阵的思路相同，也要用到队列
         $duiLie = [];
         for ($i = 0; $i < $this->dingDianShu; ++$i) {
             if ($this->dingDianFangWenLieBiao[$i] === 1) {
@@ -190,6 +215,12 @@ class WuXiangTuLinJieBiao
 
 /* 测试代码 */
 
+$a = new LinJieBiaoJieDian('a');
+$b = new LinJieBiaoJieDian('b');
+$a->zhiZhen=$b;
+$b->zhiZhen=$a;
+echo json_encode(var_dump($a));die;
+
 $luJingLieBiao = [
     ['V0', 'V1'], ['V0', 'V5'],
     ['V1', 'V2'], ['V1', 'V8'], ['V1', 'V6'],
@@ -200,6 +231,8 @@ $luJingLieBiao = [
     ['V6', 'V7'],
 ];
 $wuXiangTu = new WuXiangTuLinJieBiao($luJingLieBiao);
-// echo json_encode($wuXiangTu->getLinJieBiao());
-echo json_encode($wuXiangTu->shenDuYouXianBianLi());
-echo json_encode($wuXiangTu->guangDuYouXianBianLi());
+// echo json_encode($wuXiangTu->getDingDianLieBiao());
+// echo json_encode($wuXiangTu->getZuoBiaoLieBiao());
+echo json_encode($wuXiangTu->getLinJieBiao());
+// echo json_encode($wuXiangTu->shenDuYouXianBianLi());
+// echo json_encode($wuXiangTu->guangDuYouXianBianLi());
