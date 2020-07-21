@@ -6,8 +6,7 @@ namespace App\ShuJuJieGou;
 require_once 'Zhan.php';
 
 /**
- * 后缀表达式
- * Class HouZhuiBiaoDaShi
+ * Class HouZhuiBiaoDaShi [后缀表达式]
  * @package App\ShuJuJieGou
  */
 class HouZhuiBiaoDaShi
@@ -22,22 +21,18 @@ class HouZhuiBiaoDaShi
      */
     protected $houZhuiBiaoDaShi;
 
-    public function __construct($zhongZhuiBiaoDaShi = '')
-    {
-        $this->zhongZhuiBiaoDaShi = $zhongZhuiBiaoDaShi;
-        $this->houZhuiBiaoDaShi = '';
-        if (is_string($zhongZhuiBiaoDaShi) && $zhongZhuiBiaoDaShi != '') $this->zhongZhuiZhuanHouZhui();
-    }
-
     /**
-     * 设置中缀表达式
-     * @param string $zhongZhuiBiaoDaShi
+     * HouZhuiBiaoDaShi constructor.
+     * @param $zhongZhuiBiaoDaShi [中缀表达式]
      */
-    public function setZhongZhuiBiaoDaShi($zhongZhuiBiaoDaShi = '')
+    public function __construct($zhongZhuiBiaoDaShi)
     {
-        $this->zhongZhuiBiaoDaShi = $zhongZhuiBiaoDaShi;
+        $this->zhongZhuiBiaoDaShi = '';
         $this->houZhuiBiaoDaShi = '';
-        if (is_string($zhongZhuiBiaoDaShi) && $zhongZhuiBiaoDaShi != '') $this->zhongZhuiZhuanHouZhui();
+        if (is_string($zhongZhuiBiaoDaShi) && $zhongZhuiBiaoDaShi !== '') {
+            $this->zhongZhuiBiaoDaShi = $zhongZhuiBiaoDaShi;
+            $this->zhongZhuiZhuanHouZhui();
+        }
     }
 
     /**
@@ -55,31 +50,32 @@ class HouZhuiBiaoDaShi
     protected function zhongZhuiZhuanHouZhui()
     {
         $houZhuiBiaoDaShi = [];
-        $operatorStack = new Zhan();
-        $numStr = '';
-        $strLen = strlen($this->zhongZhuiBiaoDaShi);
-        for ($i = 0; $i < $strLen; ++$i) {
+        $caoZuoFuZhan = new Zhan();
+        $shuZiString = '';
+        $chuanChang = strlen($this->zhongZhuiBiaoDaShi);
+        for ($i = 0; $i < $chuanChang; ++$i) {
             $itemChar = $this->zhongZhuiBiaoDaShi[$i];
             // 判断超过9的数字
             if (is_numeric($itemChar)) {
-                $numStr .= $itemChar;
-                continue;
-            } else if ($numStr !== '') {
-                $houZhuiBiaoDaShi[] = $numStr;
-                $numStr = '';
-            }
+                $shuZiString .= $itemChar;
 
+                continue;
+            } else if ($shuZiString !== '') {
+                $houZhuiBiaoDaShi[] = $shuZiString;
+                $shuZiString = '';
+            }
+            // 分别判断各个操作符
             switch ($itemChar) {
                 case '+':
                 case '-':
                     // 如果加号和减号前面有其他操作符则需要输出
                     while (1) {
-                        $operator = $operatorStack->getZhanDingYuanSu();
-                        if ($operator === '+' || $operator === '-' || $operator === '*' || $operator === '/') {
-                            $operator = $operatorStack->chuZhan();
-                            $houZhuiBiaoDaShi[] = $operator;
+                        $caoZuoFu = $caoZuoFuZhan->getZhanDingYuanSu();
+                        if ($caoZuoFu === '+' || $caoZuoFu === '-' || $caoZuoFu === '*' || $caoZuoFu === '/') {
+                            $caoZuoFu = $caoZuoFuZhan->chuZhan();
+                            $houZhuiBiaoDaShi[] = $caoZuoFu;
                         } else {
-                            $operatorStack->ruZhan($itemChar);
+                            $caoZuoFuZhan->ruZhan($itemChar);
                             break 2;
                         }
                     }
@@ -88,36 +84,40 @@ class HouZhuiBiaoDaShi
                 case '/':
                     // 如果乘号和除号前面有乘号或除号则需要输出，加号或减号则不输出
                     while (1) {
-                        $operator = $operatorStack->getZhanDingYuanSu();
-                        if ($operator === '*' && $operator === '/') {
-                            $operator = $operatorStack->chuZhan();
-                            $houZhuiBiaoDaShi[] = $operator;
+                        $caoZuoFu = $caoZuoFuZhan->getZhanDingYuanSu();
+                        if ($caoZuoFu === '*' && $caoZuoFu === '/') {
+                            $caoZuoFu = $caoZuoFuZhan->chuZhan();
+                            $houZhuiBiaoDaShi[] = $caoZuoFu;
                         } else {
-                            $operatorStack->ruZhan($itemChar);
+                            $caoZuoFuZhan->ruZhan($itemChar);
                             break 2;
                         }
                     }
                     break;
                 case'(':
-                    $operatorStack->ruZhan($itemChar);
+                    $caoZuoFuZhan->ruZhan($itemChar);
                     break;
                 case ')':
                     // 遇到右括号时，需要输出操作符，直到匹配到左括号
                     while (1) {
-                        $operator = $operatorStack->chuZhan();
-                        if ($operator === '(') break;
-                        $houZhuiBiaoDaShi[] = $operator;
+                        $caoZuoFu = $caoZuoFuZhan->chuZhan();
+                        if ($caoZuoFu === '(') {
+                            break;
+                        }
+                        $houZhuiBiaoDaShi[] = $caoZuoFu;
                     }
                     break;
             }
         }
         // 把最后一个数字输出
-        $houZhuiBiaoDaShi[] = $numStr;
+        $houZhuiBiaoDaShi[] = $shuZiString;
         // 把栈中操作符全部输出
         while (1) {
-            $operator = $operatorStack->chuZhan();
-            if ($operator === null) break;
-            $houZhuiBiaoDaShi[] = $operator;
+            $caoZuoFu = $caoZuoFuZhan->chuZhan();
+            if ($caoZuoFu === null) {
+                break;
+            }
+            $houZhuiBiaoDaShi[] = $caoZuoFu;
         }
         $this->houZhuiBiaoDaShi = implode(' ', $houZhuiBiaoDaShi);
     }
@@ -128,63 +128,66 @@ class HouZhuiBiaoDaShi
      */
     public function jiSuanHouZhui()
     {
-        $numStack = new Zhan();
-        $numStr = '';
-        $strLen = strlen($this->houZhuiBiaoDaShi);
-        for ($i = 0; $i < $strLen; ++$i) {
+        $shuZiZhan = new Zhan();
+        $shuZiString = '';
+        $chuanChang = strlen($this->houZhuiBiaoDaShi);
+        for ($i = 0; $i < $chuanChang; ++$i) {
             $itemChar = $this->houZhuiBiaoDaShi[$i];
             if (is_numeric($itemChar)) {
-                $numStr .= $itemChar;
+                $shuZiString .= $itemChar;
+
                 continue;
             } else if ($itemChar === ' ') {
-                if ($numStr !== '') {
+                if ($shuZiString !== '') {
                     // 字符之间使用空格隔开，用于区分大于9的数字
-                    $numStack->ruZhan(floatval($numStr));
-                    $numStr = '';
+                    $shuZiZhan->ruZhan(floatval($shuZiString));
+                    $shuZiString = '';
                 }
+
                 continue;
             }
             switch ($itemChar) {
                 case '+':
-                    $num1 = $numStack->chuZhan();
-                    $num2 = $numStack->chuZhan();
+                    $num1 = $shuZiZhan->chuZhan();
+                    $num2 = $shuZiZhan->chuZhan();
                     $num3 = $num2 + $num1;
-                    $numStack->ruZhan($num3);
+                    $shuZiZhan->ruZhan($num3);
                     break;
                 case '-':
-                    $num1 = $numStack->chuZhan();
-                    $num2 = $numStack->chuZhan();
+                    $num1 = $shuZiZhan->chuZhan();
+                    $num2 = $shuZiZhan->chuZhan();
                     $num3 = $num2 - $num1;
-                    $numStack->ruZhan($num3);
+                    $shuZiZhan->ruZhan($num3);
                     break;
                 case '*':
-                    $num1 = $numStack->chuZhan();
-                    $num2 = $numStack->chuZhan();
+                    $num1 = $shuZiZhan->chuZhan();
+                    $num2 = $shuZiZhan->chuZhan();
                     $num3 = $num2 * $num1;
-                    $numStack->ruZhan($num3);
+                    $shuZiZhan->ruZhan($num3);
                     break;
                 case '/':
-                    $num1 = $numStack->chuZhan();
-                    $num2 = $numStack->chuZhan();
+                    $num1 = $shuZiZhan->chuZhan();
+                    $num2 = $shuZiZhan->chuZhan();
                     $num3 = $num2 / $num1;
-                    $numStack->ruZhan($num3);
+                    $shuZiZhan->ruZhan($num3);
                     break;
             }
         }
 
-        return $numStack->chuZhan();
+        return $shuZiZhan->chuZhan();
     }
 }
 
 /* 测试代码 */
 
-$zhongZhuiBiaoDaShi = '9+(3-1)*3+10/2';
-$houZhuiBiaoDaShi = new HouZhuiBiaoDaShi($zhongZhuiBiaoDaShi);
-$result = [
-    'houZhuiBiaoDaShi' => $houZhuiBiaoDaShi->getHouZhuiBiaoDaShi(),
-    'jieGuo' => $houZhuiBiaoDaShi->jiSuanHouZhui(),
-];
-echo json_encode($result);
+// $zhongZhuiBiaoDaShi = '9+(3-1)*3+10/2';
+// $houZhuiBiaoDaShi = new HouZhuiBiaoDaShi($zhongZhuiBiaoDaShi);
+// $result = [
+//     'zhongZhuiBiaoDaShi' => $zhongZhuiBiaoDaShi,
+//     'houZhuiBiaoDaShi' => $houZhuiBiaoDaShi->getHouZhuiBiaoDaShi(),
+//     'jieGuo' => $houZhuiBiaoDaShi->jiSuanHouZhui(),
+// ];
+// echo json_encode($result);
 
 
 

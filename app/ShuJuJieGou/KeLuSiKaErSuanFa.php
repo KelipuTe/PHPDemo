@@ -3,36 +3,27 @@
 namespace App\ShuJuJieGou;
 
 
-class KeLuSiKaErSuanFa
+require_once 'WuXiangTuJuZhen.php';
+
+/**
+ * Class KeLuSiKaErSuanFa [克鲁斯卡尔算法]
+ * @package App\ShuJuJieGou
+ */
+class KeLuSiKaErSuanFa extends WuXiangTuJuZhen
 {
     /**
-     * @var array [路径列表]
+     * @var array [排序过的路径权重列表]
      */
-    protected $luJingLieBiao;
-
-    /**
-     * @var array [顶点列表]
-     * 顶点列表采用key=>value的形式，key表示顶点，value表示坐标（矩阵坐标）
-     */
-    protected $dingDianLieBiao;
-
-    /**
-     * @var int [顶点数]
-     */
-    protected $dingDianShu;
-
-    protected $paiXuHou;
-
-    protected $parent;
+    protected $luJingQuanZhongLieBiao;
 
     public function __construct($luJingLieBiao)
     {
-        if (is_array($luJingLieBiao) && count($luJingLieBiao) > 0) {
-            $this->luJingLieBiao = $luJingLieBiao;
-        }
-        $this->paiXuHou = [];
+        $this->luJingQuanZhongLieBiao = [];
+        parent::__construct($luJingLieBiao);
+    }
 
-        // 遍历统计顶点
+    public function gouZaoLinJieJuZhen()
+    {
         $this->dingDianShu = 0;
         foreach ($this->luJingLieBiao as $itemLuJing) {
             if (!isset($this->dingDianLieBiao[$itemLuJing[0]])) {
@@ -46,43 +37,56 @@ class KeLuSiKaErSuanFa
                 ++$this->dingDianShu;
             }
         }
-
-        $tempList = $luJingLieBiao;
-        //取出数组中status的一列，返回一维数组
-        $timeKey = array_column($tempList, 2);
-        //排序，根据$status 排序
-        array_multisort($timeKey, SORT_ASC, $tempList);
-
-        foreach ($tempList as $item){
-            $this->paiXuHou[] = [$this->dingDianLieBiao[$item[0]],$this->dingDianLieBiao[$item[1]],$item[2]];
+        // 克鲁斯卡尔算法不需要把邻接矩阵构造出来
+        $tempLieBiao = $this->luJingLieBiao;
+        // 取出列表中权重那一列，作为排序依据
+        $paiXuYiJu = array_column($tempLieBiao, 2);
+        // 对路径列表按照权重升序排序
+        array_multisort($paiXuYiJu, SORT_ASC, $tempLieBiao);
+        // 构造排序过的路径权重列表
+        foreach ($tempLieBiao as $item) {
+            $this->luJingQuanZhongLieBiao[] = [
+                $this->dingDianLieBiao[$item[0]],
+                $this->dingDianLieBiao[$item[1]],
+                $item[2]
+            ];
         }
-
     }
 
+    /**
+     * 克鲁斯卡尔算法
+     * @return array
+     */
     public function keLuSiKaErSuanFa()
     {
         // 记录最小生成树的边
         $zuiXiaoShenChengShu = [];
-        $this->parent = [];
+        // 记录顶点来源，用于判断顶点是不是已经在生成树上了
+        $dingDianLaiYuanBiao = [];
         for ($i = 0; $i < $this->dingDianShu; ++$i) {
-            $this->parent[$i] = 0;
+            $dingDianLaiYuanBiao[$i] = 0;
         }
         for ($i = 0; $i < $this->dingDianShu; ++$i) {
-            $n = $this->find($this->paiXuHou[$i][0]);
-            $m = $this->find($this->paiXuHou[$i][1]);
-            if ($n !== $m) {
-                $this->parent[$n] = $m;
-                $zuiXiaoShenChengShu[] = [$this->zuoBiaoLieBiao[$this->paiXuHou[$i][0]], $this->zuoBiaoLieBiao[$this->paiXuHou[$i][1]]];
+            $m = $this->find($dingDianLaiYuanBiao, $this->luJingQuanZhongLieBiao[$i][0]);
+            $n = $this->find($dingDianLaiYuanBiao, $this->luJingQuanZhongLieBiao[$i][1]);
+            if ($m !== $n) {
+                $dingDianLaiYuanBiao[$m] = $n;
+                $zuiXiaoShenChengShu[] = [
+                    $this->zuoBiaoLieBiao[$this->luJingQuanZhongLieBiao[$i][0]],
+                    $this->zuoBiaoLieBiao[$this->luJingQuanZhongLieBiao[$i][1]]
+                ];
             }
         }
+
         return $zuiXiaoShenChengShu;
     }
 
-    public function find($k)
+    protected function find($dingDianLaiYuanBiao, $k)
     {
-        while ($this->parent[$k] !== 0) {
-            $k = $this->parent[$k];
+        while ($dingDianLaiYuanBiao[$k] !== 0) {
+            $k = $dingDianLaiYuanBiao[$k];
         }
+
         return $k;
     }
 }

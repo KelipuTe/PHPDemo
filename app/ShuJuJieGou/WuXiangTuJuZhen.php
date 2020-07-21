@@ -52,7 +52,7 @@ class WuXiangTuJuZhen
      * WuXiangTuJuZhen constructor.
      * @param array $luJingLieBiao
      */
-    public function __construct($luJingLieBiao = [])
+    public function __construct($luJingLieBiao)
     {
         $this->luJingLieBiao = [];
         $this->dingDianShu = 0;
@@ -61,26 +61,19 @@ class WuXiangTuJuZhen
         $this->linJieJuZhen = [];
         $this->dingDianFangWenLieBiao = [];
         $this->bianLiJieGuo = '';
-
         if (is_array($luJingLieBiao) && count($luJingLieBiao) > 0) {
             $this->luJingLieBiao = $luJingLieBiao;
             $this->gouZaoLinJieJuZhen();
         }
     }
 
-    public function getDingDianLieBiao()
-    {
-        return $this->dingDianLieBiao;
-    }
-
-    public function getZuoBiaoLieBiao()
-    {
-        return $this->zuoBiaoLieBiao;
-    }
-
     public function getLinJieJuZhen()
     {
-        return $this->linJieJuZhen;
+        return [
+            'dingDianLieBiao' => $this->dingDianLieBiao,
+            'zuoBiaoLieBiao' => $this->zuoBiaoLieBiao,
+            'linJieJuZhen' => $this->linJieJuZhen,
+        ];
     }
 
     /**
@@ -120,13 +113,9 @@ class WuXiangTuJuZhen
         }
     }
 
-    public function getBianLiJieGuo()
-    {
-        return $this->bianLiJieGuo;
-    }
-
     /**
      * 深度优先遍历
+     * @return string
      */
     public function shenDuYouXianBianLi()
     {
@@ -196,18 +185,16 @@ class WuXiangTuJuZhen
 
 /* 测试代码 */
 
-$luJingLieBiao = [
-    ['V0', 'V1'], ['V0', 'V5'],
-    ['V1', 'V2'], ['V1', 'V8'], ['V1', 'V6'],
-    ['V2', 'V3'], ['V2', 'V8'],
-    ['V3', 'V4'], ['V3', 'V6'], ['V3', 'V7'], ['V3', 'V8'],
-    ['V4', 'V5'], ['V4', 'V7'],
-    ['V5', 'V6'],
-    ['V6', 'V7'],
-];
-$wuXiangTu = new WuXiangTuJuZhen($luJingLieBiao);
-// echo json_encode($wuXiangTu->getDingDianLieBiao());
-// echo json_encode($wuXiangTu->getZuoBiaoLieBiao());
-echo json_encode($wuXiangTu->getLinJieJuZhen());
+// $luJingLieBiao = [
+//     ['V0', 'V1'], ['V0', 'V5'],
+//     ['V1', 'V2'], ['V1', 'V8'], ['V1', 'V6'],
+//     ['V2', 'V3'], ['V2', 'V8'],
+//     ['V3', 'V4'], ['V3', 'V6'], ['V3', 'V7'], ['V3', 'V8'],
+//     ['V4', 'V5'], ['V4', 'V7'],
+//     ['V5', 'V6'],
+//     ['V6', 'V7'],
+// ];
+// $wuXiangTu = new WuXiangTuJuZhen($luJingLieBiao);
+// echo json_encode($wuXiangTu->getLinJieJuZhen());
 // echo json_encode($wuXiangTu->shenDuYouXianBianLi());
 // echo json_encode($wuXiangTu->guangDuYouXianBianLi());

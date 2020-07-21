@@ -63,26 +63,19 @@ class WuXiangTuLinJieBiao
         $this->linJieBiao = [];
         $this->dingDianFangWenLieBiao = [];
         $this->bianLiJieGuo = '';
-
         if (is_array($luJingLieBiao) && count($luJingLieBiao) > 0) {
             $this->luJingLieBiao = $luJingLieBiao;
             $this->gouZaoLinJieBiao();
         }
     }
 
-    public function getDingDianLieBiao()
-    {
-        return $this->dingDianLieBiao;
-    }
-
-    public function getZuoBiaoLieBiao()
-    {
-        return $this->zuoBiaoLieBiao;
-    }
-
     public function getLinJieBiao()
     {
-        return $this->linJieBiao;
+        return [
+            'dingDianLieBiao' => $this->dingDianLieBiao,
+            'zuoBiaoLieBiao' => $this->zuoBiaoLieBiao,
+            'linJieBiao' => $this->linJieBiao,
+        ];
     }
 
     /**
@@ -128,9 +121,9 @@ class WuXiangTuLinJieBiao
      */
     protected function tianJiaJieDian($dingDianZuoBiao, $tianJiaJieDianZuoBiao)
     {
-        if ($this->linJieBiao[$dingDianZuoBiao]['zhi_zhen'] === null)
+        if ($this->linJieBiao[$dingDianZuoBiao]['zhi_zhen'] === null) {
             $this->linJieBiao[$dingDianZuoBiao]['zhi_zhen'] = new LinJieBiaoJieDian($tianJiaJieDianZuoBiao);
-        else {
+        } else {
             // 循环到链表的末尾，再插入顶点
             $weiJieDian = $this->linJieBiao[$dingDianZuoBiao]['zhi_zhen'];
             while ($weiJieDian->zhiZhen !== null) {
@@ -138,11 +131,6 @@ class WuXiangTuLinJieBiao
             }
             $weiJieDian->zhiZhen = new LinJieBiaoJieDian($tianJiaJieDianZuoBiao);
         }
-    }
-
-    public function getBianLiJieGuo()
-    {
-        return $this->bianLiJieGuo;
     }
 
     /**
@@ -156,8 +144,9 @@ class WuXiangTuLinJieBiao
             $this->dingDianFangWenLieBiao[$key] = 0;
         }
         for ($i = 0; $i < $this->dingDianShu; ++$i) {
-            if ($this->dingDianFangWenLieBiao[$i] === 0)
+            if ($this->dingDianFangWenLieBiao[$i] === 0) {
                 $this->shenDuYouXianBianLiDiGui($i);
+            }
         }
 
         return $this->bianLiJieGuo;
@@ -170,8 +159,9 @@ class WuXiangTuLinJieBiao
         $this->dingDianFangWenLieBiao[$i] = 1;
         $weiJieDian = $this->linJieBiao[$i]['zhi_zhen'];
         while ($weiJieDian->zhiZhen !== null) {
-            if ($this->dingDianFangWenLieBiao[$weiJieDian->dingDianZuoBiao] === 0)
+            if ($this->dingDianFangWenLieBiao[$weiJieDian->dingDianZuoBiao] === 0) {
                 $this->shenDuYouXianBianLiDiGui($weiJieDian->dingDianZuoBiao);
+            }
             $weiJieDian = $weiJieDian->zhiZhen;
         }
     }
@@ -215,24 +205,16 @@ class WuXiangTuLinJieBiao
 
 /* 测试代码 */
 
-$a = new LinJieBiaoJieDian('a');
-$b = new LinJieBiaoJieDian('b');
-$a->zhiZhen=$b;
-$b->zhiZhen=$a;
-echo json_encode(var_dump($a));die;
-
-$luJingLieBiao = [
-    ['V0', 'V1'], ['V0', 'V5'],
-    ['V1', 'V2'], ['V1', 'V8'], ['V1', 'V6'],
-    ['V2', 'V3'], ['V2', 'V8'],
-    ['V3', 'V4'], ['V3', 'V6'], ['V3', 'V7'], ['V3', 'V8'],
-    ['V4', 'V5'], ['V4', 'V7'],
-    ['V5', 'V6'],
-    ['V6', 'V7'],
-];
-$wuXiangTu = new WuXiangTuLinJieBiao($luJingLieBiao);
-// echo json_encode($wuXiangTu->getDingDianLieBiao());
-// echo json_encode($wuXiangTu->getZuoBiaoLieBiao());
-echo json_encode($wuXiangTu->getLinJieBiao());
+// $luJingLieBiao = [
+//     ['V0', 'V1'], ['V0', 'V5'],
+//     ['V1', 'V2'], ['V1', 'V8'], ['V1', 'V6'],
+//     ['V2', 'V3'], ['V2', 'V8'],
+//     ['V3', 'V4'], ['V3', 'V6'], ['V3', 'V7'], ['V3', 'V8'],
+//     ['V4', 'V5'], ['V4', 'V7'],
+//     ['V5', 'V6'],
+//     ['V6', 'V7'],
+// ];
+// $wuXiangTu = new WuXiangTuLinJieBiao($luJingLieBiao);
+// echo json_encode($wuXiangTu->getLinJieBiao());
 // echo json_encode($wuXiangTu->shenDuYouXianBianLi());
 // echo json_encode($wuXiangTu->guangDuYouXianBianLi());

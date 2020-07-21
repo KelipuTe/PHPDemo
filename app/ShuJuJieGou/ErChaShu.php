@@ -43,7 +43,6 @@ class ErChaShu
     }
 
     /**
-     * 分配虚拟内存
      * @param string $jieDianZhi
      * @return string
      */
@@ -56,9 +55,6 @@ class ErChaShu
         return $zhiZhen;
     }
 
-    /**
-     * 整理虚拟内存空间，移除不需要的元素
-     */
     protected function zhenLiXuNiNeiCunKongJian()
     {
         foreach ($this->xuNiNeiCunKongJian as $key => $value) {
@@ -75,8 +71,8 @@ class ErChaShu
     public function getErChaShu()
     {
         return [
-            'gen_jie_dian_zhi_zhen' => $this->genJieDianZhiZhen,
-            'xu_ni_nei_cun_kong_jian' => $this->xuNiNeiCunKongJian
+            'genJieDianZhiZhen' => $this->genJieDianZhiZhen,
+            'xuNiNeiCunKongJian' => $this->xuNiNeiCunKongJian
         ];
     }
 

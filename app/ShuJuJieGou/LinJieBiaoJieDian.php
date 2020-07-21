@@ -8,13 +8,26 @@ namespace App\ShuJuJieGou;
  */
 class LinJieBiaoJieDian
 {
+    /**
+     * @var int
+     */
     public $dingDianZuoBiao;
 
+    /**
+     * @var string
+     */
     public $zhiZhen;
 
+    /**
+     * LinJieBiaoJieDian constructor.
+     * @param $dingDianZuoBiao [顶点坐标]
+     */
     public function __construct($dingDianZuoBiao)
     {
-        $this->dingDianZuoBiao = $dingDianZuoBiao;
+        $this->dingDianZuoBiao = -1;
         $this->zhiZhen = null;
+        if (is_numeric($dingDianZuoBiao)) {
+            $this->dingDianZuoBiao = $dingDianZuoBiao;
+        }
     }
 }

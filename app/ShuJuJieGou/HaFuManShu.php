@@ -50,7 +50,7 @@ class HaFuManShu
         $this->ziFuQuanZhongBiao = [];
         $this->haFuManBianMaBiao = [];
         $this->genJieDianZhiZhen = null;
-        if (is_string($muBiaoZiFuZhuan) && strlen($muBiaoZiFuZhuan) > 0) {
+        if (is_string($muBiaoZiFuZhuan) && $muBiaoZiFuZhuan !== '') {
             $this->muBiaoZiFuChuan = $muBiaoZiFuZhuan;
             $this->jiSuanZiFuQuanZhong();
             $this->gouZaoHaFuManShu();
@@ -59,7 +59,6 @@ class HaFuManShu
     }
 
     /**
-     * 分配虚拟内存
      * @param $ziFu
      * @param $quanZhong
      * @return string
@@ -80,8 +79,8 @@ class HaFuManShu
     public function getHaFuManShu()
     {
         return [
-            'gen_jie_dian_zhi_zhen' => $this->genJieDianZhiZhen,
-            'xu_ni_nei_cun_kong_jian' => $this->xuNiNeiCunKongJian
+            'genJieDianZhiZhen' => $this->genJieDianZhiZhen,
+            'xuNiNeiCunKongJian' => $this->xuNiNeiCunKongJian
         ];
     }
 

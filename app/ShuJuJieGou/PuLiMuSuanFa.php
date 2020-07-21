@@ -3,61 +3,26 @@
 namespace App\ShuJuJieGou;
 
 
-class PuLiMuSuanFa
+require_once 'WuXiangTuJuZhen.php';
+
+/**
+ * Class PuLiMuSuanFa [普里姆算法]
+ * @package App\ShuJuJieGou
+ */
+class PuLiMuSuanFa extends WuXiangTuJuZhen
 {
     /**
-     * @var array [路径列表]
+     * 临界权重，用于标记
      */
-    protected $luJingLieBiao;
+    protected const LIN_JIE_QUAN_ZHONG = 65535;
 
-    /**
-     * @var array [顶点列表]
-     * 顶点列表采用key=>value的形式，key表示顶点，value表示坐标（矩阵坐标）
-     */
-    protected $dingDianLieBiao;
-
-    /**
-     * @var int [顶点数]
-     */
-    protected $dingDianShu;
-
-    /**
-     * @var array [坐标列表]
-     * 坐标列表保存坐标和顶点的对应关系
-     */
-    protected $zuoBiaoLieBiao;
-
-    /**
-     * @var array [邻接矩阵]
-     */
-    protected $linJieJuZhen;
-
-    /**
-     * PuLiMuSuanFa constructor.
-     * @param $luJingLieBiao
-     */
     public function __construct($luJingLieBiao)
     {
-        if (is_array($luJingLieBiao) && count($luJingLieBiao) > 0) {
-            $this->luJingLieBiao = $luJingLieBiao;
-            $this->gouZaoLinJieJuZhen();
-        }
+        parent::__construct($luJingLieBiao);
     }
 
-    /**
-     * @return array
-     */
-    public function getLinJieJuZhen()
-    {
-        return $this->linJieJuZhen;
-    }
-
-    /**
-     * 构造邻接矩阵
-     */
     protected function gouZaoLinJieJuZhen()
     {
-        // 遍历统计顶点
         $this->dingDianShu = 0;
         foreach ($this->luJingLieBiao as $itemLuJing) {
             if (!isset($this->dingDianLieBiao[$itemLuJing[0]])) {
@@ -71,14 +36,14 @@ class PuLiMuSuanFa
                 ++$this->dingDianShu;
             }
         }
-        // 初始化邻接矩阵
+        // 初始化邻接矩阵，这里和普通邻接矩阵初始化的方式不一样
+        // 初始化的时候除了对角线默认所有的值都是临界权重，对角线默认为0，自己到自己当然是0
         for ($i = 0; $i < $this->dingDianShu; ++$i) {
             for ($j = 0; $j < $this->dingDianShu; ++$j) {
-                $this->linJieJuZhen[$i][$j] = 65535;
+                $this->linJieJuZhen[$i][$j] = self::LIN_JIE_QUAN_ZHONG;
             }
             $this->linJieJuZhen[$i][$i] = 0;
         }
-        // 构造邻接矩阵
         foreach ($this->luJingLieBiao as $itemLuJing) {
             $dingDian1 = $itemLuJing[0];
             $dingDian2 = $itemLuJing[1];
@@ -90,52 +55,54 @@ class PuLiMuSuanFa
         }
     }
 
+    /**
+     * 普里姆算法
+     * @return array
+     */
     public function puLiMuSuanFa()
     {
         // 记录最小生成树的边
         $zuiXiaoShenChengShu = [];
-        // 设置一个临界值用于初始化
-        $linJieQuanZhong = 65535;
-        // 记录到达各个顶点的最小路径权重，没有路径就默认临界值用于区分
+        // 记录最小生成树的顶点，到达不在最小生成树中的各个顶点的最小路径权重，如果没有路径到达对应的顶点，就默认设置为临界权重
         $zuiXiaoQuanZhongLieBiao = [];
-        // 相关顶点用于记录上面最小路径权重的来源，即最小路劲是由那个顶点出来的
+        // 相关顶点用于记录上面最小路径权重的来源，即对应的路径是从哪个顶点出来的
         $xiangGuanDingDianLieBiao = [];
         // 默认从顶点V0开始
         $qiShiDingDian = 0;
-        // 已经录入最小生成树的结点路径就标为0表示已经找到了
+        // 已经录入最小生成树的顶点，最小路径权重就标为0，表示顶点已经在最小生成树中
         $zuiXiaoQuanZhongLieBiao[$qiShiDingDian] = 0;
-        // 因为是从顶点V0开始的
+        // 因为是从顶点V0开始的，所以默认V0顶点是从V0出发的
         $xiangGuanDingDianLieBiao[$qiShiDingDian] = 0;
-        // 初始化
+        // 初始化，因为是从顶点V0开始的，所以初始化的时候，最小路径全部默认是从V0出发的
         for ($i = 1; $i < $this->dingDianShu; ++$i) {
             $zuiXiaoQuanZhongLieBiao[$i] = $this->linJieJuZhen[$qiShiDingDian][$i];
             $xiangGuanDingDianLieBiao[$i] = 0;
         }
+        // 每轮判断都是寻找从当前已经找到的最小生成树的顶点出发的所有边中最小权重的边和对应的那个顶点
         for ($i = 1; $i < $this->dingDianShu; ++$i) {
-            $zuiXiaoQuanZhong = $linJieQuanZhong;
-            $j = 1;
+            $zuiXiaoQuanZhong = self::LIN_JIE_QUAN_ZHONG;
             $k = 0;
             // 循环比较本次从最小生成树顶点出发的所有边的权重，找出最小的边
-            while ($j < $this->dingDianShu) {
+            for ($j = 1; $j < $this->dingDianShu; ++$j) {
                 if ($zuiXiaoQuanZhongLieBiao[$j] !== 0 && $zuiXiaoQuanZhongLieBiao[$j] < $zuiXiaoQuanZhong) {
                     $zuiXiaoQuanZhong = $zuiXiaoQuanZhongLieBiao[$j];
                     $k = $j;
                 }
                 ++$j;
             }
-            // 当前最小权重边的坐标和最小权重来源坐标可以表示出一条边
+            // 用当前最小权重边的坐标和最小权重边的来源坐标可以表示出一条边
             $zuiXiaoShenChengShu[] = [$this->zuoBiaoLieBiao[$xiangGuanDingDianLieBiao[$k]], $this->zuoBiaoLieBiao[$k]];
             // 把这个顶点标记为已找到
             $zuiXiaoQuanZhongLieBiao[$k] = 0;
             for ($j = 1; $j < $this->dingDianShu; ++$j) {
-                // 把新找到的结点加入最小生成树，然后把从这个结点出发的边加入下一轮的判断
+                // 把新找到的顶点加入最小生成树，然后把从这个顶点出发的边和当前的最小路劲比较一下，权重更小的路径加入下一轮的判断
                 if ($zuiXiaoQuanZhongLieBiao[$j] !== 0 && $this->linJieJuZhen[$k][$j] < $zuiXiaoQuanZhongLieBiao[$j]) {
                     $zuiXiaoQuanZhongLieBiao[$j] = $this->linJieJuZhen[$k][$j];
                     $xiangGuanDingDianLieBiao[$j] = $k;
                 }
             }
-            // 每次判断都是寻找从当前已经找到的最小生成树出发的所有边中最小权重的边
         }
+
         return $zuiXiaoShenChengShu;
     }
 }

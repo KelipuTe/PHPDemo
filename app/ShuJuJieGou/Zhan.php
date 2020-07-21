@@ -1,7 +1,7 @@
 <?php
-/* 栈 */
 
 namespace App\ShuJuJieGou;
+
 
 /**
  * Class Zhan [栈]
@@ -37,7 +37,10 @@ class Zhan
      */
     public function getZhanDingYuanSu()
     {
-        if ($this->zhanDi < $this->zhanDing) return null;
+        if ($this->zhanDing < $this->zhanDi) {
+            return null;
+        }
+
         return $this->zhanKongJian[$this->zhanDing];
     }
 
@@ -57,8 +60,11 @@ class Zhan
      */
     public function chuZhan()
     {
-        if ($this->zhanDing < $this->zhanDi) return null;
+        if ($this->zhanDing < $this->zhanDi) {
+            return null;
+        }
         --$this->zhanDing;
+
         return array_pop($this->zhanKongJian);
     }
 }

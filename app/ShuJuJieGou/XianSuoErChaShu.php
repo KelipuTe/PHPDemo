@@ -4,13 +4,14 @@
 namespace App\ShuJuJieGou;
 
 
+require_once 'ErChaShu.php';
 require_once 'XianSuoErChaShuJieDian.php';
 
 /**
  * Class XianSuoErChaShu [线索二叉树]
  * @package App\ShuJuJieGou
  */
-class XianSuoErChaShu
+class XianSuoErChaShu extends ErChaShu
 {
     /**
      * @var array [二叉树元素数组]
@@ -189,8 +190,8 @@ class XianSuoErChaShu
     }
 }
 
-$numList = ['A', 'B', 'C', null, 'D', null, 'E', null, null, 'F', 'I', null, null, 'J', null];
-$erChaShu = new XianSuoErChaShu($numList);
+$yuanSuBiao = ['V0', 'V1', 'V2', null, 'V4', null, 'V6', null, null, 'V9', 'V10', null, null, 'V13', null];
+$erChaShu = new XianSuoErChaShu($yuanSuBiao);
 $erChaShu->buildTreeWithArray();
 $erChaShu->qianXuBianLiXiuJian($erChaShu->getErChaShu());
 $erChaShu->zhongXuBianLiXianSuoHua();
