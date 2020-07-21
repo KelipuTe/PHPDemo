@@ -3,6 +3,7 @@
 namespace App\ShuJuJieGou;
 
 
+require_once 'XuNiNeiCunTrait.php';
 require_once 'HaFuManShuJieDian.php';
 
 /**
@@ -11,6 +12,8 @@ require_once 'HaFuManShuJieDian.php';
  */
 class HaFuManShu
 {
+    use XuNiNeiCunTrait;
+
     /**
      * 临时结点结点值，用于判断是不是有效结点
      */
@@ -32,18 +35,6 @@ class HaFuManShu
     protected $haFuManBianMaBiao;
 
     /**
-     * @var array [虚拟内存空间]
-     * 用于模拟C语言中的指针
-     */
-    protected $xuNiNeiCunKongJian;
-
-    /**
-     * @var int [虚拟内存大小]
-     * 用于记录分配内存的数量
-     */
-    protected $xuNiNeiCunDaXiao;
-
-    /**
      * @var string [根结点指针]
      */
     protected $genJieDianZhiZhen;
@@ -54,11 +45,10 @@ class HaFuManShu
      */
     public function __construct($muBiaoZiFuZhuan)
     {
+        $this->xuNiNeiCunChuShiHua();
         $this->muBiaoZiFuChuan = '';
         $this->ziFuQuanZhongBiao = [];
         $this->haFuManBianMaBiao = [];
-        $this->xuNiNeiCunKongJian = [];
-        $this->xuNiNeiCunDaXiao = 0;
         $this->genJieDianZhiZhen = null;
         if (is_string($muBiaoZiFuZhuan) && strlen($muBiaoZiFuZhuan) > 0) {
             $this->muBiaoZiFuChuan = $muBiaoZiFuZhuan;
@@ -66,6 +56,21 @@ class HaFuManShu
             $this->gouZaoHaFuManShu();
             $this->gouZaoHaFuManBianMaBiao();
         }
+    }
+
+    /**
+     * 分配虚拟内存
+     * @param $ziFu
+     * @param $quanZhong
+     * @return string
+     */
+    protected function fenPeiXuNiNeiCun($ziFu, $quanZhong)
+    {
+        $zhiZhen = 'zhi_zhen_' . $this->xuNiNeiCunDaXiao;
+        ++$this->xuNiNeiCunDaXiao;
+        $this->xuNiNeiCunKongJian[$zhiZhen] = new HaFuManShuJieDian($ziFu, $quanZhong);
+
+        return $zhiZhen;
     }
 
     /**
@@ -121,7 +126,7 @@ class HaFuManShu
                 $jieDianZhiZhen1 = $this->fenPeiXuNiNeiCun($keyZiFu1, $quanZhong1);
                 unset($ziFuQuanZhongBiao[$keyZiFu1]);
             }
-            $jieDian1 = $this->xuNiNeiCunKongJian[$jieDianZhiZhen1];
+            $jieDian1 = $this->huoQuNeiCunShuJu($jieDianZhiZhen1);
             // 获取第二个结点
             $keyZiFu2 = key($ziFuQuanZhongBiao);
             $quanZhong2 = $ziFuQuanZhongBiao[$keyZiFu2];
@@ -132,11 +137,11 @@ class HaFuManShu
                 $jieDianZhiZhen2 = $this->fenPeiXuNiNeiCun($keyZiFu2, $quanZhong2);
                 unset($ziFuQuanZhongBiao[$keyZiFu2]);
             }
-            $jieDian2 = $this->xuNiNeiCunKongJian[$jieDianZhiZhen2];
+            $jieDian2 = $this->huoQuNeiCunShuJu($jieDianZhiZhen2);
             // 构造上层结点
             $shangCengQuanZhong = $jieDian1->quanZhong + $jieDian2->quanZhong;
             $shangCengZhiZhen = $this->fenPeiXuNiNeiCun(self::TEMP_JIE_DIAN_ZHI, $shangCengQuanZhong);
-            $shangcengJieDian = $this->xuNiNeiCunKongJian[$shangCengZhiZhen];
+            $shangcengJieDian = $this->huoQuNeiCunShuJu($shangCengZhiZhen);
             if ($jieDian1->quanZhong <= $jieDian2->quanZhong) {
                 $shangcengJieDian->zuoZhiZhen = $jieDianZhiZhen1;
                 $shangcengJieDian->youZhiZhen = $jieDianZhiZhen2;
@@ -150,21 +155,6 @@ class HaFuManShu
         }
         reset($ziFuQuanZhongBiao);
         $this->genJieDianZhiZhen = key($ziFuQuanZhongBiao);
-    }
-
-    /**
-     * 分配虚拟内存
-     * @param $ziFu
-     * @param $quanZhong
-     * @return string
-     */
-    protected function fenPeiXuNiNeiCun($ziFu, $quanZhong)
-    {
-        $zhiZhen = 'zhi_zhen_' . $this->xuNiNeiCunDaXiao;
-        ++$this->xuNiNeiCunDaXiao;
-        $this->xuNiNeiCunKongJian[$zhiZhen] = new HaFuManShuJieDian($ziFu, $quanZhong);
-
-        return $zhiZhen;
     }
 
     /**
@@ -193,7 +183,7 @@ class HaFuManShu
         if ($genJieDianZhiZhen === null) {
             return;
         }
-        $genJieDian = $this->xuNiNeiCunKongJian[$genJieDianZhiZhen];
+        $genJieDian = $this->huoQuNeiCunShuJu($genJieDianZhiZhen);
         if ($genJieDian->jieDianZhi === null) {
             return;
         }

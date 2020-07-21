@@ -3,6 +3,7 @@
 namespace App\ShuJuJieGou;
 
 
+require_once 'XuNiNeiCunTrait.php';
 require_once 'ErChaShuJieDian.php';
 
 /**
@@ -11,22 +12,12 @@ require_once 'ErChaShuJieDian.php';
  */
 class ErChaShu
 {
+    use XuNiNeiCunTrait;
+
     /**
      * @var array [二叉树元素表]
      */
     protected $yuanSuBiao;
-
-    /**
-     * @var array [虚拟内存空间]
-     * 用于模拟C语言中的指针
-     */
-    protected $xuNiNeiCunKongJian;
-
-    /**
-     * @var int [虚拟内存大小]
-     * 用于记录分配内存的数量
-     */
-    protected $xuNiNeiCunDaXiao;
 
     /**
      * @var string [根结点指针]
@@ -40,15 +31,40 @@ class ErChaShu
      */
     public function __construct($yuanSuBiao)
     {
+        $this->xuNiNeiCunChuShiHua();
         $this->yuanSuBiao = [];
-        $this->xuNiNeiCunKongJian = [];
-        $this->xuNiNeiCunDaXiao = 0;
         $this->genJieDianZhiZhen = null;
         if (is_array($yuanSuBiao) && count($yuanSuBiao) > 0) {
             $this->yuanSuBiao = $yuanSuBiao;
             $this->gouZaoErChaShu();
             $this->qianXuBianLiXiuJian();
             $this->zhenLiXuNiNeiCunKongJian();
+        }
+    }
+
+    /**
+     * 分配虚拟内存
+     * @param string $jieDianZhi
+     * @return string
+     */
+    protected function fenPeiXuNiNeiCun($jieDianZhi)
+    {
+        $zhiZhen = 'zhi_zhen_' . $this->xuNiNeiCunDaXiao;
+        ++$this->xuNiNeiCunDaXiao;
+        $this->xuNiNeiCunKongJian[$zhiZhen] = new ErChaShuJieDian($jieDianZhi);
+
+        return $zhiZhen;
+    }
+
+    /**
+     * 整理虚拟内存空间，移除不需要的元素
+     */
+    protected function zhenLiXuNiNeiCunKongJian()
+    {
+        foreach ($this->xuNiNeiCunKongJian as $key => $value) {
+            if ($value->jieDianZhi === '') {
+                unset($this->xuNiNeiCunKongJian[$key]);
+            }
         }
     }
 
@@ -84,20 +100,6 @@ class ErChaShu
     }
 
     /**
-     * 分配虚拟内存
-     * @param string $jieDianZhi
-     * @return string
-     */
-    protected function fenPeiXuNiNeiCun($jieDianZhi)
-    {
-        $zhiZhen = 'zhi_zhen_' . $this->xuNiNeiCunDaXiao;
-        ++$this->xuNiNeiCunDaXiao;
-        $this->xuNiNeiCunKongJian[$zhiZhen] = new ErChaShuJieDian($jieDianZhi);
-
-        return $zhiZhen;
-    }
-
-    /**
      * 以层次遍历的顺序依次插入结点
      * @param string $jieDianZhiZhen
      * @throws \Exception
@@ -115,7 +117,7 @@ class ErChaShu
             if ($tempJieDianZhiZhen === null) {
                 throw new \Exception("指针：({$tempJieDianZhiZhen})为空");
             }
-            $tempJieDian = $this->xuNiNeiCunKongJian[$tempJieDianZhiZhen];
+            $tempJieDian = $this->huoQuNeiCunShuJu($tempJieDianZhiZhen);
             if ($tempJieDian === null) {
                 throw new \Exception("结点：({$tempJieDianZhiZhen})为空");
             }
@@ -156,12 +158,12 @@ class ErChaShu
         if ($genJieDianZhiZhen === null) {
             return;
         }
-        $genJieDian = $this->xuNiNeiCunKongJian[$genJieDianZhiZhen];
+        $genJieDian = $this->huoQuNeiCunShuJu($genJieDianZhiZhen);
         if ($genJieDian === null || $genJieDian->jieDianZhi === null) {
             return;
         }
         if ($genJieDian->zuoZhiZhen !== null) {
-            $zuoJieDian = $this->xuNiNeiCunKongJian[$genJieDian->zuoZhiZhen];
+            $zuoJieDian = $this->huoQuNeiCunShuJu($genJieDian->zuoZhiZhen);
             if ($zuoJieDian->jieDianZhi === '') {
                 $genJieDian->zuoZhiZhen = null;
             } else {
@@ -169,23 +171,11 @@ class ErChaShu
             }
         }
         if ($genJieDian->youZhiZhen !== null) {
-            $youJieDian = $this->xuNiNeiCunKongJian[$genJieDian->youZhiZhen];
+            $youJieDian = $this->huoQuNeiCunShuJu($genJieDian->youZhiZhen);
             if ($youJieDian->jieDianZhi === '') {
                 $genJieDian->youZhiZhen = null;
             } else {
                 $this->qianXuBianLiXiuJianDiGui($genJieDian->youZhiZhen);
-            }
-        }
-    }
-
-    /**
-     * 整理虚拟内存空间，移除不需要的元素
-     */
-    protected function zhenLiXuNiNeiCunKongJian()
-    {
-        foreach ($this->xuNiNeiCunKongJian as $key => $value) {
-            if ($value->jieDianZhi === '') {
-                unset($this->xuNiNeiCunKongJian[$key]);
             }
         }
     }
@@ -207,7 +197,7 @@ class ErChaShu
         if ($genJieDianZhiZhen === null) {
             return '';
         }
-        $genJieDian = $this->xuNiNeiCunKongJian[$genJieDianZhiZhen];
+        $genJieDian = $this->huoQuNeiCunShuJu($genJieDianZhiZhen);
         if ($genJieDian === null || $genJieDian->jieDianZhi === null) {
             return '';
         }
@@ -237,7 +227,7 @@ class ErChaShu
         if ($genJieDianZhiZhen === null) {
             return '';
         }
-        $genJieDian = $this->xuNiNeiCunKongJian[$genJieDianZhiZhen];
+        $genJieDian = $this->huoQuNeiCunShuJu($genJieDianZhiZhen);
         if ($genJieDian === null || $genJieDian->jieDianZhi === null) {
             return '';
         }
@@ -266,7 +256,7 @@ class ErChaShu
         if ($genJieDianZhiZhen === null) {
             return '';
         }
-        $genJieDian = $this->xuNiNeiCunKongJian[$genJieDianZhiZhen];
+        $genJieDian = $this->huoQuNeiCunShuJu($genJieDianZhiZhen);
         if ($genJieDian === null || $genJieDian->jieDianZhi === null) {
             return '';
         }
@@ -296,7 +286,7 @@ class ErChaShu
         if ($genJieDianZhiZhen === null) {
             return 0;
         }
-        $genJieDian = $this->xuNiNeiCunKongJian[$genJieDianZhiZhen];
+        $genJieDian = $this->huoQuNeiCunShuJu($genJieDianZhiZhen);
         if ($genJieDian === null || $genJieDian->jieDianZhi === null) {
             return 0;
         }
@@ -323,7 +313,7 @@ class ErChaShu
             if ($tempJieDianZhiZhen === null) {
                 continue;
             }
-            $tempJieDian = $this->xuNiNeiCunKongJian[$tempJieDianZhiZhen];
+            $tempJieDian = $this->huoQuNeiCunShuJu($tempJieDianZhiZhen);
             if ($tempJieDian === null) {
                 continue;
             }
@@ -358,7 +348,7 @@ class ErChaShu
             if ($tempJieDianZhiZhen === null) {
                 continue;
             }
-            $tempJieDian = $this->xuNiNeiCunKongJian[$tempJieDianZhiZhen];
+            $tempJieDian = $this->huoQuNeiCunShuJu($tempJieDianZhiZhen);
             if ($tempJieDian === null) {
                 continue;
             }
@@ -396,7 +386,7 @@ class ErChaShu
                 if ($tempJieDianZhiZhen === null) {
                     continue;
                 }
-                $tempJieDian = $this->xuNiNeiCunKongJian[$tempJieDianZhiZhen];
+                $tempJieDian = $this->huoQuNeiCunShuJu($tempJieDianZhiZhen);
                 if ($tempJieDian === null) {
                     continue;
                 }
