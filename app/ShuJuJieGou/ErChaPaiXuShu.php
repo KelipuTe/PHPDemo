@@ -77,15 +77,50 @@ class ErChaPaiXuShu extends ErChaShu
             }
         }
     }
+
+    public function shanChuJieDian($jieDianZhi)
+    {
+        $muBiaoZhiZhen = $this->zhongXuBianLiChaZhao($jieDianZhi);
+        $muBiaoJieDian = $this->huoQuNeiCunShuJu($muBiaoZhiZhen);
+        if ($muBiaoJieDian->zuoZhiZhen === null) {
+            $this->xuNiNeiCunKongJian[$muBiaoZhiZhen] = $this->huoQuNeiCunShuJu($muBiaoJieDian->youZhiZhen);
+            $this->shiFangXuNiNeiCun($muBiaoJieDian->youZhiZhen);
+        } else if ($muBiaoJieDian->youZhiZhen === null) {
+            $this->xuNiNeiCunKongJian[$muBiaoZhiZhen] = $this->huoQuNeiCunShuJu($muBiaoJieDian->zuoZhiZhen);
+            $this->shiFangXuNiNeiCun($muBiaoJieDian->zuoZhiZhen);
+        } else {
+            $xiuGaiZhiZhen = $muBiaoZhiZhen;
+            $xiuGaiJieDian = $muBiaoJieDian;
+            $qianQuZhiZhen = $muBiaoZhiZhen;
+            $xunZhiZhiZhen = $muBiaoJieDian->zuoZhiZhen;
+            $xunZhiJieDian = $this->huoQuNeiCunShuJu($xunZhiZhiZhen);
+            while ($xunZhiJieDian->youZhiZhen !== null) {
+                $qianQuZhiZhen = $xunZhiZhiZhen;
+                $xunZhiZhiZhen = $xunZhiJieDian->youZhiZhen;
+                $xunZhiJieDian = $this->huoQuNeiCunShuJu($xunZhiZhiZhen);
+            }
+            $xiuGaiJieDian->jieDianZhi = $xunZhiJieDian->jieDianZhi;
+            $qianQuJieDian = $this->huoQuNeiCunShuJu($qianQuZhiZhen);
+            if ($xiuGaiZhiZhen !== $qianQuZhiZhen) {
+                $qianQuJieDian->yuoZhiZhen = $xunZhiJieDian->zuoZhiZhen;
+            } else {
+                $qianQuJieDian->zuoZhiZhen = $xunZhiJieDian->zuoZhiZhen;
+            }
+            $this->shiFangXuNiNeiCun($xunZhiZhiZhen);
+        }
+    }
 }
 
 /* 测试代码 */
 
-$erChaPaiXuShu = new ErChaPaiXuShu();
-$yuanSuBiao = [62, 58, 88, 47, 73, 99, 35, 51, 93, 37, 95];
-foreach ($yuanSuBiao as $item) {
-    $erChaPaiXuShu->chaRuJieDian($item);
-}
-echo json_encode($erChaPaiXuShu->getErChaShu());
-echo json_encode($erChaPaiXuShu->zhongXuBianLi());
-echo json_encode($erChaPaiXuShu->zhongXuBianLiChaZhao(73));
+// $erChaPaiXuShu = new ErChaPaiXuShu();
+// $yuanSuBiao = [62, 58, 88, 47, 73, 99, 35, 51, 93, 37, 95];
+// $yuanSuBiao = [162, 158, 188, 147, 173, 199, 135, 151, 129, 137, 195, 136, 149, 156, 148, 150, 138];
+// foreach ($yuanSuBiao as $item) {
+//     $erChaPaiXuShu->chaRuJieDian($item);
+// }
+// echo json_encode($erChaPaiXuShu->getErChaShu());
+// echo json_encode($erChaPaiXuShu->zhongXuBianLi());
+
+// $erChaPaiXuShu->shanChuJieDian(147);
+// echo json_encode($erChaPaiXuShu->getErChaShu());

@@ -56,6 +56,15 @@ trait XuNiNeiCunTrait
     }
 
     /**
+     * 释放虚拟内存空间
+     * @param $zhiZhen
+     */
+    protected function shiFangXuNiNeiCun($zhiZhen)
+    {
+        unset($this->xuNiNeiCunKongJian[$zhiZhen]);
+    }
+
+    /**
      * 整理虚拟内存空间，移除不需要的元素
      * 这个方法需要各个调用的类自行编码
      */

@@ -1,40 +1,35 @@
 <?php
 
-namespace App\SuanFa\PaiXu;
+namespace App\ShuJuJieGou;
+
+
+require_once 'PaiXuAbstract.php';
 
 /**
- * 选择排序
- * Class XuanZePaiXu
+ * Class XuanZePaiXu [选择排序]
+ * @package App\ShuJuJieGou
  */
 class XuanZePaiXu extends PaiXuAbstract
 {
-
-
-    /**
-     * 选择排序
-     */
     protected function doSort()
     {
-        $afterSortList = $this->beforeSortList;
-        $length = count($afterSortList);
+        $this->afterSortList = $this->beforeSortList;
+        $length = count($this->afterSortList);
         for ($i = 0; $i < $length; $i++) {
             // 第n次循环找到第n小的那个元素
             $minIndex = $i;
             for ($j = $i + 1; $j < $length; $j++) {
-                // 记录排序比较次数
                 ++$this->sortTimes;
-                if ($afterSortList[$j] < $afterSortList[$minIndex]) {
+                if ($this->afterSortList[$j] < $this->afterSortList[$minIndex]) {
                     $minIndex = $j;
                 }
             }
             // 把第n小的值和序列第n个位置的元素交换
-            $tempNum = $afterSortList[$i];
-            $afterSortList[$i] = $afterSortList[$minIndex];
-            $afterSortList[$minIndex] = $tempNum;
-            // 记录排序步骤
-            $this->sortSteps[] = json_encode($afterSortList);
+            $tempNum = $this->afterSortList[$i];
+            $this->afterSortList[$i] = $this->afterSortList[$minIndex];
+            $this->afterSortList[$minIndex] = $tempNum;
+            $this->sortSteps[] = json_encode($this->afterSortList);
         }
-        $this->afterSortList = $afterSortList;
     }
 }
 

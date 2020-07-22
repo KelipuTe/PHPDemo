@@ -1,8 +1,12 @@
 <?php
 
-namespace App\SuanFa\PaiXu;
+namespace App\ShuJuJieGou;
 
 
+/**
+ * Class PaiXuAbstract
+ * @package App\ShuJuJieGou
+ */
 abstract class PaiXuAbstract
 {
     /**
@@ -29,26 +33,15 @@ abstract class PaiXuAbstract
      * PaiXuAbstract constructor.
      * @param array $beforeSortList
      */
-    public function __construct($beforeSortList = [])
+    public function __construct($beforeSortList)
     {
         $this->beforeSortList = $beforeSortList;
         $this->afterSortList = [];
         $this->sortTimes = 0;
         $this->sortSteps = [];
-        if (is_array($beforeSortList) && count($beforeSortList) > 0) $this->doSort();
-    }
-
-    /**
-     * 设置待排序序列
-     * @param array $beforeSortList
-     */
-    public function setBeforeSortList($beforeSortList = [])
-    {
-        $this->beforeSortList = $beforeSortList;
-        $this->afterSortList = [];
-        $this->sortTimes = 0;
-        $this->sortSteps = [];
-        if (is_array($beforeSortList) && count($beforeSortList) > 0) $this->doSort();
+        if (is_array($beforeSortList) && count($beforeSortList) > 0) {
+            $this->doSort();
+        }
     }
 
     /**
@@ -58,8 +51,8 @@ abstract class PaiXuAbstract
     public function getSortResult()
     {
         return [
-            'before_sort_list' => $this->beforeSortList,
-            'after_sort_list' => $this->afterSortList,
+            'before_sort_list' => json_encode($this->beforeSortList),
+            'after_sort_list' => json_encode($this->afterSortList),
             'sort_times' => $this->sortTimes,
             'sort_steps' => $this->sortSteps,
         ];
@@ -67,6 +60,7 @@ abstract class PaiXuAbstract
 
     /**
      * 排序算法
+     * 这个方法需要各个调用的类自行编码
      */
     abstract protected function doSort();
 }
