@@ -50,7 +50,7 @@ class WuXiangTuJuZhen
 
     /**
      * WuXiangTuJuZhen constructor.
-     * @param array $luJingLieBiao
+     * @param array $luJingLieBiao [无向图路径列表]
      */
     public function __construct($luJingLieBiao)
     {

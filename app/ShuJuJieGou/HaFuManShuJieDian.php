@@ -23,10 +23,10 @@ class HaFuManShuJieDian extends ErChaShuJieDian
      */
     public function __construct($jieDianZhi, $quanZhong)
     {
-        parent::__construct($jieDianZhi);
         $this->quanZhong = 0;
         if (is_numeric($quanZhong) && $quanZhong > 0) {
             $this->quanZhong = $quanZhong;
         }
+        parent::__construct($jieDianZhi);
     }
 }

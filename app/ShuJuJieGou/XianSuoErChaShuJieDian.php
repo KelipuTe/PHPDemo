@@ -1,30 +1,21 @@
 <?php
-/* 线索二叉树结点 */
 
 namespace App\ShuJuJieGou;
 
+
+require_once 'ErChaShuJieDian.php';
 
 /**
  * Class ShuJieDian [线索二叉树结点]
  * @package App\ShuJuJieGou
  */
-class XianSuoErChaShuJieDian
+class XianSuoErChaShuJieDian extends ErChaShuJieDian
 {
-    /**
-     * @var int [结点值]
-     */
-    public $jieDianZhi;
-
     /**
      * @var int [左标识]
      * -1=未设置；0=前驱；1=左孩子
      */
     public $zuoBiaoShi;
-
-    /**
-     * @var XianSuoErChaShuJieDian [左指针]
-     */
-    public $zuoZhiZhen;
 
     /**
      * @var int [右标识]
@@ -33,20 +24,13 @@ class XianSuoErChaShuJieDian
     public $youBiaoShi;
 
     /**
-     * @var XianSuoErChaShuJieDian [右指针]
-     */
-    public $youZhiZhen;
-
-    /**
      * ShuJieDian constructor.
      * @param $jieDianZhi [结点值]
      */
     public function __construct($jieDianZhi)
     {
-        $this->jieDianZhi = $jieDianZhi;
-        $this->zuoZhiZhen = null;
         $this->zuoBiaoShi = -1;
-        $this->youZhiZhen = null;
         $this->youBiaoShi = -1;
+        parent::__construct($jieDianZhi);
     }
 }

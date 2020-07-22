@@ -20,7 +20,7 @@ class LinJieBiaoJieDian
 
     /**
      * LinJieBiaoJieDian constructor.
-     * @param $dingDianZuoBiao [顶点坐标]
+     * @param int $dingDianZuoBiao [顶点坐标]
      */
     public function __construct($dingDianZuoBiao)
     {

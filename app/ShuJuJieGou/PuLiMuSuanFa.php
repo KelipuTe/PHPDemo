@@ -16,6 +16,10 @@ class PuLiMuSuanFa extends WuXiangTuJuZhen
      */
     protected const LIN_JIE_QUAN_ZHONG = 65535;
 
+    /**
+     * PuLiMuSuanFa constructor.
+     * @param array $luJingLieBiao [无向图路径列表]
+     */
     public function __construct($luJingLieBiao)
     {
         parent::__construct($luJingLieBiao);

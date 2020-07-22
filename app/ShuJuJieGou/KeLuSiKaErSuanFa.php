@@ -16,6 +16,10 @@ class KeLuSiKaErSuanFa extends WuXiangTuJuZhen
      */
     protected $luJingQuanZhongLieBiao;
 
+    /**
+     * KeLuSiKaErSuanFa constructor.
+     * @param array $luJingLieBiao [无向图路径列表]
+     */
     public function __construct($luJingLieBiao)
     {
         $this->luJingQuanZhongLieBiao = [];
@@ -93,15 +97,15 @@ class KeLuSiKaErSuanFa extends WuXiangTuJuZhen
 
 /* 测试代码 */
 
-$luJingLieBiao = [
-    ['V0', 'V1', 10], ['V0', 'V5', 11],
-    ['V1', 'V2', 18], ['V1', 'V8', 12], ['V1', 'V6', 16],
-    ['V2', 'V3', 22], ['V2', 'V8', 8],
-    ['V3', 'V4', 20], ['V3', 'V6', 24], ['V3', 'V7', 16], ['V3', 'V8', 21],
-    ['V4', 'V5', 26], ['V4', 'V7', 7],
-    ['V5', 'V6', 17],
-    ['V6', 'V7', 19],
-];
-$wuXiangTu = new KeLuSiKaErSuanFa($luJingLieBiao);
+// $luJingLieBiao = [
+//     ['V0', 'V1', 10], ['V0', 'V5', 11],
+//     ['V1', 'V2', 18], ['V1', 'V8', 12], ['V1', 'V6', 16],
+//     ['V2', 'V3', 22], ['V2', 'V8', 8],
+//     ['V3', 'V4', 20], ['V3', 'V6', 24], ['V3', 'V7', 16], ['V3', 'V8', 21],
+//     ['V4', 'V5', 26], ['V4', 'V7', 7],
+//     ['V5', 'V6', 17],
+//     ['V6', 'V7', 19],
+// ];
+// $wuXiangTu = new KeLuSiKaErSuanFa($luJingLieBiao);
 // echo json_encode($wuXiangTu->getLinJieJuZhen());
-echo json_encode($wuXiangTu->keLuSiKaErSuanFa());
+// echo json_encode($wuXiangTu->keLuSiKaErSuanFa());

@@ -33,7 +33,7 @@ class ErChaShuJieDian
         $this->jieDianZhi = '';
         $this->zuoZhiZhen = null;
         $this->youZhiZhen = null;
-        if (is_string($jieDianZhi) && $jieDianZhi !== '') {
+        if (is_numeric($jieDianZhi) || (is_string($jieDianZhi) && $jieDianZhi !== '')) {
             $this->jieDianZhi = $jieDianZhi;
         }
     }
