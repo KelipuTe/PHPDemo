@@ -59,7 +59,7 @@ class ErChaShu
     {
         foreach ($this->xuNiNeiCunKongJian as $key => $value) {
             if ($value->jieDianZhi === '') {
-                unset($this->xuNiNeiCunKongJian[$key]);
+                $this->shiFangXuNiNeiCun($key);
             }
         }
     }

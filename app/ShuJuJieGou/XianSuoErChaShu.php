@@ -50,15 +50,6 @@ class XianSuoErChaShu extends ErChaShu
         return $zhiZhen;
     }
 
-    protected function zhenLiXuNiNeiCunKongJian()
-    {
-        foreach ($this->xuNiNeiCunKongJian as $key => $value) {
-            if ($value->jieDianZhi === '') {
-                unset($this->xuNiNeiCunKongJian[$key]);
-            }
-        }
-    }
-
     /**
      * 获取二叉树
      * @return array
