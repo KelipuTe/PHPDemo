@@ -31,7 +31,7 @@ class PingHengErChaShuJieDian extends ErChaShuJieDian
     {
         $this->fuZhiZhen = null;
         $this->jieDianShenDu = 0;
-        $this->pingHengCanShu = 7;
+        $this->pingHengCanShu = 0;
         parent::__construct($jieDianZhi);
     }
 }
