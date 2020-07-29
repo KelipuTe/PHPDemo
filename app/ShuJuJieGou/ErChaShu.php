@@ -29,7 +29,7 @@ class ErChaShu
      * @param array $yuanSuBiao [二叉树元素表]
      * @throws \Exception
      */
-    public function __construct($yuanSuBiao)
+    public function __construct($yuanSuBiao = [])
     {
         $this->xuNiNeiCunChuShiHua();
         $this->yuanSuBiao = [];
