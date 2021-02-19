@@ -3,7 +3,7 @@
 /* 外观模式（Facade）*/
 
 // 外观模式需要 IOC 容器支持
-require_once 'KongZhiFanZhuan.php';
+require_once 'kong4zhi4fan3zhuan3.php';
 
 class LogServiceFacade
 {

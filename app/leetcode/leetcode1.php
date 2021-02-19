@@ -1,5 +1,5 @@
 <?php
-/* LeetCode1 两数之和 */
+/*#####leetcode1-两数之和#####*/
 
 /**
  * @param Integer[] $nums
@@ -24,25 +24,18 @@ function twoSum($nums, $target)
     return [];
 }
 
-/* 测试代码 */
+/*#####测试代码#####*/
 
 $testList = [
     ['nums' => [3, 2, 4], 'target' => 6],
     ['nums' => [5, 3, 3, 2], 'target' => 6],
-    ['nums' => [2, 7, 11, 15], 'target' => 9],
+    ['nums' => [2, 7, 11, 15], 'target' => 9]
 ];
-$resultList = [];
+$testNum = 3;
 
 $timeStart = intval(microtime(true) * 1000);
 foreach ($testList as $item) {
-    $resultList[] = twoSum($item['nums'], $item['target']);
+    echo json_encode(twoSum($item['nums'], $item['target'])) . PHP_EOL;
 }
 $timeStop = intval(microtime(true) * 1000);
-
-$echo = [
-    'timeStart' => $timeStart,
-    'timeStop' => $timeStop,
-    'timePass' => $timeStop - $timeStart,
-    'result' => $resultList
-];
-echo json_encode($echo);
+echo 'timePass:' . round(($timeStop - $timeStart) / 3, 2) . PHP_EOL;
