@@ -26,16 +26,11 @@ function twoSum($nums, $target)
 
 /*#####测试代码#####*/
 
-$testList = [
+$arrTest = [
     ['nums' => [3, 2, 4], 'target' => 6],
     ['nums' => [5, 3, 3, 2], 'target' => 6],
     ['nums' => [2, 7, 11, 15], 'target' => 9]
 ];
-$testNum = 3;
-
-$timeStart = intval(microtime(true) * 1000);
-foreach ($testList as $item) {
-    echo json_encode(twoSum($item['nums'], $item['target'])) . PHP_EOL;
+foreach ($arrTest as $tItem) {
+    echo json_encode(twoSum($tItem['nums'], $tItem['target'])) . PHP_EOL;
 }
-$timeStop = intval(microtime(true) * 1000);
-echo 'timePass:' . round(($timeStop - $timeStart) / 3, 2) . PHP_EOL;
